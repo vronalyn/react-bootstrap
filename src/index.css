@@ -3,6 +3,14 @@
 body{
   font-family: 'Poppins', sans-serif;
 }
-.hero{
-  background-color: rgb(17, 24, 37);
+
+.bg-dark{
+  background-color: #000517 !important;
+}
+.bg-light{
+  background: rgb(2,0,36);
+  background: linear-gradient(0deg, rgba(2,0,36,1) 35%, rgba(20,31,69,1) 100%);
+}
+.btn-light{
+  background-color: #00A3FF !important;
 }
