@@ -5,14 +5,6 @@ import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 
 const Landing = () => {
-  const scrollToAbout = () => {
-    document.getElementById("about").scrollIntoView({ behavior: "smooth" });
-  };
-
-  const scrollToContact = () => {
-    document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <div>
       <Navbar/>
