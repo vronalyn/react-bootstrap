@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import Navbar2 from '../components/Navbar2'
 import Cards from '../components/Cards'
@@ -7,14 +7,19 @@ import Chart from '../components/Chart'
 
 
 const Dashboard = () => {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+    const toggleSidebar = () => {
+        setSidebarCollapsed(!sidebarCollapsed);
+    };
 
   return (
     <div>
 
       <div className="wrapper ">
-        <Sidebar />
+        <Sidebar sidebarCollapsed={sidebarCollapsed} />
         <div className="main">
-          <Navbar2 />
+          <Navbar2 toggleSidebar={toggleSidebar} />
           <main className="content px-3 py-2 bg-secondary bg-opacity-10">
             <div className="container-fluid">
 

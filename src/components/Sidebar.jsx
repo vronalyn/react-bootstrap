@@ -2,9 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import '../css/Sidebar.css'
 
-const Sidebar = () => {
+const Sidebar = ({ sidebarCollapsed }) => {
     return (
-        <aside id="sidebar" className="js-sidebar collapse-horizontal">
+        <aside id="sidebar"  className={`js-sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
             <div className="h-100">
                 <div className="sidebar-logo d-flex align-items-center">
                     <i className='bx bxs-droplet p-1 me-2 fs-4 rounded-circle border border-primary' ></i>

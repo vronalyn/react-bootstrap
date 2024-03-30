@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Navbar2 = () => {
+const Navbar2 = ({ toggleSidebar }) => {
 
     return (
         <nav className="navbar navbar-expand px-3 py-0 border-bottom bg-white">
-            <button className="btn bg-transparent" id="sidebar-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" >
+            <button className="btn bg-transparent" id="sidebar-toggle" type="button" onClick={toggleSidebar}>
                 <span className="navbar-toggler-icon"></span>
             </button>
 
