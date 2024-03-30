@@ -27,10 +27,10 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top z-1">
       <div className="container">
-        <Link to="/" className="navbar-brand text-white fw-bold">
-        <i className='bx bxs-droplet text-primary'></i>
-          <span className="mx-2">WaterMS</span>
-        </Link>
+      <div className="sidebar-logo d-flex align-items-center p-0">
+                    <i className='bx bxs-droplet p-1 me-2 fs-4 rounded-circle border border-primary' ></i>
+                    <Link to={'/'}>WaterMS</Link>
+                </div>
         <button
           className="navbar-toggler"
           type="button"
@@ -51,7 +51,7 @@ const Navbar = () => {
               <a href="#contact" className="nav-link text-white px-3">Contact</a>
             </li>
             <li className="nav-item">
-              <Link to="/login" className="btn btn-light text-white px-3">Login</Link>
+              <Link to="/login" className="btn btn-custom px-4">Login</Link>
             </li>
           </ul>
         </div>

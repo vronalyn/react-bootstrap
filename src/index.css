@@ -3,60 +3,84 @@
 *,
 ::after,
 ::before {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-body{
+:root {
+  --accent-color: #00A3FF;
+  --bg-dark-blue: #000517;
+  --blue-faded: #00a2ff28;
+  --bg-gradient-blue: linear-gradient(0deg, rgba(2, 0, 36, 1) 35%, rgba(20, 31, 69, 1) 100%);
+  --white: #fff;
+}
+
+body {
   font-family: 'Poppins', sans-serif;
   opacity: 1;
   overflow-y: scroll;
   margin: 0;
 }
 
-.bg-dark{
-  background-color: #000517 !important;
-}
-.bg-light{
-  background: rgb(2,0,36);
-  background: linear-gradient(0deg, rgba(2,0,36,1) 35%, rgba(20,31,69,1) 100%);
-}
-.btn-light{
-  background-color: #00A3FF !important;
+.btn-custom {
+  color: var(--white);
+  background: var(--accent-color);
+  border-color: var(--white);
 }
 
-a{
-    cursor: pointer;
-    text-decoration: none;
+.btn-custom:hover {
+  color: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+  background: none !important;
+}
+
+.btn-dropdown {
+  color: var(--white);
+  background: var(--bg-dark-blue);
+  cursor: pointer;
+}
+
+.bg-info-cstm {
+  background: var(--blue-faded);
+  
+  border-color: var(--accent-color);
+}
+.bg-info-cstm i{
+  color: var(--accent-color);
+}
+
+
+a {
+  cursor: pointer;
+  text-decoration: none;
 }
 
 li {
-    list-style: none;
+  list-style: none;
 }
 
 /* Layout for admin dashboard skeleton */
 
 .wrapper {
-    align-items: stretch;
-    display: flex;
-    width: 100%;
+  align-items: stretch;
+  display: flex;
+  width: 100%;
 }
 
 #sidebar {
   max-width: 264px;
   min-width: 264px;
-  background: var(--bs-white);
+  background: var(--bg-dark-blue);
   transition: all 0.35s ease-in-out;
 }
 
 .main {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    min-width: 0;
-    overflow: hidden;
-    transition: all 0.35s ease-in-out;
-    width: 100%;
-    
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 0;
+  overflow: hidden;
+  transition: all 0.35s ease-in-out;
+  width: 100%;
 }
 
 .content {
@@ -75,7 +99,6 @@ li {
 }
 
 
-
 /* Sidebar Toggle */
 
 #sidebar.collapsed {
@@ -87,15 +110,15 @@ li {
 @media (max-width:767.98px) {
 
   .js-sidebar {
-      margin-left: -264px;
+    margin-left: -264px;
   }
 
   #sidebar.collapsed {
-      margin-left: 0;
+    margin-left: 0;
   }
 
   .navbar,
   footer {
-      width: 100vw;
+    width: 100vw;
   }
 }

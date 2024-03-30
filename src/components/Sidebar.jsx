@@ -6,30 +6,31 @@ const Sidebar = () => {
     return (
         <aside id="sidebar" className="js-sidebar collapse-horizontal">
             <div className="h-100">
-                <div className="sidebar-logo">
-                    <i className='bx bxs-droplet text-primary pe-2 fs-4' ></i>
-                    <Link to={'/'} className='a'>WaterMS</Link>
+                <div className="sidebar-logo d-flex align-items-center">
+                    <i className='bx bxs-droplet p-1 me-2 fs-4 rounded-circle border border-primary' ></i>
+                    <Link to={'/'}>WaterMS</Link>
                 </div>
                 <ul className="sidebar-nav">
                     <li className="sidebar-header">
                         Main
                     </li>
-                    <li className="sidebar-item">
-                        <Link to={'/home'} className="sidebar-link">
-                            <i className='bx bx-category pe-2' ></i>
-                            Dashboard
-                        </Link>
+                    
+                    <li class="sidebar-item">
+						<a class="sidebar-link" href="#">
+                        <i className='bx bx-category pe-2 align-middle' ></i> 
+                        <span class="align-middle">Dashboard</span>
+                        </a>
                     </li>
                     <li className="sidebar-item">
                         <a href='#' className="sidebar-link">
-                            <i className='bx bx-group pe-2' ></i>
-                            Users
+                            <i className='bx bx-group pe-2 align-middle' ></i>
+                            <span className='align-middle'>Users</span>
                         </a>
                     </li>
                     <li className="sidebar-item">
                         <a href="#" className="sidebar-link collapsed" data-bs-target="#buildings" data-bs-toggle="collapse"
-                            aria-expanded="false"><i className='bx bx-buildings pe-2' ></i>
-                            Buildings
+                            aria-expanded="false"><i className='bx bx-buildings pe-2 align-middle' ></i>
+                            <span className='align-middle'>Building</span>
                         </a>
                         <ul id="buildings" className="sidebar-dropdown list-unstyled collapse ps-4" data-bs-parent="#sidebar">
                             <li className="sidebar-item">
@@ -42,8 +43,8 @@ const Sidebar = () => {
                     </li>
                     <li className="sidebar-item">
                         <a href="#" className="sidebar-link collapsed" data-bs-target="#analytics" data-bs-toggle="collapse"
-                            aria-expanded="false"><i className='bx bx-bar-chart-alt-2 pe-2' ></i>
-                            Analytics
+                            aria-expanded="false"><i className='bx bx-bar-chart-alt-2 pe-2 align-middle' ></i>
+                            <span className='align-middle'>Analytics</span>
                         </a>
                         <ul id="analytics" className="sidebar-dropdown list-unstyled collapse ps-4" data-bs-parent="#sidebar">
                             <li className="sidebar-item">
@@ -56,8 +57,8 @@ const Sidebar = () => {
                     </li>
                     <li className="sidebar-item">
                         <a href='#' className="sidebar-link">
-                            <i className='bx bx-receipt pe-2' ></i>
-                            Billing Management
+                            <i className='bx bx-receipt pe-2 align-middle' ></i>
+                            <span className='align-middle'>Building Management</span>
                         </a>
                     </li>
 
@@ -66,12 +67,12 @@ const Sidebar = () => {
                     </li>
                     <li className="sidebar-item">
                         <a href="#" className="sidebar-link">
-                            <i className='bx bx-user pe-2' ></i>
-                            User Profile
+                            <i className='bx bx-user pe-2 align-middle' ></i>
+                            <span className='align-middle'>User Profile</span>
                         </a>
                         <a href="#" className="sidebar-link ">
-                            <i className='bx bx-cog pe-2' ></i>
-                            Account Settings
+                            <i className='bx bx-cog pe-2 align-middle' ></i>
+                            <span className='align-middle'>Account Settings</span>
                         </a>
                     </li>
                 </ul>

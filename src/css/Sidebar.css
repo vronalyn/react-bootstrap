@@ -1,12 +1,13 @@
 
 .sidebar-logo {
     padding: 1.15rem;
+    color: var(--accent-color);
 }
 
 .sidebar-logo a {
-    color: #000000;
+    color: var(--accent-color);
     font-size: 1.15rem;
-    font-weight: 600;
+    font-weight: 800;
 }
 
 .sidebar-nav {
@@ -18,14 +19,14 @@
 }
 
 .sidebar-header {
-    color: #000000;
+    color: var(--white);
     font-size: .75rem;
     padding: 1.5rem 1.5rem .375rem;
 }
 
 a.sidebar-link {
     padding: .625rem 1.625rem;
-    color: #000000;
+    color: var(--white);
     position: relative;
     display: block;
     font-size: 1rem;
@@ -35,11 +36,17 @@ a.sidebar-link {
     font-size: 20px;
 }
 
+.sidebar-link:hover{
+    color: var(--white);
+    background: var(--accent-color);
+    border-radius: 10px;
+}
+
 .avatar {
     height: 40px;
     width: 40px;
 }
-/* .sidebar-link[data-bs-toggle="collapse"]::after {
+.sidebar-link[data-bs-toggle="collapse"]::after {
     border: solid;
     border-width: 0 .075rem .075rem 0;
     content: "";
@@ -47,7 +54,7 @@ a.sidebar-link {
     padding: 2px;
     position: absolute;
     right: 1.5rem;
-    top: 1.4rem;
+    top: 1.2rem;
     transform: rotate(-135deg);
     transition: all .2s ease-out;
   }
@@ -55,7 +62,7 @@ a.sidebar-link {
   .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
     transform: rotate(45deg);
     transition: all .2s ease-out;
-  } */
+  }
 
 
 @media (min-width:768px) {

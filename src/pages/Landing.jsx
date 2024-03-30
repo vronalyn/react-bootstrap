@@ -1,8 +1,8 @@
 import React from "react";
-import About from "../components/About";
-import Contact from "../components/Contact";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
+import Contact from "./Contact";
+import About from "./About";
 
 const Landing = () => {
   return (
@@ -26,7 +26,7 @@ const Landing = () => {
                 water usage like never before and embark on a journey towards
                 sustainable living.
               </p>
-              <Link to='/login' className="btn btn-light text-white mt-3 px-5 py-2">
+              <Link to='/login' className="btn btn-custom mt-3 px-5 py-2">
                 Get Started
               </Link>
             </div>

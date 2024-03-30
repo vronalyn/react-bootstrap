@@ -55,7 +55,7 @@ const Login = () => {
                   </div>
                 </div>
 
-                <button className="btn btn-light text-white py-2 px-5 mt-4">Login</button>
+                <button className="btn btn-custom py-2 px-5 mt-4">Login</button>
               </div>
             </div>
           </div>
