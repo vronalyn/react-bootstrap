@@ -49,20 +49,14 @@ const Dashboard = () => {
                       </div>
                     </div>
                   <Chart/>
+
+                  <Chart/>
                 </div>
 
                 <div className="col-md-4">
                  <Logs/>
                 </div>
               </div>
-
-              <div className='row'>
-                <div className="col-md-8">
-                  <Chart/>
-                </div>
-
-              </div>
-
 
             </div>
           </main>
