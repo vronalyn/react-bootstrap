@@ -25,9 +25,9 @@ const Navbar2 = ({ toggleSidebar }) => {
   }, [currentUser]);
 
   return (
-    <nav className="navbar navbar-expand px-3 py-0 border-bottom bg-white">
+    <nav className="navbar navbar-expand px-3 py-0 border-bottom bg-white ">
       <button
-        className="btn bg-transparent"
+        className="btn bg-transparent "
         id="sidebar-toggle"
         type="button"
         onClick={toggleSidebar}
@@ -125,10 +125,10 @@ const Navbar2 = ({ toggleSidebar }) => {
               )}
             </a>
             <div className="dropdown-menu dropdown-menu-end">
-              <a href="/" className="dropdown-item">
+              <a href="/profile" className="dropdown-item">
                 <i className="bx bx-user-circle"></i> Profile
               </a>
-              <a href="/" className="dropdown-item">
+              <a href="/account-settings" className="dropdown-item">
                 <i className="bx bx-cog"></i> Settings
               </a>
               <a

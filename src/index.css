@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 *,
 ::after,
@@ -7,15 +7,19 @@
 }
 
 :root {
-  --accent-color: #00A3FF;
+  --accent-color: #00a3ff;
   --bg-dark-blue: #000517;
   --blue-faded: #00a2ff28;
-  --bg-gradient-blue: linear-gradient(0deg, rgba(2, 0, 36, 1) 35%, rgba(20, 31, 69, 1) 100%);
+  --bg-gradient-blue: linear-gradient(
+    0deg,
+    rgba(2, 0, 36, 1) 35%,
+    rgba(20, 31, 69, 1) 100%
+  );
   --white: #fff;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   opacity: 1;
   overflow-y: scroll;
   margin: 0;
@@ -41,13 +45,12 @@ body {
 
 .bg-info-cstm {
   background: var(--blue-faded);
-  
+
   border-color: var(--accent-color);
 }
-.bg-info-cstm i{
+.bg-info-cstm i {
   color: var(--accent-color);
 }
-
 
 a {
   cursor: pointer;
@@ -90,14 +93,13 @@ li {
 }
 
 .card {
-  box-shadow: 0 0 .875rem 0 rgba(34, 46, 60, .05);
+  box-shadow: 0 0 0.875rem 0 rgba(34, 46, 60, 0.05);
   margin-bottom: 24px;
 }
 
 .navbar-expand .navbar-nav {
   margin-left: auto;
 }
-
 
 /* Sidebar Toggle */
 
@@ -107,8 +109,7 @@ li {
 
 /* Footer and Nav */
 
-@media (max-width:767.98px) {
-
+@media (max-width: 767.98px) {
   .js-sidebar {
     margin-left: -264px;
   }

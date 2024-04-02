@@ -194,8 +194,8 @@ function Users() {
             </div>
 
             <div className="">
-              <div className=" mt-lg-5 ">
-                <div className="w-100 d-flex justify-content-end mb-lg-3">
+              <div className=" mt-5 bg-white p-3 ">
+                <div className="w-100 d-flex justify-content-end mb-4">
                   <button
                     type="button"
                     className="btn btn-primary "

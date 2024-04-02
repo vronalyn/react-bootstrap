@@ -77,20 +77,20 @@ function AccountSettings() {
         <main className="content px-3 py-2 bg-secondary bg-opacity-10">
           <div className="container-fluid">
             <div className="mb-3">
-              <h1 className="fw-bold">Profile</h1>
+              <h1 className="fw-bold">Account Settings</h1>
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
                     <a href="#">Home</a>
                   </li>
                   <li className="breadcrumb-item active" aria-current="page">
-                    Profile
+                    Account Settings
                   </li>
                 </ol>
               </nav>
             </div>
             <div className=" mt-5 d-flex  ">
-              <div className="containerSetting w-50 h-auto  p-5 border-light shadow-sm">
+              <div className="containerSetting h-auto  p-5 border-light shadow-sm">
                 <form onSubmit={handleSubmit}>
                   <h2>Change Password</h2>
                   {error && <p className="text-danger">{error}</p>}

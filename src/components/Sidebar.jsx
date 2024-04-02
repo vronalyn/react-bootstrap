@@ -1,35 +1,37 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../css/Sidebar.css";
+import { useUserRole } from "../contexts/UserRoleContext";
 
 const Sidebar = ({ sidebarCollapsed }) => {
+  const { userRole } = useUserRole();
+
   return (
     <aside
       id="sidebar"
-      className={`js-sidebar sidebarContainer ${
-        sidebarCollapsed ? "collapsed" : ""
-      }`}
+      className={`js-sidebar  ${sidebarCollapsed ? "collapsed" : ""}`}
     >
-      <div className="h-100">
+      <div className="sidebarContainer">
         <div className="sidebar-logo d-flex align-items-center">
           <i className="bx bxs-droplet p-1 me-2 fs-4 rounded-circle border border-primary"></i>
-          <Link to={"/"}>WaterMS</Link>
+          <Link to="/home">WaterMS</Link>
         </div>
         <ul className="sidebar-nav">
           <li className="sidebar-header">Main</li>
-
           <li className="sidebar-item">
-            <a className="sidebar-link" href="#">
+            <Link to="/home" className="sidebar-link">
               <i className="bx bx-category pe-2 align-middle"></i>
               <span className="align-middle">Dashboard</span>
-            </a>
+            </Link>
           </li>
-          <li className="sidebar-item">
-            <a href="/users" className="sidebar-link">
-              <i className="bx bx-group pe-2 align-middle"></i>
-              <span className="align-middle">Users</span>
-            </a>
-          </li>
+          {userRole === "admin" && (
+            <li className="sidebar-item">
+              <Link to="/users" className="sidebar-link">
+                <i className="bx bx-group pe-2 align-middle"></i>
+                <span className="align-middle">Users</span>
+              </Link>
+            </li>
+          )}
           <li className="sidebar-item">
             <a
               href="#"
@@ -75,34 +77,33 @@ const Sidebar = ({ sidebarCollapsed }) => {
               data-bs-parent="#sidebar"
             >
               <li className="sidebar-item">
-                <a href="#" className="sidebar-link">
+                <Link to="/weekly" className="sidebar-link">
                   Weekly
-                </a>
+                </Link>
               </li>
               <li className="sidebar-item">
-                <a href="#" className="sidebar-link">
+                <Link to="/monthly" className="sidebar-link">
                   Monthly
-                </a>
+                </Link>
               </li>
             </ul>
           </li>
           <li className="sidebar-item">
-            <a href="billing" className="sidebar-link">
+            <Link to="/billing" className="sidebar-link">
               <i className="bx bx-receipt pe-2 align-middle"></i>
               <span className="align-middle">Billing Management</span>
-            </a>
+            </Link>
           </li>
-
           <li className="sidebar-header">Misc</li>
           <li className="sidebar-item">
-            <a href="/profile" className="sidebar-link">
+            <Link to="/profile" className="sidebar-link">
               <i className="bx bx-user pe-2 align-middle"></i>
               <span className="align-middle">User Profile</span>
-            </a>
-            <a href="/account-settings" className="sidebar-link ">
+            </Link>
+            <Link to="/account-settings" className="sidebar-link">
               <i className="bx bx-cog pe-2 align-middle"></i>
               <span className="align-middle">Account Settings</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

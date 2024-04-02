@@ -9,6 +9,7 @@ import BillingPage from "./pages/BillingPages/BillingPage";
 import Users from "./pages/users/Users";
 import { useUserRole } from "./contexts/UserRoleContext";
 import { useAuth } from "./contexts/authContext";
+import Weekly from "./pages/Weekly";
 
 function App() {
   const { currentUser } = useAuth();
@@ -31,36 +32,59 @@ function App() {
         <Route index element={<Landing />} />
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<Dashboard />} />
-        <Route path="*" element={<Error404 />} />
+        <Route
+          path="/home"
+          element={
+            <RequireAuth>
+              <Dashboard />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/profile"
           element={
-            // <RequireAuth>
-            <Profile />
-            // </RequireAuth>
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
           }
         />
         <Route
           path="/account-settings"
           element={
-            // <RequireAuth>
-            <AccountSettings />
-            // </RequireAuth>
+            <RequireAuth>
+              <AccountSettings />
+            </RequireAuth>
           }
         />
         <Route
           path="/users"
           element={
-            <Users />
-            // <RequireAuth>
-            //   <RequireRole allowedRoles={["admin"]}>
-            //     <Users />
-            //   </RequireRole>
-            // </RequireAuth>
+            // <Users />
+            <RequireAuth>
+              <RequireRole allowedRoles={["admin"]}>
+                <Users />
+              </RequireRole>
+            </RequireAuth>
           }
         />
-        <Route path="/billing" element={<BillingPage />} />
+
+        <Route
+          path="/billing"
+          element={
+            <RequireAuth>
+              <BillingPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/weekly"
+          element={
+            <RequireAuth>
+              <Weekly />
+            </RequireAuth>
+          }
+        />
+        <Route path="*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>
   );

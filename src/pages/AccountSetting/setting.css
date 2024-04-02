@@ -1,4 +1,22 @@
 .containerSetting {
   background-color: #fff;
-  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px; */
+  /* width: 50%; */
+}
+
+@media (min-width: 768px) {
+  .containerSetting {
+    width: 50%;
+  }
+}
+
+@media (min-width: 576px) {
+  .containerSetting {
+    width: 60%;
+  }
+}
+
+@media (max-width: 576px) {
+  .containerSetting {
+    width: 100%;
+  }
 }

@@ -4,13 +4,13 @@ import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_KEY,
-  authDomain: "prototypedemo-c7373.firebaseapp.com",
-  projectId: "prototypedemo-c7373",
-  storageBucket: "prototypedemo-c7373.appspot.com",
-  messagingSenderId: "161927163964",
-  appId: "1:161927163964:web:0d8c7aaf29355ae66a5339",
-  measurementId: "G-NRR8H6DWRH",
+  apiKey: "AIzaSyAJ-7oKXhRQqYB8nVMnb7z6ne-sOi034_0",
+  authDomain: "msu-iit-watermonitoringsystem.firebaseapp.com",
+  projectId: "msu-iit-watermonitoringsystem",
+  storageBucket: "msu-iit-watermonitoringsystem.appspot.com",
+  messagingSenderId: "289051512949",
+  appId: "1:289051512949:web:a812eca549e1084ddd683c",
+  measurementId: "G-HFG2RFKLJV",
 };
 
 // Initialize Firebase

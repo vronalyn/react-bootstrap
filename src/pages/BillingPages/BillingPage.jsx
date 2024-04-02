@@ -35,7 +35,7 @@ function BillingPage() {
         <main className="content px-3 py-2 bg-secondary bg-opacity-10">
           <div className="container-fluid">
             <div className="mb-3">
-              <h1 className="fw-bold">Profile</h1>
+              <h1 className="fw-bold">Billing Management</h1>
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">

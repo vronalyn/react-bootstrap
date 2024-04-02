@@ -1,5 +1,6 @@
 .sidebarContainer {
   height: 100vh;
+  position: fixed;
 }
 .sidebar-logo {
   padding: 1.15rem;
@@ -64,6 +65,10 @@ a.sidebar-link {
 .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
   transform: rotate(45deg);
   transition: all 0.2s ease-out;
+}
+
+.navBar {
+  position: fixed;
 }
 
 @media (min-width: 768px) {
