@@ -1,0 +1,40 @@
+.prevImg {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.status-active {
+  background-color: #6df7ce;
+}
+.status-inactive {
+  background-color: #f497a0;
+}
+
+.user {
+  background-color: white;
+}
+.user table {
+  width: 100%;
+  text-align: left;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.user table th {
+  padding: 14px;
+  /* background-color: rgb(166, 166, 166); */
+  background-color: #fff;
+  border-bottom: 1px solid gray;
+}
+
+.user table td {
+  padding-top: 14px;
+  padding-bottom: 14px;
+  padding-left: 14px;
+}

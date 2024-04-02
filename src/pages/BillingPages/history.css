@@ -1,0 +1,54 @@
+.historyContainer table {
+  width: 100%;
+  text-align: left;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px; */
+
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.historyContainer thead th:first-child {
+  border-top-left-radius: 10px;
+}
+
+.historyContainer thead th:last-child {
+  border-top-right-radius: 10px;
+}
+
+.historyContainer table th {
+  padding: 14px;
+  /* background-color: rgb(231, 231, 231); */
+  background-color: #fff;
+  border-bottom: 1px solid gray;
+}
+
+.historyContainer table td {
+  padding-top: 14px;
+  padding-bottom: 14px;
+  padding-left: 14px;
+}
+
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
+
+.PaginationPage {
+  width: 70px;
+}

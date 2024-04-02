@@ -1,0 +1,94 @@
+.containerProfile {
+}
+.containerProfileImg {
+  background-color: #fff;
+  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px; */
+  height: auto;
+}
+
+.profileImg {
+  width: 100px;
+  height: 100px;
+  font-size: 2.2rem;
+  position: relative;
+}
+
+.containerCamera {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+  position: absolute;
+  bottom: -5px;
+  right: 0;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.generalInfo dt {
+  text-transform: capitalize;
+}
+
+.generalInfo {
+  font-size: 0.9rem;
+  padding-left: 10px;
+  background-color: #fff;
+  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px; */
+}
+
+.generalInfo .generalInfoInput {
+  display: flex;
+  justify-content: space-between;
+}
+
+.generalInfo .wrap-generalInfoInput {
+  width: 60%;
+}
+
+.generalEditInput {
+  width: auto;
+  border: none;
+  border-bottom: 2px solid rgb(220, 220, 220);
+  border-radius: 0%;
+  font-size: 14px;
+}
+@media only screen and (max-width: 768px) {
+  .containerCamera {
+    width: 25px;
+    height: 25px;
+  }
+  html {
+    font-size: 90%;
+  }
+  .profileImg {
+    width: 80px;
+    height: 80px;
+  }
+  .generalInfo .generalInfoInput input {
+    text-align: right;
+  }
+  .generalEditInput {
+    font-size: 10px;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  html {
+    font-size: 70%;
+  }
+  .containerProfile {
+    gap: 16px;
+  }
+}
+@media only screen and (max-width: 427px) {
+}
+
+@media only screen and (max-width: 340px) {
+  .generalInfo {
+    padding-left: 10px;
+  }
+}

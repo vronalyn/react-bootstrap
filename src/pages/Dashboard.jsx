@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import Navbar2 from '../components/Navbar2'
+
 import Cards from '../components/Cards'
 import Logs from '../components/Logs'
 import Chart from '../components/Chart'

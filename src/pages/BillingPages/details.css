@@ -1,0 +1,83 @@
+/* .wrap-tabDetailContainer {
+  display: flex;
+  justify-content: center;
+} */
+.tabDetailContainer {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  width: 100%;
+  padding: 30px;
+}
+
+.tabDetailContainer .headerContainer {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.35);
+  padding-bottom: 20px;
+}
+
+.tabDetailContainer .headerContainer .title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.prevBill {
+  display: flex;
+  flex-direction: column;
+}
+
+.prevBill .prevDate {
+  font-weight: lighter;
+  font-size: 14px;
+}
+
+.prevBill .prevBillAmount {
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-align: end;
+}
+
+.tabDetailContainer table {
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+  width: 100%;
+}
+
+.tabDetailContainer table td,
+.tabDetailContainer table th {
+  text-align: right;
+}
+
+.tabDetailContainer table th {
+  font-weight: 500;
+}
+
+.tabDetailContainer table td {
+  padding: 15px 0px 15px 0px;
+}
+th:first-child,
+td:first-child {
+  width: 33%;
+  text-align: left !important;
+}
+
+td {
+  border-bottom: 1px solid #ddd;
+}
+
+.totalBillContainer {
+  text-align: right;
+}
+
+.totalBillContainer .total {
+  font-weight: lighter;
+}
+.totalBill {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+.totalBillDate {
+  font-size: 14px;
+  margin-top: 4px;
+}

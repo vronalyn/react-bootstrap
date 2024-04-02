@@ -1,0 +1,78 @@
+.rateContainer {
+  width: 40%;
+  height: auto;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.rateHeader {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+  padding-bottom: 20px;
+}
+
+.rateHeader .title {
+  /* font-size: 1.5rem; */
+  font-weight: bold;
+}
+
+.rateContent {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 30px;
+  /* padding-left: 30px; */
+}
+
+.rateContent dt,
+.rateContent dd {
+  width: 40%;
+  margin-bottom: 20px;
+}
+
+.rateContent dd {
+  font-weight: bold;
+}
+
+.rateChangeLog {
+  margin-top: 50px;
+}
+
+.rateChangeLog table {
+  width: 100%;
+  text-align: left;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.rateChangeLog table th {
+  padding: 14px;
+  /* background-color: rgb(166, 166, 166); */
+  background-color: #fff;
+  border-bottom: 1px solid gray;
+}
+
+.rateChangeLog table td {
+  padding-top: 14px;
+  padding-bottom: 14px;
+  padding-left: 14px;
+}
+
+@media only screen and (max-width: 576px) {
+  html {
+    font-size: 70%;
+  }
+  .rateContainer {
+    width: 100%;
+  }
+}

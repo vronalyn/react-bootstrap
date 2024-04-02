@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.sidebar {
+  width: 300px;
+  height: 100vh;
+  background-color: skyblue;
+}
+
+main {
+  width: 100%;
+  padding: 40px;
+}
+
+.title h1 {
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.wrap-billingTab {
+  width: 100%;
+}
+
+.billingTab {
+  display: flex;
+  gap: 5px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-weight: 500;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px solid gray;
+}
+.billingTab li {
+  padding: 0px 20px 10px 0px;
+  margin-bottom: -0.5px;
+}
+.billingTab li:hover {
+  cursor: pointer;
+  color: rgb(5, 109, 150);
+  border-bottom: 1px solid rgb(5, 109, 150);
+}
+
+.billingTab li.active {
+  color: rgb(5, 109, 150);
+  border-bottom: 1px solid rgb(5, 109, 150);
+}
+
+.wrap-tabcontent {
+  margin-top: 40px;
+}

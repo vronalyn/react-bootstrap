@@ -83,7 +83,7 @@ const Cards = () => {
                                         <div className="col-4">
                                             <div className="d-flex justify-content-end">
                                                 <div className="lh-1 text-white bg-info-cstm rounded-circle p-3 d-flex align-items-center justify-content-center">
-                                                    <i class='bx bx-target-lock fs-4' ></i>
+                                                    <i className='bx bx-target-lock fs-4' ></i>
                                                 </div>
                                             </div>
                                         </div>

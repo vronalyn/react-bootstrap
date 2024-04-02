@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 
 const Error404 = () => {
     return (
-        <div class="d-flex justify-content-center align-items-center vh-100">
-            <div class="col-md-12 text-center">
+        <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="col-md-12 text-center">
                 <h1>404</h1>
                 <h2>Page Not Found</h2>
                 <p>

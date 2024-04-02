@@ -1,13 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { SidebarProvider } from "./contexts/SidebarContext";
+import { AuthProvider } from "./contexts/authContext";
+import { UserRoleProvider } from "./contexts/UserRoleContext";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <UserRoleProvider>
+        <SidebarProvider>
+          <App />
+        </SidebarProvider>
+      </UserRoleProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
 
