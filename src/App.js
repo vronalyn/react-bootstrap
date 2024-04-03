@@ -10,6 +10,8 @@ import Users from "./pages/users/Users";
 import { useUserRole } from "./contexts/UserRoleContext";
 import { useAuth } from "./contexts/authContext";
 import Weekly from "./pages/Weekly";
+import BuildingDorm from "./pages/building/BuildingDorm";
+import BuildingCCS from "./pages/building/BuildingCCS";
 
 function App() {
   const { currentUser } = useAuth();
@@ -73,6 +75,22 @@ function App() {
           element={
             <RequireAuth>
               <BillingPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/building/dorm"
+          element={
+            <RequireAuth>
+              <BuildingDorm activeTab="dorm" />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/building/ccs"
+          element={
+            <RequireAuth>
+              <BuildingCCS activeTab="ccs" />
             </RequireAuth>
           }
         />

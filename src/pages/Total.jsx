@@ -276,7 +276,7 @@ const Total = () => {
         </div>
         <WeeklyChart
           height={400}
-          type="bar"
+          type="line"
           // dateRange={dateRange}
           rightCCSTotal={CCSRightData}
           leftCCSTotal={CCSLeftData}

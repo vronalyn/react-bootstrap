@@ -482,7 +482,7 @@ const Weekly = () => {
                       </div>
                       <WeeklyChart
                         height={400}
-                        type="bar"
+                        type="line"
                         // dateRange={dateRangeDorm}
                         right={DormRightData}
                         left={DormLeftData}
@@ -584,7 +584,7 @@ const Weekly = () => {
                       </div>
                       <WeeklyChart
                         height={400}
-                        type="bar"
+                        type="line"
                         // dateRange={dateRangeCCS}
                         right={CCSRightData}
                         left={CCSLeftData}

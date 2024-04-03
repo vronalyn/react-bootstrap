@@ -15,6 +15,7 @@ const WeeklyChart = ({
   leftDormTotal,
 }) => {
   const [dates, setDates] = useState([]);
+  const [totalVolumes, setTotalVolumes] = useState([]);
   const [state, setState] = useState({
     series: [
       {
@@ -51,16 +52,24 @@ const WeeklyChart = ({
       dataLabels: {
         enabled: false,
       },
-
-      plotOptions: {
-        bar: {
-          borderRadius: 6,
-          columnWidth: "60%",
-          dataLabels: {
-            position: "top",
-          },
+      stroke: {
+        width: 2,
+        curve: "smooth",
+      },
+      markers: {
+        hover: {
+          size: 8,
         },
       },
+      // plotOptions: {
+      //   bar: {
+      //     borderRadius: 6,
+      //     columnWidth: "60%",
+      //     dataLabels: {
+      //       position: "top",
+      //     },
+      //   },
+      // },
       xaxis: {
         type: "category", // Changed from datetime to category
         categories: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"], // Define the categories (days of the week)
@@ -320,6 +329,7 @@ const WeeklyChart = ({
       />
 
       {/* extra data */}
+      <p>Total</p>
 
       {/* extra data */}
     </div>
