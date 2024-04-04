@@ -45,10 +45,10 @@ const Navbar2 = ({ toggleSidebar }) => {
   };
   const truncateText = (text) => {
     const words = text.split(" ");
-    if (words.length <= 3) {
+    if (words.length <= 7) {
       return text;
     } else {
-      return words.slice(0, 3).join(" ") + "...";
+      return words.slice(0, 8).join(" ") + "...";
     }
   };
   const [showFullTexts, setShowFullTexts] = useState({});
