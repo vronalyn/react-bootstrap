@@ -10,6 +10,7 @@ import Total from "./Total";
 
 const Dashboard = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [goals, setGoals] = useState([]);
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
@@ -37,7 +38,7 @@ const Dashboard = () => {
                 </nav>
               </div>
 
-              <Cards />
+              <Cards goals={goals} setGoals={setGoals} />
 
               <div className="row">
                 <div className="col-md-8">
@@ -64,7 +65,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className="col-md-4">
-                  <Logs />
+                  <Logs goals={goals} setGoals={setGoals} />
                 </div>
               </div>
             </div>

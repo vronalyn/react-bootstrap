@@ -30,9 +30,22 @@ export const doCreateUserWithEmailAndPassword = async (
 ) => {
   const email = `${firstname}.${lastname}@gmail.com`; // Constructing email from firstname and lastname
   const password = `${firstname}${lastname}`;
-
+  const emailVerified = false;
+  const phoneNumber = "";
+  const displayName = `${firstname}`;
+  const photoURL = "";
+  const disabled = false;
   try {
-    const result = await createUserWithEmailAndPassword(auth, email, password);
+    const result = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password,
+      emailVerified,
+      phoneNumber,
+      displayName,
+      photoURL,
+      disabled
+    );
     console.log(result);
 
     // Proceed with creating user document in Firestore

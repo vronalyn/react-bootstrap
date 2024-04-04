@@ -4,7 +4,7 @@ import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAJ-7oKXhRQqYB8nVMnb7z6ne-sOi034_0",
+  apiKey: process.env.REACT_APP_FIREBASE_KEY,
   authDomain: "msu-iit-watermonitoringsystem.firebaseapp.com",
   projectId: "msu-iit-watermonitoringsystem",
   storageBucket: "msu-iit-watermonitoringsystem.appspot.com",

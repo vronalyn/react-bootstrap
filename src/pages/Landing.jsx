@@ -7,8 +7,8 @@ import About from "./About";
 const Landing = () => {
   return (
     <div>
-      <Navbar/>
-      <section className='bg-dark'>
+      <Navbar />
+      <section className="bg-dark">
         <div className="container vh-100 d-flex text-white">
           {/* Left Side */}
           <div className="col-md-6 d-flex align-items-center">
@@ -22,11 +22,11 @@ const Landing = () => {
               </h2>
               <p className="mt-3 pe-4" style={{ maxWidth: "85%" }}>
                 Make a splash with WaterMS, the cutting-edge platform
-                revolutionizing how you manage water consumption. Streamline your
-                water usage like never before and embark on a journey towards
-                sustainable living.
+                revolutionizing how you manage water consumption. Streamline
+                your water usage like never before and embark on a journey
+                towards sustainable living.
               </p>
-              <Link to='/login' className="btn btn-custom mt-3 px-5 py-2">
+              <Link to="/login" className="btn btn-custom mt-3 px-5 py-2">
                 Get Started
               </Link>
             </div>
@@ -82,13 +82,12 @@ const Landing = () => {
       </section>
 
       <div id="about">
-        <About/>
+        <About />
       </div>
 
       <div id="contact">
-        <Contact/>
+        <Contact />
       </div>
-
     </div>
   );
 };

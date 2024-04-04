@@ -85,11 +85,88 @@ export const fetchBilling = (setBilling) => {
   });
 };
 
+export const addGoalToFirestore = async (newGoal) => {
+  try {
+    // Add additional fields to the new goal object
+    const goalWithMeta = {
+      ...newGoal,
+      createdAt: serverTimestamp(), // Timestamp of when the goal was created
+    };
+
+    // await db.collection("goals").add(goalWithMeta);
+    await addDoc(collection(db, "goals"), goalWithMeta);
+
+    return true;
+  } catch (error) {
+    console.error("Error adding goal to Firestore:", error);
+    return false;
+  }
+};
+
+export const getGoalsWithAlertFalse = async (setGoals) => {
+  try {
+    // const goalRef = query(
+    //   collection(db, "goals"),
+    //   where("goalAlert", "==", false)
+    // );
+    const goalRef = collection(db, "goals");
+
+    // Subscribe to the query snapshot to get real-time updates
+    const unsubscribe = onSnapshot(goalRef, (snapshot) => {
+      if (!snapshot.empty) {
+        // Check if the snapshot contains documents
+        const goalData = snapshot.docs.map((doc) => ({
+          id: doc.id, // Include the id property
+          ...doc.data(),
+        }));
+        setGoals(goalData);
+      } else {
+        console.log("No documents found");
+      }
+    });
+
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error getting goals:", error);
+    throw new Error("Failed to fetch goals. Please try again later.");
+  }
+};
+
+export const updateGoal = async (goalId, newData) => {
+  try {
+    const goalDocRef = doc(db, "goals", goalId);
+
+    // Update the document with the new data
+    await updateDoc(goalDocRef, newData);
+
+    console.log("Goal updated successfully!");
+    return true; // Return true to indicate success
+  } catch (error) {
+    console.error("Error updating goal:", error);
+    return false; // Return false to indicate failure
+  }
+};
+
+export const addActivityLog = async (goalId, message) => {
+  try {
+    const logRef = collection(db, "activityLogs");
+    const logData = {
+      goalId: goalId,
+      message: message,
+      createdAt: serverTimestamp(),
+    };
+    await addDoc(logRef, logData);
+    console.log("Activity log added successfully");
+  } catch (error) {
+    console.error("Error adding activity log:", error);
+  }
+};
+// dont delete this as this is working but nit logically work on our code
 // console.log("Weekly Billed:", updatedReports);
 // try {
 //   // Loop through the updated reports and add each one to the "Billing" collection
 //   for (const updatedReport of updatedReports) {
-//     const docRef = addDoc(collection(db, "Billing"), {
+//     const docRef = a
 //       total_volume: updatedReport.total_volume,
 //       total_billed: updatedReport.totalBilled,
 //       rate: updatedReport.billingRate,
@@ -101,23 +178,4 @@ export const fetchBilling = (setBilling) => {
 // } catch (error) {
 //   console.error("Error adding document: ", error);
 // }
-// };
-// Function to reauthenticate the user with their current password
-// export const doReauthenticateUser = async (email, currentPassword) => {
-//   try {
-//     // Create a credential with the user's email and current password
-//     const credential = await auth.EmailAuthProvider.credential(
-//       email,
-//       currentPassword
-//     );
-
-//     // Reauthenticate the user with the credential
-//     await auth.currentUser.reauthenticateWithCredential(credential);
-
-//     // Reauthentication successful
-//     return true;
-//   } catch (error) {
-//     // Reauthentication failed
-//     throw error;
-//   }
 // };
