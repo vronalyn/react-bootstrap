@@ -49,14 +49,14 @@ const Sidebar = ({ sidebarCollapsed }) => {
               data-bs-parent="#sidebar"
             >
               <li className="sidebar-item">
-                <a href="#" className="sidebar-link">
+                <Link to="/building/ccs" className="sidebar-link">
                   CCS
-                </a>
+                </Link>
               </li>
               <li className="sidebar-item">
-                <a href="#" className="sidebar-link">
+                <Link to="/building/dorm" className="sidebar-link">
                   Dormitory
-                </a>
+                </Link>
               </li>
             </ul>
           </li>

@@ -15,6 +15,8 @@ const WeeklyChart = ({
   leftDormTotal,
 }) => {
   const [dates, setDates] = useState([]);
+  const [totalVolumes, setTotalVolumes] = useState([]);
+  const [grandTotalVolume, setGrandTotalVolume] = useState(0);
   const [state, setState] = useState({
     series: [
       {
@@ -51,16 +53,24 @@ const WeeklyChart = ({
       dataLabels: {
         enabled: false,
       },
-
-      plotOptions: {
-        bar: {
-          borderRadius: 6,
-          columnWidth: "60%",
-          dataLabels: {
-            position: "top",
-          },
+      stroke: {
+        width: 2,
+        curve: "smooth",
+      },
+      markers: {
+        hover: {
+          size: 8,
         },
       },
+      // plotOptions: {
+      //   bar: {
+      //     borderRadius: 6,
+      //     columnWidth: "60%",
+      //     dataLabels: {
+      //       position: "top",
+      //     },
+      //   },
+      // },
       xaxis: {
         type: "category", // Changed from datetime to category
         categories: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"], // Define the categories (days of the week)
@@ -100,6 +110,7 @@ const WeeklyChart = ({
   useEffect(() => {
     if (right && left) {
       let tankData;
+      let grandTotalVolume = 0;
       if (tankLocation) {
         // Adjusted condition to include 'CCSRight'
         if (tankLocation === "DormRight" || tankLocation === "CCSRight") {
@@ -109,12 +120,20 @@ const WeeklyChart = ({
         }
 
         // Calculate total volume for each entry
-        const tankVolumes = Object.values(tankData).map((tankEntry) =>
-          (tankEntry.entries.length > 0
-            ? tankEntry.entries[0].volume
-            : 0
-          ).toFixed(2)
-        );
+        // const tankVolumes = Object.values(tankData).map((tankEntry) =>
+        //   (tankEntry.entries.length > 0
+        //     ? tankEntry.entries[0].volume
+        //     : 0
+        //   ).toFixed(2)
+        // );
+
+        const tankVolumes = Object.values(tankData).map((tankEntry) => {
+          const volume = (
+            tankEntry.entries.length > 0 ? tankEntry.entries[0].volume : 0
+          ).toFixed(2);
+          grandTotalVolume += parseFloat(volume); // Add volume to grand total
+          return volume;
+        });
 
         setState((prevState) => ({
           ...prevState,
@@ -141,12 +160,21 @@ const WeeklyChart = ({
         }));
       } else {
         // If tankLocation is not provided, display data for both right and left tanks
+        // const totalVolumes = Object.values(right).map((rightEntry, index) => {
+        //   const totalRightVolume =
+        //     rightEntry.entries.length > 0 ? rightEntry.entries[0].volume : 0;
+        //   const totalLeftVolume =
+        //     left[index]?.entries.length > 0 ? left[index].entries[0].volume : 0;
+        //   return (totalRightVolume + totalLeftVolume).toFixed(2);
+        // });
         const totalVolumes = Object.values(right).map((rightEntry, index) => {
           const totalRightVolume =
             rightEntry.entries.length > 0 ? rightEntry.entries[0].volume : 0;
           const totalLeftVolume =
             left[index]?.entries.length > 0 ? left[index].entries[0].volume : 0;
-          return (totalRightVolume + totalLeftVolume).toFixed(2);
+          const totalVolume = (totalRightVolume + totalLeftVolume).toFixed(2);
+          grandTotalVolume += parseFloat(totalVolume); // Add total volume to grand total
+          return totalVolume;
         });
 
         setState((prevState) => ({
@@ -177,9 +205,13 @@ const WeeklyChart = ({
           ],
         }));
       }
+      // Update grand total volume state
+      setGrandTotalVolume(grandTotalVolume);
+      console.log(`Grand Total Volume: ${grandTotalVolume.toFixed(2)}`);
     }
   }, [right, left, tankLocation]);
 
+  // =================checking data
   useEffect(() => {
     console.log("Right Data:", rightCCSTotal);
     console.log("Left Data:", leftCCSTotal);
@@ -264,6 +296,12 @@ const WeeklyChart = ({
         .reduce((acc, curr) => parseFloat(acc) + parseFloat(curr), 0)
         .toFixed(2);
 
+      // Calculate grand total volume across all locations and both locations
+      const grandTotalVolume =
+        parseFloat(totalVolume) + parseFloat(totalCCSVolume);
+
+      setGrandTotalVolume(grandTotalVolume);
+
       setState((prevState) => ({
         ...prevState,
         series:
@@ -307,6 +345,8 @@ const WeeklyChart = ({
                 },
               ],
       }));
+      // Display total volume
+      console.log(`Grand Total Volume: ${grandTotalVolume.toFixed(2)}`);
     }
   }, [rightDormTotal, leftDormTotal, rightCCSTotal, leftCCSTotal]);
 
@@ -320,6 +360,10 @@ const WeeklyChart = ({
       />
 
       {/* extra data */}
+      <p>
+        Total:{" "}
+        {grandTotalVolume.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </p>
 
       {/* extra data */}
     </div>
