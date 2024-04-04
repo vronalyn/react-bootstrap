@@ -6,7 +6,7 @@ import { addGoalToFirestore } from "../firebase/function";
 const Cards = ({ goals, setGoals }) => {
   const { currentUser } = useAuth();
 
-  const [thresholdValue, setThresholdValue] = useState(0);
+  const [levelValue, setLevelValue] = useState(0);
   const [showGoalAlert, setShowGoalAlert] = useState(false);
   const [coverageArea, setCoverageArea] = useState("");
   const [goalLiters, setGoalLiters] = useState();
@@ -21,7 +21,7 @@ const Cards = ({ goals, setGoals }) => {
     setShowGoalAlert(false);
     setCoverageArea("");
     setGoalLiters("");
-    setThresholdValue(0);
+    setLevelValue(0);
   };
 
   // const [goals, setGoals] = useState([]);
@@ -29,7 +29,7 @@ const Cards = ({ goals, setGoals }) => {
   const handleChange = (event) => {
     let newValue = parseInt(event.target.value);
     newValue = Math.max(0, Math.min(newValue, 100));
-    setThresholdValue(newValue);
+    setLevelValue(newValue);
   };
 
   const handleSliderClick = (event) => {
@@ -46,8 +46,8 @@ const Cards = ({ goals, setGoals }) => {
     const newGoal = {
       coverageArea: coverageArea,
       goalLiters: goalLiters,
-      thresholdValue: thresholdValue,
-      thresholdValueAlert: false,
+      levelValue: levelValue,
+      levelValueAlert: false,
       goalAlert: false,
       createdBy: currentUser.uid,
     };
@@ -282,7 +282,7 @@ const Cards = ({ goals, setGoals }) => {
                                   for="goalToggle"
                                 >
                                   <h6>
-                                    Set a Percentage Threshold for Goal Alerts!
+                                    Set a Percentage Level for Goal Alerts!
                                   </h6>
                                 </label>
                               </div>
@@ -321,14 +321,14 @@ const Cards = ({ goals, setGoals }) => {
                                         htmlFor="goalThreshold"
                                         className="form-label"
                                       >
-                                        Threshold:
+                                        Percentage Level:
                                       </label>
                                       <div>
                                         <input
                                           type="range"
                                           min="0"
                                           max="100"
-                                          value={thresholdValue}
+                                          value={levelValue}
                                           onChange={handleChange}
                                           onClick={handleSliderClick}
                                           className="slider w-100"
@@ -338,7 +338,7 @@ const Cards = ({ goals, setGoals }) => {
                                       <div className="d-flex justify-content-between">
                                         <span>0</span>
                                         <p className="border p-1">
-                                          <span>{thresholdValue}</span>
+                                          <span>{levelValue}</span>
                                         </p>
                                       </div>
                                     </div>

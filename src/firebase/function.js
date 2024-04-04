@@ -10,6 +10,7 @@ import {
   updateDoc,
   serverTimestamp,
   doc,
+  orderBy,
 } from "firebase/firestore";
 import Swal from "sweetalert2";
 
@@ -147,12 +148,13 @@ export const updateGoal = async (goalId, newData) => {
   }
 };
 
-export const addActivityLog = async (goalId, message) => {
+export const addActivityLog = async (goalId, message, icon) => {
   try {
-    const logRef = collection(db, "activityLogs");
+    const logRef = collection(db, "activity_Log");
     const logData = {
       goalId: goalId,
       message: message,
+      icon: icon,
       createdAt: serverTimestamp(),
     };
     await addDoc(logRef, logData);
@@ -161,6 +163,31 @@ export const addActivityLog = async (goalId, message) => {
     console.error("Error adding activity log:", error);
   }
 };
+
+export const getActivityLogs = async (setActivityLog) => {
+  try {
+    const logsRef = collection(db, "activity_Log"); // Replace 'activity_logs' with your actual collection name
+    const logsQuery = query(logsRef, orderBy("createdAt", "desc")); // Order logs by 'timestamp' in descending order
+
+    const unsubscribe = onSnapshot(logsQuery, (snapshot) => {
+      if (!snapshot.empty) {
+        const activityLogData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setActivityLog(activityLogData);
+      } else {
+        console.log("No documents found");
+      }
+    });
+
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error fetching activity logs:", error);
+    return []; // Return an empty array if there's an error
+  }
+};
+
 // dont delete this as this is working but nit logically work on our code
 // console.log("Weekly Billed:", updatedReports);
 // try {

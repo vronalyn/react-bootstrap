@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { doGetUserAccount, doSignOut } from "../firebase/auth";
 import { useAuth } from "../contexts/authContext";
 import { Link, useNavigate } from "react-router-dom";
-
+import { getActivityLogs } from "../firebase/function";
 const Navbar2 = ({ toggleSidebar }) => {
   const navigate = useNavigate();
 
   const { currentUser } = useAuth();
   const [userData, setUserData] = useState(null);
+  const [activityLog, setActivityLog] = useState([]);
+  const [showFullMessage, toggleShowFullMessage] = useState();
+  const [showFullText, setShowFullText] = useState(false);
 
   useEffect(() => {
     if (currentUser) {
@@ -23,6 +26,39 @@ const Navbar2 = ({ toggleSidebar }) => {
       fetchUserData();
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    const fetchactivityLog = async () => {
+      const activityLogFromFirestore = await getActivityLogs(setActivityLog);
+    };
+
+    fetchactivityLog();
+  }, []);
+
+  // Function to format createdAt date
+  const formatCreatedAt = (createdAt) => {
+    const date = new Date(createdAt);
+    return date.toLocaleString();
+  };
+  const limitTextToThreeWords = (text) => {
+    return text.split(" ").slice(0, 3).join(" ");
+  };
+  const truncateText = (text) => {
+    const words = text.split(" ");
+    if (words.length <= 3) {
+      return text;
+    } else {
+      return words.slice(0, 3).join(" ") + "...";
+    }
+  };
+  const [showFullTexts, setShowFullTexts] = useState({});
+
+  const toggleShowFullText = (index) => {
+    setShowFullTexts((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index],
+    }));
+  };
 
   return (
     <nav className="navbar navbar-expand px-3 py-0 border-bottom bg-white ">
@@ -46,28 +82,76 @@ const Navbar2 = ({ toggleSidebar }) => {
             >
               <i className="bx bx-bell align-middle fs-5"></i>
             </button>
-            <ul className="dropdown-menu dropdown-menu-end">
+            <ul
+              className="dropdown-menu dropdown-menu-end"
+              style={{
+                width: "500px",
+                maxHeight: "450px",
+                overflowY: "auto",
+                wordbreak: "break-all",
+                overflowX: "hidden",
+              }}
+            >
               <div className="dropdown-menu-header align-middle text-center text-muted">
-                4 New Notifications
+                Notifications
               </div>
+
               <li>
                 <hr className="dropdown-divider" />
               </li>
-              <li className="d-flex align-items-center mt-3 pe-2">
-                <a className="dropdown-item lh-1 d-flex " href="#">
-                  <span className="me-3 justify-content-center">
-                    <i className="bx bxs-error-circle rounded-circle bg-warning-subtle text-warning p-2 align-items-center"></i>
-                  </span>
-                  <div>
-                    <p className="p-0 fs-6 mb-0">Max Usage Reached</p>
-                    <br />
-                    <p className="fs-7 mb-0 badge text-secondary p-0">
-                      30/03/24 3:00 pm
-                    </p>
-                  </div>
-                </a>
-              </li>
-              <li className="d-flex align-items-center mt-3 pe-2">
+
+              {activityLog &&
+                activityLog.map((activityLogItem, index) => (
+                  <li
+                    key={index}
+                    className="d-flex align-items-center mt-3 pe-2 "
+                  >
+                    <a className="dropdown-item lh-1 d-flex " href="#">
+                      <span className="me-3 justify-content-center">
+                        <i
+                          className={`${
+                            activityLogItem.icon === "warning"
+                              ? "bg-warning-subtle text-warning"
+                              : "bg-danger-subtle text-danger"
+                          } bx bxs-error-circle rounded-circle p-2 align-items-center`}
+                        ></i>
+                      </span>
+                      <div>
+                        <p className="p-0 fs-6 mb-0">
+                          {showFullTexts[index]
+                            ? activityLogItem.message
+                            : truncateText(activityLogItem.message)}
+                          {!showFullTexts[index] && (
+                            <span
+                              className="fs-7 d-flex  justify-content-end "
+                              onClick={() => toggleShowFullText(index)}
+                            >
+                              <br /> Read More
+                            </span>
+                          )}
+                          {showFullTexts[index] && (
+                            <span
+                              className="fs-7 d-flex  justify-content-end "
+                              onClick={() => toggleShowFullText(index)}
+                            >
+                              <br /> Read Less
+                            </span>
+                          )}
+                        </p>
+
+                        <br />
+                        <p className="fs-7 mb-0 badge text-secondary p-0">
+                          {activityLogItem.createdAt &&
+                            new Date(
+                              activityLogItem.createdAt.seconds * 1000
+                            ).toLocaleString()}
+                        </p>
+                      </div>
+                    </a>
+                  </li>
+                ))}
+
+              {/* <li className="d-flex align-items-center mt-3 pe-2">
                 <a className="dropdown-item lh-1 d-flex " href="#">
                   <span className="me-3">
                     <i className="bx bxs-error-circle rounded-circle bg-danger-subtle text-danger p-2 align-items-center justify-content-center"></i>
@@ -80,7 +164,7 @@ const Navbar2 = ({ toggleSidebar }) => {
                     </p>
                   </div>
                 </a>
-              </li>
+              </li> */}
               <li>
                 <hr className="dropdown-divider" />
               </li>

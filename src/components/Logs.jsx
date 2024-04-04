@@ -6,8 +6,11 @@ import {
   addActivityLog,
 } from "../firebase/function";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Logs = ({ goals, setGoals }) => {
-  const [thresholdValue, setThresholdValue] = useState();
+  const [levelValue, setLevelValue] = useState();
   const [showGoalAlert, setShowGoalAlert] = useState(false);
   const [coverageArea, setCoverageArea] = useState("");
   const [goalLiters, setGoalLiters] = useState("");
@@ -47,8 +50,9 @@ const Logs = ({ goals, setGoals }) => {
           !goal.goalAlert
         ) {
           const message = ` The water consumption target of ${goal.goalLiters} liters for ${goal.coverageArea} has been met.`;
-          alert(message);
-          await addActivityLog(goal.id, message);
+          toast.warning(message);
+          const icon = "danger";
+          await addActivityLog(goal.id, message, icon);
           try {
             await updateGoal(goal.id, { goalAlert: true });
           } catch (error) {
@@ -58,14 +62,15 @@ const Logs = ({ goals, setGoals }) => {
 
         const percentage = calculatePercentage(
           goal.goalLiters,
-          goal.thresholdValue
+          goal.levelValue
         );
-        if (percentage >= goal.thresholdValue && !goal.thresholdValueAlert) {
-          const message = `Warning: The water consumption in ${goal.coverageArea} has reached ${percentage}% of the target goal of ${goal.goalLiters} liters.`;
-          alert(message);
-          await addActivityLog(goal.id, message);
+        if (percentage >= goal.levelValue && !goal.levelValueAlert) {
+          const message = `The water consumption in ${goal.coverageArea} has reached ${percentage}% of the target goal of ${goal.goalLiters} liters.`;
+          toast.warning(message);
+          const icon = "warning";
+          await addActivityLog(goal.id, message, icon);
           try {
-            updateGoal(goal.id, { thresholdValueAlert: true });
+            updateGoal(goal.id, { levelValueAlert: true });
           } catch (error) {
             console.error("Error updating goal alert:", error);
           }
@@ -80,7 +85,7 @@ const Logs = ({ goals, setGoals }) => {
     handleGoals();
   }, [currentWaterUsage, goals]);
 
-  function calculatePercentage(goalLiters, thresholdValue) {
+  function calculatePercentage(goalLiters, levelValue) {
     if (!goalLiters) return 0;
 
     const goalLitersInt = parseInt(goalLiters);
@@ -99,7 +104,7 @@ const Logs = ({ goals, setGoals }) => {
   }
 
   return (
-    <div className="card widget-card border-light shadow-sm">
+    <div className="card widget-card border-light shadow-sm overflow-auto">
       <div className="card-body p-4">
         <div className="d-flex justify-content-between ">
           <h5 className="card-title widget-card-title mb-4">Activity Logs</h5>
@@ -107,7 +112,10 @@ const Logs = ({ goals, setGoals }) => {
             <Clock format={"h:mm:ss A"} ticking={true} />
           </div>
         </div>
-        <div className="row gy-4">
+        <div
+          className="row gy-4"
+          style={{ maxHeight: "600px", overflowY: "auto" }}
+        >
           {goals.map((goal, index) => (
             <div className="col-12" key={index}>
               <div>
@@ -116,16 +124,29 @@ const Logs = ({ goals, setGoals }) => {
               </div>
               <div className="">
                 <div className="d-flex justify-content-end ">
-                  <span>{calculatePercentage(goal.goalLiters)}%</span>
+                  <span>
+                    {goal.goalAlert
+                      ? 100
+                      : calculatePercentage(goal.goalLiters)}
+                    %
+                  </span>
                 </div>
                 <div className="progress">
                   <div
                     className="progress-bar bg-primary"
                     role="progressbar"
                     style={{
-                      width: `${calculatePercentage(goal.goalLiters)}%`,
+                      width: `${
+                        goal.goalAlert
+                          ? 100
+                          : calculatePercentage(goal.goalLiters)
+                      }%`,
                     }}
-                    aria-valuenow={calculatePercentage(goal.goalLiters)}
+                    aria-valuenow={
+                      goal.goalAlert
+                        ? 100
+                        : calculatePercentage(goal.goalLiters)
+                    }
                     aria-valuemin="0"
                     aria-valuemax="100"
                   ></div>
