@@ -17,9 +17,13 @@ import Navbar2 from "../../components/Navbar2";
 import HourlyChart from "../../components/HourlyChart";
 
 const BuildingDorm = ({ activeTab }) => {
+  // Use JavaScript's Date object to get the current date
+  // and format it as "YYYY-MM-DD" for the input's initial value
+  const currentDate = new Date().toISOString().split("T")[0];
+
   const [specificDate, setSpecificDate] = useState("");
 
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(currentDate);
 
   const [RightData, setRightData] = useState({});
   const [LeftData, setLeftData] = useState({});
@@ -32,7 +36,7 @@ const BuildingDorm = ({ activeTab }) => {
 
   //   added
   useEffect(() => {
-    const dateValue = selectedDate;
+    const dateValue = selectedDate || currentDate;
     const date = new Date(dateValue);
     setSpecificDate(date);
     fetchData(date);
@@ -101,7 +105,7 @@ const BuildingDorm = ({ activeTab }) => {
             collection(db, database),
             where("location", "==", location),
             where("DateTime", ">=", hourStart),
-            where("DateTime", "<", hourEnd),
+            where("DateTime", "<=", hourEnd),
             orderBy("DateTime", "desc"),
             limit(1)
           ),
@@ -151,7 +155,7 @@ const BuildingDorm = ({ activeTab }) => {
             collection(db, database),
             where("location", "==", location),
             where("DateTime", ">=", hourStart),
-            where("DateTime", "<", hourEnd),
+            where("DateTime", "<=", hourEnd),
             orderBy("DateTime", "desc"),
             limit(1)
           ),
@@ -225,7 +229,7 @@ const BuildingDorm = ({ activeTab }) => {
                       <div class="d-block d-sm-flex align-items-center justify-content-between mb-3">
                         <div class="mb-3 mb-sm-0">
                           <h5 class="card-title widget-card-title">
-                            Last 7 days
+                            Last 24 hours
                           </h5>
                           <p>Alumni Dormitory</p>
                           <p className="reminder">

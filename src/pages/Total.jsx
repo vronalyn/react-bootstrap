@@ -84,6 +84,42 @@ const Total = () => {
 
     setDateRange({ start: formattedStartDate, end: formattedEndDate }); // Update the date range state
   };
+
+  const handlePrevWeek = () => {
+    if (!selectedWeek) return;
+    const [year, weekNumber] = selectedWeek.split("-W");
+    const prevWeekNumber = parseInt(weekNumber, 10) - 1;
+    const newSelectedWeek = `${year}-W${prevWeekNumber
+      .toString()
+      .padStart(2, "0")}`;
+    setSelectedWeek(newSelectedWeek);
+    updateDateRange(newSelectedWeek);
+  };
+
+  const handleNextWeek = () => {
+    if (!selectedWeek) return;
+    const [year, weekNumber] = selectedWeek.split("-W");
+    const nextWeekNumber = parseInt(weekNumber, 10) + 1;
+    const newSelectedWeek = `${year}-W${nextWeekNumber
+      .toString()
+      .padStart(2, "0")}`;
+    setSelectedWeek(newSelectedWeek);
+    updateDateRange(newSelectedWeek);
+  };
+
+  const updateDateRange = (week) => {
+    const [year, weekNumber] = week.split("-W");
+    const startDate = new Date(year, 0, 1 + (weekNumber - 1) * 7);
+    const endDate = new Date(year, 0, 1 + (weekNumber - 1) * 7 + 6);
+    startDate.setDate(startDate.getDate() + 1);
+    endDate.setDate(endDate.getDate() + 1);
+    const formattedStartDate = startDate.toISOString().substring(0, 10);
+    const formattedEndDate = endDate.toISOString().substring(0, 10);
+    setDateRange({ start: formattedStartDate, end: formattedEndDate });
+    setFormattedStartDate(formattedStartDate);
+    setFormattedEndDate(formattedEndDate);
+  };
+
   useEffect(() => {
     // Format date
     if (dateRange.start && dateRange.end) {
@@ -249,9 +285,15 @@ const Total = () => {
             <h5 class="card-title widget-card-title">Last 7 days</h5>
             <p>Total Water Consumption</p>
             <p className="date">
-              <i className="bx bx-chevron-left icon-left"></i>
+              <i
+                className="bx bx-chevron-left icon-left"
+                onClick={handlePrevWeek}
+              ></i>
               <span>{`${formattedStartDate} - ${formattedEndDate}`}</span>
-              <i className="bx bx-chevron-right icon-right"></i>
+              <i
+                className="bx bx-chevron-right icon-right"
+                onClick={handleNextWeek}
+              ></i>
             </p>
           </div>
           <div>

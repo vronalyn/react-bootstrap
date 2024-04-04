@@ -154,6 +154,79 @@ const Weekly = () => {
     }
   };
 
+  const handlePrevWeek = (location) => {
+    if (location === "Dorm") {
+      const [year, weekNumber] = selectedWeekDorm.split("-W");
+      const prevWeekNumber = parseInt(weekNumber, 10) - 1;
+      const newSelectedWeek = `${year}-W${prevWeekNumber
+        .toString()
+        .padStart(2, "0")}`;
+      setSelectedWeekDorm(newSelectedWeek);
+      updateDateRange("Dorm", newSelectedWeek);
+    } else if (location === "CCS") {
+      const [year, weekNumber] = selectedWeekCCS.split("-W");
+      const prevWeekNumber = parseInt(weekNumber, 10) - 1;
+      const newSelectedWeek = `${year}-W${prevWeekNumber
+        .toString()
+        .padStart(2, "0")}`;
+      setSelectedWeekCCS(newSelectedWeek);
+      updateDateRange("CCS", newSelectedWeek);
+    }
+  };
+
+  const handleNextWeek = (location) => {
+    if (location === "Dorm") {
+      const [year, weekNumber] = selectedWeekDorm.split("-W");
+      const nextWeekNumber = parseInt(weekNumber, 10) + 1;
+      const newSelectedWeek = `${year}-W${nextWeekNumber
+        .toString()
+        .padStart(2, "0")}`;
+      setSelectedWeekDorm(newSelectedWeek);
+      updateDateRange("Dorm", newSelectedWeek);
+    } else if (location === "CCS") {
+      const [year, weekNumber] = selectedWeekCCS.split("-W");
+      const nextWeekNumber = parseInt(weekNumber, 10) + 1;
+      const newSelectedWeek = `${year}-W${nextWeekNumber
+        .toString()
+        .padStart(2, "0")}`;
+      setSelectedWeekCCS(newSelectedWeek);
+      updateDateRange("CCS", newSelectedWeek);
+    }
+  };
+
+  const updateDateRange = (location, week) => {
+    const [year, weekNumber] = week.split("-W");
+    const startDate = new Date(year, 0, 1 + (weekNumber - 1) * 7);
+    const endDate = new Date(year, 0, 1 + (weekNumber - 1) * 7 + 6);
+    startDate.setDate(startDate.getDate() + 1);
+    endDate.setDate(endDate.getDate() + 1);
+    const formattedStartDate = startDate.toLocaleString("default", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+    const formattedEndDate = endDate.toLocaleString("default", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+    if (location === "Dorm") {
+      setDateRangeDorm({
+        start: startDate.toISOString().substring(0, 10),
+        end: endDate.toISOString().substring(0, 10),
+      });
+      setFormattedStartDateDorm(formattedStartDate);
+      setFormattedEndDateDorm(formattedEndDate);
+    } else if (location === "CCS") {
+      setDateRangeCCS({
+        start: startDate.toISOString().substring(0, 10),
+        end: endDate.toISOString().substring(0, 10),
+      });
+      setFormattedStartDateCCS(formattedStartDate);
+      setFormattedEndDateCCS(formattedEndDate);
+    }
+  };
+
   useEffect(() => {
     fetchData(
       selectedWeekDorm,
@@ -302,7 +375,7 @@ const Weekly = () => {
         "CCS",
         selectedTankCCS
       );
-    }, 3600000);
+    }, 60000);
 
     // Cleanup function to clear the interval when the component unmounts or when the dependencies change
     return () => clearInterval(fetchDataInterval);
@@ -401,9 +474,15 @@ const Weekly = () => {
                           </h5>
                           <p>Alumni Dormitory</p>
                           <p className="date">
-                            <i className="bx bx-chevron-left icon-left"></i>
+                            <i
+                              className="bx bx-chevron-left icon-left"
+                              onClick={() => handlePrevWeek("Dorm")}
+                            ></i>
                             <span>{`${formattedStartDateDorm} - ${formattedEndDateDorm}`}</span>
-                            <i className="bx bx-chevron-right icon-right"></i>
+                            <i
+                              className="bx bx-chevron-right icon-right"
+                              onClick={() => handleNextWeek("Dorm")}
+                            ></i>
                           </p>
                         </div>
                         <div>
@@ -502,9 +581,15 @@ const Weekly = () => {
                           </h5>
                           <p>College of Computer Studies</p>
                           <p className="date">
-                            <i className="bx bx-chevron-left icon-left"></i>
+                            <i
+                              className="bx bx-chevron-left icon-left"
+                              onClick={() => handlePrevWeek("CCS")}
+                            ></i>
                             <span>{`${formattedStartDateCCS} - ${formattedEndDateCCS}`}</span>
-                            <i className="bx bx-chevron-right icon-right"></i>
+                            <i
+                              className="bx bx-chevron-right icon-right"
+                              onClick={() => handleNextWeek("CCS")}
+                            ></i>
                           </p>
                         </div>
                         <div>

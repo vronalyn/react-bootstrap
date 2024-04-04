@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
 const HourlyChart = ({ colors, height, right, left, type }) => {
+  const [grandTotalVolume, setGrandTotalVolume] = useState(0);
   const [state, setState] = useState({
     series: [
       {
@@ -263,6 +264,27 @@ const HourlyChart = ({ colors, height, right, left, type }) => {
     console.log("Left Data:", left);
   }, [right, left]);
 
+  useEffect(() => {
+    if (state.series[2].data.length > 0) {
+      // Find the last entry with total volume greater than 0
+      let lastIndex = state.series[2].data.length - 1;
+      while (
+        lastIndex >= 0 &&
+        parseFloat(state.series[2].data[lastIndex]) <= 0
+      ) {
+        lastIndex--;
+      }
+      // Set the grand total volume
+      if (lastIndex >= 0) {
+        setGrandTotalVolume(parseFloat(state.series[2].data[lastIndex]));
+      } else {
+        setGrandTotalVolume(0);
+      }
+    } else {
+      setGrandTotalVolume(0);
+    }
+  }, [state.series[2].data]);
+
   return (
     <div className="head">
       {/* <p className="header">{header}</p>
@@ -277,10 +299,10 @@ const HourlyChart = ({ colors, height, right, left, type }) => {
         height={height}
       />
       {/* extra data */}
-      {/* <div className="card-meta">
-        <p className="text">Total</p>
-        <p className="meta-value">0</p>
-      </div> */}
+      <p>
+        Total:{" "}
+        {grandTotalVolume.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </p>
       {/* extra data */}
     </div>
   );
