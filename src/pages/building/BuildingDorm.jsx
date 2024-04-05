@@ -15,6 +15,7 @@ import { db } from "../../firebase/firebase";
 import Sidebar from "../../components/Sidebar";
 import Navbar2 from "../../components/Navbar2";
 import HourlyChart from "../../components/HourlyChart";
+import Weekly from "../Weekly";
 
 const BuildingDorm = ({ activeTab }) => {
   // Use JavaScript's Date object to get the current date
@@ -205,7 +206,7 @@ const BuildingDorm = ({ activeTab }) => {
           <main className="content px-3 py-2 bg-secondary bg-opacity-10">
             <div className="container-fluid">
               <div className="mb-3">
-                <h1 className="fw-bold">Weekly</h1>
+                <h1 className="fw-bold">Alumni Dormitory</h1>
                 <nav aria-label="breadcrumb"></nav>
               </div>
 
@@ -262,6 +263,9 @@ const BuildingDorm = ({ activeTab }) => {
                     </div>
                     <div id="bsb-chart-1"></div>
                   </div>
+
+                  {/* Weekly */}
+                  <Weekly activeTab={activeTab} />
                 </div>
               </div>
             </div>
