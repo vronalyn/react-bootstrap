@@ -73,7 +73,7 @@ const WeeklyChart = ({
       // },
       xaxis: {
         type: "category", // Changed from datetime to category
-        categories: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"], // Define the categories (days of the week)
+        categories: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"], // Define the categories (days of the week)
         labels: {
           style: {
             fontSize: "12px", // Adjust the font size here
