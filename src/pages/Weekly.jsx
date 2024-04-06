@@ -1,6 +1,5 @@
 import Sidebar from "../components/Sidebar";
 import Navbar2 from "../components/Navbar2";
-import Total from "./Total";
 import React, { useEffect, useState } from "react";
 
 // added
@@ -16,7 +15,7 @@ import {
 import { db } from "../firebase/firebase";
 import WeeklyChart from "../components/WeeklyChart";
 
-const Weekly = () => {
+const Weekly = ({ activeTab }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const toggleSidebar = () => {
@@ -439,251 +438,182 @@ const Weekly = () => {
   // added
   return (
     <div>
-      <div className="wrapper ">
-        <Sidebar sidebarCollapsed={sidebarCollapsed} />
-        <div className="main">
-          <Navbar2 toggleSidebar={toggleSidebar} />
-          <main className="content px-3 py-2 bg-secondary bg-opacity-10">
-            <div className="container-fluid">
-              <div className="mb-3">
-                <h1 className="fw-bold">Weekly</h1>
-                <nav aria-label="breadcrumb"></nav>
+      {/* Dorm */}
+      {activeTab === "dorm" && (
+        <div class="card widget-card border-light shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-block d-sm-flex align-items-center justify-content-between mb-3">
+              <div class="mb-3 mb-sm-0">
+                <h5 class="card-title widget-card-title">Last 7 days</h5>
+                <p>Alumni Dormitory</p>
+                <p className="reminder">
+                  Please be advised that new data will be added/updated daily.
+                </p>
+                <p className="date">
+                  <i
+                    className="bx bx-chevron-left icon-left"
+                    onClick={() => handlePrevWeek("Dorm")}
+                  ></i>
+                  <span>{`${formattedStartDateDorm} - ${formattedEndDateDorm}`}</span>
+                  <i
+                    className="bx bx-chevron-right icon-right"
+                    onClick={() => handleNextWeek("Dorm")}
+                  ></i>
+                </p>
               </div>
+              <div>
+                <div className="form-card">
+                  <form action="POST">
+                    <input
+                      type="week"
+                      id="weekDorm"
+                      name="weekDorm"
+                      value={selectedWeekDorm}
+                      onChange={handleWeekChangeDorm}
+                    />
 
-              <div className="row">
-                <div className="col-md-8">
-                  <div className="row mb-4">
-                    <div className="col-md-12 d-flex align-items-center">
-                      <div className="col-8 col-md-8">
-                        <div className="heading-text">
-                          {/* <h3 className="lh-1 fw-bold">Realtime Analytics</h3> */}
-                          <p>Write a short description here.</p>
-                        </div>
+                    <div className="select-menu" onClick={toggleOptionsDorm}>
+                      <div className="select-btn" tabIndex="0">
+                        <span className="select-text">
+                          {selectedOptionDorm}
+                        </span>
+                        <i className="bx bx-chevron-down"></i>
                       </div>
+                      <ul className={`options ${isActiveDorm ? "active" : ""}`}>
+                        <li
+                          className="option"
+                          onClick={() =>
+                            handleOptionClickDorm("", "Select Tank Location")
+                          }
+                        >
+                          <span className="option-text">
+                            Select Tank Location
+                          </span>
+                        </li>
+                        <li
+                          className="option"
+                          onClick={() =>
+                            handleOptionClickDorm("DormRight", "Right Tank")
+                          }
+                        >
+                          <span className="option-text">Right Tank</span>
+                        </li>
+                        <li
+                          className="option"
+                          onClick={() =>
+                            handleOptionClickDorm("DormLeft", "Left Tank")
+                          }
+                        >
+                          <span className="option-text">Left Tank</span>
+                        </li>
+                      </ul>
                     </div>
-                  </div>
-                  {/* added */}
-
-                  {/* CCS */}
-                  <div className="card widget-card border-light shadow-sm">
-                    <div className="card-body p-4">
-                      <div className="d-block d-sm-flex align-items-center justify-content-between mb-3">
-                        <div className="mb-3 mb-sm-0">
-                          <h5 className="card-title widget-card-title">
-                            Last 7 days
-                          </h5>
-                          <p>Alumni Dormitory</p>
-                          <p className="date">
-                            <i
-                              className="bx bx-chevron-left icon-left"
-                              onClick={() => handlePrevWeek("Dorm")}
-                            ></i>
-                            <span>{`${formattedStartDateDorm} - ${formattedEndDateDorm}`}</span>
-                            <i
-                              className="bx bx-chevron-right icon-right"
-                              onClick={() => handleNextWeek("Dorm")}
-                            ></i>
-                          </p>
-                        </div>
-                        <div>
-                          <div className="form-card">
-                            <form action="POST">
-                              <input
-                                type="week"
-                                id="weekDorm"
-                                name="weekDorm"
-                                value={selectedWeekDorm}
-                                onChange={handleWeekChangeDorm}
-                              />
-
-                              <div
-                                className="select-menu"
-                                onClick={toggleOptionsDorm}
-                              >
-                                <div className="select-btn" tabIndex="0">
-                                  <span className="select-text">
-                                    {selectedOptionDorm}
-                                  </span>
-                                  <i className="bx bx-chevron-down"></i>
-                                </div>
-                                <ul
-                                  className={`options ${
-                                    isActiveDorm ? "active" : ""
-                                  }`}
-                                >
-                                  <li
-                                    className="option"
-                                    onClick={() =>
-                                      handleOptionClickDorm(
-                                        "",
-                                        "Select Tank Location"
-                                      )
-                                    }
-                                  >
-                                    <span className="option-text">
-                                      Select Tank Location
-                                    </span>
-                                  </li>
-                                  <li
-                                    className="option"
-                                    onClick={() =>
-                                      handleOptionClickDorm(
-                                        "DormRight",
-                                        "Right Tank"
-                                      )
-                                    }
-                                  >
-                                    <span className="option-text">
-                                      Right Tank
-                                    </span>
-                                  </li>
-                                  <li
-                                    className="option"
-                                    onClick={() =>
-                                      handleOptionClickDorm(
-                                        "DormLeft",
-                                        "Left Tank"
-                                      )
-                                    }
-                                  >
-                                    <span className="option-text">
-                                      Left Tank
-                                    </span>
-                                  </li>
-                                </ul>
-                              </div>
-                              {isLoadingDorm && (
-                                <p className="loading">Loading data...</p>
-                              )}
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                      <WeeklyChart
-                        height={400}
-                        type="line"
-                        // dateRange={dateRangeDorm}
-                        right={DormRightData}
-                        left={DormLeftData}
-                        tankLocation={selectedTankDorm}
-                      />
-                      <div id="bsb-chart-1"></div>
-                    </div>
-                  </div>
-
-                  {/* CCS */}
-                  <div className="card widget-card border-light shadow-sm">
-                    <div className="card-body p-4">
-                      <div className="d-block d-sm-flex align-items-center justify-content-between mb-3">
-                        <div className="mb-3 mb-sm-0">
-                          <h5 className="card-title widget-card-title">
-                            Last 7 days
-                          </h5>
-                          <p>College of Computer Studies</p>
-                          <p className="date">
-                            <i
-                              className="bx bx-chevron-left icon-left"
-                              onClick={() => handlePrevWeek("CCS")}
-                            ></i>
-                            <span>{`${formattedStartDateCCS} - ${formattedEndDateCCS}`}</span>
-                            <i
-                              className="bx bx-chevron-right icon-right"
-                              onClick={() => handleNextWeek("CCS")}
-                            ></i>
-                          </p>
-                        </div>
-                        <div>
-                          <div className="form-card">
-                            <form action="POST">
-                              <input
-                                type="week"
-                                id="weekCCS"
-                                name="weekCCS"
-                                value={selectedWeekCCS}
-                                onChange={handleWeekChangeCCS}
-                              />
-
-                              <div
-                                className="select-menu"
-                                onClick={toggleOptionsCCS}
-                              >
-                                <div className="select-btn" tabIndex="0">
-                                  <span className="select-text">
-                                    {selectedOptionCCS}
-                                  </span>
-                                  <i className="bx bx-chevron-down"></i>
-                                </div>
-                                <ul
-                                  className={`options ${
-                                    isActiveCCS ? "active" : ""
-                                  }`}
-                                >
-                                  <li
-                                    className="option"
-                                    onClick={() =>
-                                      handleOptionClickCCS(
-                                        "",
-                                        "Select Tank Location"
-                                      )
-                                    }
-                                  >
-                                    <span className="option-text">
-                                      Select Tank Location
-                                    </span>
-                                  </li>
-                                  <li
-                                    className="option"
-                                    onClick={() =>
-                                      handleOptionClickCCS(
-                                        "CCSRight",
-                                        "Right Tank"
-                                      )
-                                    }
-                                  >
-                                    <span className="option-text">
-                                      Right Tank
-                                    </span>
-                                  </li>
-                                  <li
-                                    className="option"
-                                    onClick={() =>
-                                      handleOptionClickCCS(
-                                        "CCSLeft",
-                                        "Left Tank"
-                                      )
-                                    }
-                                  >
-                                    <span className="option-text">
-                                      Left Tank
-                                    </span>
-                                  </li>
-                                </ul>
-                              </div>
-
-                              {isLoadingCCS && (
-                                <p className="loading">Loading data...</p>
-                              )}
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                      <WeeklyChart
-                        height={400}
-                        type="line"
-                        // dateRange={dateRangeCCS}
-                        right={CCSRightData}
-                        left={CCSLeftData}
-                        tankLocation={selectedTankCCS}
-                      />
-                      <div id="bsb-chart-1"></div>
-                    </div>
-                  </div>
+                    {isLoadingDorm && (
+                      <p className="loading">Loading data...</p>
+                    )}
+                  </form>
                 </div>
               </div>
             </div>
-          </main>
+            <WeeklyChart
+              height={400}
+              type="line"
+              // dateRange={dateRangeDorm}
+              right={DormRightData}
+              left={DormLeftData}
+              tankLocation={selectedTankDorm}
+            />
+            <div id="bsb-chart-1"></div>
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* CCS */}
+      {activeTab === "ccs" && (
+        <div class="card widget-card border-light shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-block d-sm-flex align-items-center justify-content-between mb-3">
+              <div class="mb-3 mb-sm-0">
+                <h5 class="card-title widget-card-title">Last 7 days</h5>
+                <p>College of Computer Studies</p>
+                <p className="reminder">
+                  Please be advised that new data will be added/updated daily.
+                </p>
+                <p className="date">
+                  <i
+                    className="bx bx-chevron-left icon-left"
+                    onClick={() => handlePrevWeek("CCS")}
+                  ></i>
+                  <span>{`${formattedStartDateCCS} - ${formattedEndDateCCS}`}</span>
+                  <i
+                    className="bx bx-chevron-right icon-right"
+                    onClick={() => handleNextWeek("CCS")}
+                  ></i>
+                </p>
+              </div>
+              <div>
+                <div className="form-card">
+                  <form action="POST">
+                    <input
+                      type="week"
+                      id="weekCCS"
+                      name="weekCCS"
+                      value={selectedWeekCCS}
+                      onChange={handleWeekChangeCCS}
+                    />
+
+                    <div className="select-menu" onClick={toggleOptionsCCS}>
+                      <div className="select-btn" tabIndex="0">
+                        <span className="select-text">{selectedOptionCCS}</span>
+                        <i className="bx bx-chevron-down"></i>
+                      </div>
+                      <ul className={`options ${isActiveCCS ? "active" : ""}`}>
+                        <li
+                          className="option"
+                          onClick={() =>
+                            handleOptionClickCCS("", "Select Tank Location")
+                          }
+                        >
+                          <span className="option-text">
+                            Select Tank Location
+                          </span>
+                        </li>
+                        <li
+                          className="option"
+                          onClick={() =>
+                            handleOptionClickCCS("CCSRight", "Right Tank")
+                          }
+                        >
+                          <span className="option-text">Right Tank</span>
+                        </li>
+                        <li
+                          className="option"
+                          onClick={() =>
+                            handleOptionClickCCS("CCSLeft", "Left Tank")
+                          }
+                        >
+                          <span className="option-text">Left Tank</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    {isLoadingCCS && <p className="loading">Loading data...</p>}
+                  </form>
+                </div>
+              </div>
+            </div>
+            <WeeklyChart
+              height={400}
+              type="line"
+              // dateRange={dateRangeCCS}
+              right={CCSRightData}
+              left={CCSLeftData}
+              tankLocation={selectedTankCCS}
+            />
+            <div id="bsb-chart-1"></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

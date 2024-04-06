@@ -6,7 +6,7 @@ import Logs from "../components/Logs";
 import Chart from "../components/Chart";
 
 // added
-import Total from "./Total";
+import TotalWeekly from "./TotalWeekly";
 
 const Dashboard = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -59,7 +59,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                   {/* added */}
-                  <Total />
+                  <TotalWeekly />
 
                   <Chart />
                 </div>

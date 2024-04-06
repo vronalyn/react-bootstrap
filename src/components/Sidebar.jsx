@@ -77,12 +77,12 @@ const Sidebar = ({ sidebarCollapsed }) => {
               data-bs-parent="#sidebar"
             >
               <li className="sidebar-item">
-                <Link to="/weekly" className="sidebar-link">
+                <Link to="/analytics/weekly" className="sidebar-link">
                   Weekly
                 </Link>
               </li>
               <li className="sidebar-item">
-                <Link to="/monthly" className="sidebar-link">
+                <Link to="/analytics/monthly" className="sidebar-link">
                   Monthly
                 </Link>
               </li>
