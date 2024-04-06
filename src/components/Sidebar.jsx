@@ -82,7 +82,7 @@ const Sidebar = ({ sidebarCollapsed }) => {
                 </Link>
               </li>
               <li className="sidebar-item">
-                <Link to="/anlytics/monthly" className="sidebar-link">
+                <Link to="/analytics/monthly" className="sidebar-link">
                   Monthly
                 </Link>
               </li>

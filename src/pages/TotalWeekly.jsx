@@ -13,7 +13,7 @@ import {
 import { db } from "../firebase/firebase";
 import WeeklyChart from "../components/WeeklyChart";
 
-const Total = () => {
+const TotalWeekly = () => {
   // added
   const [selectedWeek, setSelectedWeek] = useState("");
   const [dateRange, setDateRange] = useState({ start: "", end: "" });
@@ -284,6 +284,9 @@ const Total = () => {
           <div class="mb-3 mb-sm-0">
             <h5 class="card-title widget-card-title">Last 7 days</h5>
             <p>Total Water Consumption</p>
+            <p className="reminder">
+              Please be advised that new data will be added/updated daily.
+            </p>
             <p className="date">
               <i
                 className="bx bx-chevron-left icon-left"
@@ -332,4 +335,4 @@ const Total = () => {
   );
 };
 
-export default Total;
+export default TotalWeekly;

@@ -16,6 +16,7 @@ import Sidebar from "../../components/Sidebar";
 import Navbar2 from "../../components/Navbar2";
 import HourlyChart from "../../components/HourlyChart";
 import Weekly from "../Weekly";
+import Monthly from "../Monthly";
 
 const BuildingDorm = ({ activeTab }) => {
   // Use JavaScript's Date object to get the current date
@@ -266,6 +267,9 @@ const BuildingDorm = ({ activeTab }) => {
 
                   {/* Weekly */}
                   <Weekly activeTab={activeTab} />
+
+                  {/* Weekly */}
+                  <Monthly activeTab={activeTab} />
                 </div>
               </div>
             </div>
