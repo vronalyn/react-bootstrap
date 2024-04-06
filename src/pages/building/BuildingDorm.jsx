@@ -224,11 +224,11 @@ const BuildingDorm = ({ activeTab }) => {
                   {/* added */}
 
                   {/*  */}
-                  <div class="card widget-card border-light shadow-sm">
-                    <div class="card-body p-4">
-                      <div class="d-block d-sm-flex align-items-center justify-content-between mb-3">
-                        <div class="mb-3 mb-sm-0">
-                          <h5 class="card-title widget-card-title">
+                  <div className="card widget-card border-light shadow-sm">
+                    <div className="card-body p-4">
+                      <div className="d-block d-sm-flex align-items-center justify-content-between mb-3">
+                        <div className="mb-3 mb-sm-0">
+                          <h5 className="card-title widget-card-title">
                             Last 24 hours
                           </h5>
                           <p>Alumni Dormitory</p>

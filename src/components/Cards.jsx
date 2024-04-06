@@ -5,19 +5,15 @@ import { addGoalToFirestore } from "../firebase/function";
 
 const Cards = ({ goals, setGoals }) => {
   const { currentUser } = useAuth();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [levelValue, setLevelValue] = useState(0);
   const [showGoalAlert, setShowGoalAlert] = useState(false);
   const [coverageArea, setCoverageArea] = useState("");
   const [goalLiters, setGoalLiters] = useState();
-  const [showModal, setShowModal] = useState(false);
-
-  const handleOpenModal = () => {
-    setShowModal(true); // Set showModal to true to display the modal
-  };
+  // const [showModal, setShowModal] = useState(false);
 
   const handleCloseModal = () => {
-    setShowModal(false);
     setShowGoalAlert(false);
     setCoverageArea("");
     setGoalLiters("");
@@ -40,14 +36,24 @@ const Cards = ({ goals, setGoals }) => {
     setShowGoalAlert((prevShowGoalAlert) => !prevShowGoalAlert);
   };
 
+  // levelValue: levelValue === 0 ? null : levelValue,
+  // levelValueAlert: levelValue === 0 ? true : false,
+  const closeEditGoal = () => {
+    setErrorMessage("");
+  };
   const handleSaveGoal = async (e) => {
     e.preventDefault();
+
+    if (showGoalAlert && levelValue === 0) {
+      setErrorMessage("Please set a level value for the goal alert.");
+      return;
+    }
 
     const newGoal = {
       coverageArea: coverageArea,
       goalLiters: goalLiters,
-      levelValue: levelValue,
-      levelValueAlert: false,
+      levelValue: levelValue === 0 ? null : levelValue,
+      levelValueAlert: levelValue === 0 ? true : false,
       goalAlert: false,
       createdBy: currentUser.uid,
     };
@@ -65,6 +71,7 @@ const Cards = ({ goals, setGoals }) => {
 
         // After the user closes the alert, close the modal
         handleCloseModal();
+        window.location.reload();
       } else {
         // Display an error alert using SweetAlert
         Swal.fire({
@@ -191,7 +198,6 @@ const Cards = ({ goals, setGoals }) => {
                   </div>
                   <div className="d-flex justify-content-center mt-2">
                     <button
-                      onClick={handleOpenModal}
                       type="button"
                       data-bs-toggle="modal"
                       data-bs-target="#setGoalButton"
@@ -241,7 +247,7 @@ const Cards = ({ goals, setGoals }) => {
                                 }
                                 required
                               >
-                                <option selected disabled value="">
+                                <option disabled value="">
                                   Select coverage area
                                 </option>
                                 <option value="Entire Building">
@@ -279,7 +285,7 @@ const Cards = ({ goals, setGoals }) => {
                               <div>
                                 <label
                                   className="form-check-label"
-                                  for="goalToggle"
+                                  htmlFor="goalToggle"
                                 >
                                   <h6>
                                     Set a Percentage Level for Goal Alerts!
@@ -294,11 +300,6 @@ const Cards = ({ goals, setGoals }) => {
                                   role="switch"
                                   checked={showGoalAlert}
                                   onChange={handleToggleChange}
-
-                                  // onChange={(e) => {
-                                  //   e.preventDefault(); // Prevent the default behavior of the checkbox
-                                  //   setShowGoalAlert(e.target.checked);
-                                  // }}
                                 />
                               </div>
                             </div>
@@ -317,6 +318,12 @@ const Cards = ({ goals, setGoals }) => {
                                   </div>
                                   <div className="d-flex justify-content-center">
                                     <div className="w-100 pe-lg-4  ps-lg-4 ">
+                                      {errorMessage && (
+                                        <p className="text-danger mb-2">
+                                          {errorMessage}
+                                        </p>
+                                      )}
+
                                       <label
                                         htmlFor="goalThreshold"
                                         className="form-label"
@@ -350,6 +357,7 @@ const Cards = ({ goals, setGoals }) => {
                             <div className="modal-footer">
                               <button
                                 type="button"
+                                onClick={closeEditGoal}
                                 className="btn btn-secondary"
                                 data-bs-dismiss="modal"
                               >

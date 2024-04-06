@@ -91,7 +91,8 @@ export const addGoalToFirestore = async (newGoal) => {
     // Add additional fields to the new goal object
     const goalWithMeta = {
       ...newGoal,
-      createdAt: serverTimestamp(), // Timestamp of when the goal was created
+      createdAt: serverTimestamp(),
+      modifiedBy: "",
     };
 
     // await db.collection("goals").add(goalWithMeta);
@@ -100,17 +101,18 @@ export const addGoalToFirestore = async (newGoal) => {
     return true;
   } catch (error) {
     console.error("Error adding goal to Firestore:", error);
+
     return false;
   }
 };
 
 export const getGoalsWithAlertFalse = async (setGoals) => {
   try {
-    // const goalRef = query(
-    //   collection(db, "goals"),
-    //   where("goalAlert", "==", false)
-    // );
-    const goalRef = collection(db, "goals");
+    const goalRef = query(
+      collection(db, "goals"),
+      orderBy("createdAt", "desc")
+    );
+    // const goalRef = collection(db, "goals");
 
     // Subscribe to the query snapshot to get real-time updates
     const unsubscribe = onSnapshot(goalRef, (snapshot) => {
@@ -145,6 +147,23 @@ export const updateGoal = async (goalId, newData) => {
   } catch (error) {
     console.error("Error updating goal:", error);
     return false; // Return false to indicate failure
+  }
+};
+export const editGoal = async (editGoal, goalid) => {
+  try {
+    // Add additional fields to the new goal object
+    const goalWithMeta = {
+      ...editGoal,
+      createdAt: serverTimestamp(),
+    };
+
+    // await db.collection("goals").add(goalWithMeta);
+    await updateDoc(doc(db, "goals", goalid), goalWithMeta);
+
+    return true;
+  } catch (error) {
+    console.error("Error Edit goal to Firestore:", error);
+    return false;
   }
 };
 

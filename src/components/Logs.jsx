@@ -4,36 +4,61 @@ import {
   getGoalsWithAlertFalse,
   updateGoal,
   addActivityLog,
+  editGoal,
 } from "../firebase/function";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "../css/log.css";
+import Swal from "sweetalert2";
+import { useAuth } from "../contexts/authContext";
 
 const Logs = ({ goals, setGoals }) => {
-  const [levelValue, setLevelValue] = useState();
+  const { currentUser } = useAuth();
   const [showGoalAlert, setShowGoalAlert] = useState(false);
-  const [coverageArea, setCoverageArea] = useState("");
-  const [goalLiters, setGoalLiters] = useState("");
   // const [goals, setGoals] = useState([]);
+  const [editedGoal, setEditedGoal] = useState(null);
+  const [levelValue, setLevelValue] = useState(0);
+  const [errorMessage1, setErrorMessage1] = useState("");
+  const [errorMessage2, setErrorMessage2] = useState("");
+  const [initialGoal, setInitialGoal] = useState(null);
+
+  // SImulation test
+  const [ccsWaterUsage, setCcsWaterUsage] = useState(0);
+  const [dormWaterUsage, setDormWaterUsage] = useState(0);
   const [currentWaterUsage, setCurrentWaterUsage] = useState(0);
 
-  // Water Usage simulation
-  // console.log("Water Usage: " + currentWaterUsage);
+  // Simulation for CCS water usage
+
   // useEffect(() => {
-  //   // Simulate increasing water usage every second
-  //   const interval = setInterval(() => {
-  //     setCurrentWaterUsage((prevUsage) => prevUsage + 50); // Increase water usage by 1 unit
+  //   const ccsInterval = setInterval(() => {
+  //     setCcsWaterUsage((prevUsage) => prevUsage + 50); // Increase CCS water usage by 50 units every second
   //   }, 1000);
 
-  //   // Clean up interval on component unmount
+  //   return () => clearInterval(ccsInterval);
+  // }, []);
+
+  // // Simulation for Dorm water usage
+  // useEffect(() => {
+  //   const dormInterval = setInterval(() => {
+  //     setDormWaterUsage((prevUsage) => prevUsage + 30); // Increase Dorm water usage by 30 units every second
+  //   }, 1000);
+
+  //   return () => clearInterval(dormInterval);
+  // }, []);
+
+  // // Combined simulation for current water usage
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setCurrentWaterUsage((prevUsage) => prevUsage + 80); // Increase total water usage by 80 units every second
+  //   }, 1000);
+
   //   return () => clearInterval(interval);
   // }, []);
 
   useEffect(() => {
-    // Call the function to fetch goals from Firestore
     const fetchGoals = async () => {
       const goalsFromFirestore = await getGoalsWithAlertFalse(setGoals);
-      // setGoals(goalsFromFirestore);
     };
 
     fetchGoals(); // Call the fetchGoals function
@@ -50,7 +75,10 @@ const Logs = ({ goals, setGoals }) => {
           !goal.goalAlert
         ) {
           const message = ` The water consumption target of ${goal.goalLiters} liters for ${goal.coverageArea} has been met.`;
-          toast.warning(message);
+          toast.warning(message, {
+            autoClose: 5000,
+            closeOnClick: true,
+          });
           const icon = "danger";
           await addActivityLog(goal.id, message, icon);
           try {
@@ -62,11 +90,14 @@ const Logs = ({ goals, setGoals }) => {
 
         const percentage = calculatePercentage(
           goal.goalLiters,
-          goal.levelValue
+          goal.coverageArea
         );
         if (percentage >= goal.levelValue && !goal.levelValueAlert) {
           const message = `The water consumption in ${goal.coverageArea} has reached ${percentage}% of the target goal of ${goal.goalLiters} liters.`;
-          toast.warning(message);
+          toast.warning(message, {
+            autoClose: 5000,
+            closeOnClick: true,
+          });
           const icon = "warning";
           await addActivityLog(goal.id, message, icon);
           try {
@@ -85,16 +116,26 @@ const Logs = ({ goals, setGoals }) => {
     handleGoals();
   }, [currentWaterUsage, goals]);
 
-  function calculatePercentage(goalLiters, levelValue) {
+  function calculatePercentage(goalLiters, coverageArea) {
     if (!goalLiters) return 0;
 
     const goalLitersInt = parseInt(goalLiters);
 
     if (goalLitersInt === 0) return 0; // Prevent division by zero
 
-    // Calculate the percentage
-    let percentage = (currentWaterUsage / goalLitersInt) * 100;
-
+    // let percentage = (currentWaterUsage / goalLitersInt) * 100;
+    let percentage;
+    switch (coverageArea) {
+      case "CCS":
+        percentage = (ccsWaterUsage / goalLitersInt) * 100;
+        break;
+      case "Dorm":
+        percentage = (dormWaterUsage / goalLitersInt) * 100;
+        break;
+      default:
+        percentage = (currentWaterUsage / goalLitersInt) * 100;
+        break;
+    }
     // Cap the percentage at 100
     if (percentage >= 100) {
       percentage = 100;
@@ -102,6 +143,110 @@ const Logs = ({ goals, setGoals }) => {
 
     return Math.floor(percentage);
   }
+
+  const handleEditGoal = (index) => {
+    setEditedGoal(index);
+    setInitialGoal({
+      goalLiters: index.goalLiters,
+      levelValue: index.levelValue,
+    });
+  };
+
+  // useEffect(() => {
+  //   if (editedGoal !== null && editedGoal.levelValue !== null) {
+  //     setShowGoalAlert(true);
+  //   }
+  // }, [editedGoal]);
+
+  useEffect(() => {
+    if (editedGoal !== null) {
+      if (editedGoal.levelValue !== null) {
+        setShowGoalAlert(true);
+        setLevelValue(editedGoal.levelValue);
+      } else {
+        setLevelValue(0);
+      }
+    }
+  }, [editedGoal]);
+
+  const handleToggleChange = () => {
+    setShowGoalAlert((prevShowGoalAlert) => !prevShowGoalAlert);
+  };
+
+  const handleChange = (event) => {
+    let newValue = parseInt(event.target.value);
+    newValue = Math.max(0, Math.min(newValue, 100));
+    setEditedGoal({ ...editedGoal, levelValue: newValue });
+  };
+
+  const handleSliderClick = (event) => {
+    event.stopPropagation(); // Prevent the click event from bubbling up
+  };
+
+  const closeEditGoal = () => {
+    setErrorMessage1("");
+    setErrorMessage2("");
+  };
+  const submitEditGoal = async (e) => {
+    e.preventDefault();
+
+    if (
+      editedGoal.goalLiters === initialGoal.goalLiters &&
+      editedGoal.levelValue === initialGoal.levelValue
+    ) {
+      console.log("initial goal: " + initialGoal.goalLiters);
+      console.log("initial goal: " + initialGoal.levelValue);
+
+      setErrorMessage1("No changes have been made to the goal.");
+      return;
+    } else {
+      setErrorMessage1("");
+    }
+
+    if (showGoalAlert && levelValue === 0) {
+      setErrorMessage2("Please set a level value for the goal alert.");
+      return;
+    } else {
+      setErrorMessage2("");
+    }
+
+    const editGoalData = {
+      goalLiters: editedGoal.goalLiters,
+      levelValue: levelValue === 0 ? null : levelValue,
+      levelValueAlert: levelValue === 0 ? true : false,
+      goalAlert: false,
+      modifiedBy: currentUser.email,
+    };
+    console.log("form id: " + editedGoal.email);
+    try {
+      const success = await editGoal(editGoalData, editedGoal.id);
+
+      if (success) {
+        // Display a success alert using SweetAlert
+        await Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Goal Update successfully!",
+        });
+        window.location.reload();
+      } else {
+        // Display an error alert using SweetAlert
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "An error occurred while updating the goal.",
+        });
+      }
+    } catch (error) {
+      console.error("Error saving goal:", error);
+      // Display an error alert using SweetAlert
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "An error occurred while saving the goal.",
+      });
+    }
+  };
 
   return (
     <div className="card widget-card border-light shadow-sm overflow-auto">
@@ -112,15 +257,63 @@ const Logs = ({ goals, setGoals }) => {
             <Clock format={"h:mm:ss A"} ticking={true} />
           </div>
         </div>
+        <div>
+          <div>
+            <p>CCS Water Usage: {ccsWaterUsage}</p>
+          </div>
+          <div>
+            <p>Dorm Water Usage: {dormWaterUsage}</p>
+          </div>
+          <div>
+            <p>Total Water Usage: {currentWaterUsage}</p>
+          </div>
+        </div>
         <div
           className="row gy-4"
           style={{ maxHeight: "600px", overflowY: "auto" }}
         >
           {goals.map((goal, index) => (
-            <div className="col-12" key={index}>
-              <div>
-                <h6 className=" text-secondary  m-0">{goal.coverageArea}</h6>
-                <p className=" fw-medium  m-0 fs-5">{goal.goalLiters} L</p>
+            <div className="col-12 card-goal py-3 rounded " key={index}>
+              <div className="d-flex justify-content-between ">
+                <div>
+                  <h6 className=" text-secondary  m-0">{goal.coverageArea}</h6>
+                  <p className=" fw-medium  m-0 fs-5">{goal.goalLiters} L</p>
+                </div>
+                {/* <div>
+
+                  <i className="bx bx-dots-vertical-rounded"></i>
+                </div> */}
+
+                <div className=" w-auto ">
+                  <div className="btn-group">
+                    <button
+                      type="button"
+                      className="btn btn-sm bg-light rounded-circle  w-auto border-0"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i className="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <ul className="dropdown-menu dropdown-menu-sm-end ">
+                      <li>
+                        <button
+                          onClick={() => handleEditGoal(goal)}
+                          className="dropdown-item"
+                          type="button "
+                          data-bs-toggle="modal"
+                          data-bs-target="#setEditGoalButton"
+                        >
+                          Edit
+                        </button>
+                      </li>
+                      <li>
+                        <button className="dropdown-item" type="button">
+                          Delete
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
               <div className="">
                 <div className="d-flex justify-content-end ">
@@ -154,6 +347,166 @@ const Logs = ({ goals, setGoals }) => {
               </div>
             </div>
           ))}
+
+          {/* Modal for edit */}
+
+          <div
+            className="modal fade"
+            id="setEditGoalButton"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">
+                    Edit Goal
+                  </h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  {editedGoal && (
+                    <form onSubmit={submitEditGoal}>
+                      {errorMessage1 && (
+                        <p className="text-danger mb-2">{errorMessage1}</p>
+                      )}
+                      <div className="mb-3">
+                        <label htmlFor="coverageArea" className="form-label">
+                          Coverage Area:
+                        </label>
+                        <select
+                          className="form-select "
+                          aria-label="Select coverage area"
+                          id="coverageArea"
+                          value={editedGoal.coverageArea}
+                          disabled
+                          required
+                        >
+                          <option>{editedGoal.coverageArea}</option>
+                        </select>
+                      </div>
+
+                      <div className="mb-5">
+                        <label htmlFor="goalInput" className="form-label">
+                          Enter your goal (liters):
+                        </label>
+                        <div className="input-group">
+                          <input
+                            type="number"
+                            className="form-control"
+                            id="goalInput"
+                            required
+                            value={editedGoal.goalLiters}
+                            onChange={(e) =>
+                              setEditedGoal({
+                                ...editedGoal,
+                                goalLiters: parseInt(e.target.value),
+                              })
+                            }
+                          />
+                          <span className="input-group-text" id="goalHelp">
+                            liters
+                          </span>
+                        </div>
+                      </div>
+                      <div className="form-check form-switch form-check-reverse d-flex gap-5 ">
+                        <div>
+                          <label
+                            className="form-check-label"
+                            htmlFor="goalToggle"
+                          >
+                            <h6>Set a Percentage Level for Goal Alerts!</h6>
+                          </label>
+                        </div>
+                        <div className="">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="goalToggle"
+                            role="switch"
+                            checked={showGoalAlert}
+                            onChange={handleToggleChange}
+                          />
+                          <p>{levelValue}</p>
+                        </div>
+                      </div>
+
+                      <div>
+                        {showGoalAlert && (
+                          <div>
+                            <div className=" mb-5 ">
+                              <p className="fs-7 text-secondary ">
+                                Input a percentage to receive timely
+                                notifications and stay motivated as you achieve
+                                milestones. Customize your threshold, stay
+                                informed, and keep pushing towards your
+                                targets!"
+                              </p>
+                            </div>
+                            <div className="d-flex justify-content-center">
+                              <div className="w-100 pe-lg-4  ps-lg-4 ">
+                                {errorMessage2 && (
+                                  <p className="text-danger mb-2">
+                                    {errorMessage2}
+                                  </p>
+                                )}
+
+                                <label
+                                  htmlFor="goalThreshold"
+                                  className="form-label"
+                                >
+                                  Percentage Level:
+                                </label>
+                                <div>
+                                  <input
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    value={levelValue}
+                                    onChange={handleChange}
+                                    onClick={handleSliderClick}
+                                    className="slider w-100"
+                                    id="goalThreshold"
+                                  />
+                                </div>
+                                <div className="d-flex justify-content-between">
+                                  <span>0</span>
+                                  <p className="border p-1">
+                                    <span>{levelValue}</span>
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          onClick={closeEditGoal}
+                          className="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          Cancel
+                        </button>
+                        <button type="submit" className="btn btn-primary">
+                          Save
+                        </button>
+                      </div>
+                    </form>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* <div className="col-12">
                         <div className="row align-items-center">
                             <div className="col-8">

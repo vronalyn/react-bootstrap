@@ -278,11 +278,11 @@ const Total = () => {
   // added
 
   return (
-    <div class="card widget-card border-light shadow-sm">
-      <div class="card-body p-4">
-        <div class="d-block d-sm-flex align-items-center justify-content-between mb-3">
-          <div class="mb-3 mb-sm-0">
-            <h5 class="card-title widget-card-title">Last 7 days</h5>
+    <div className="card widget-card border-light shadow-sm">
+      <div className="card-body p-4">
+        <div className="d-block d-sm-flex align-items-center justify-content-between mb-3">
+          <div className="mb-3 mb-sm-0">
+            <h5 className="card-title widget-card-title">Last 7 days</h5>
             <p>Total Water Consumption</p>
             <p className="date">
               <i
@@ -297,7 +297,7 @@ const Total = () => {
             </p>
           </div>
           <div>
-            {/* <select class="form-select text-secondary border-light-subtle ">
+            {/* <select className="form-select text-secondary border-light-subtle ">
               <option selected>Right Tank</option>
               <option value="1">Left Tank</option>
             </select> */}

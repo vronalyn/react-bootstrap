@@ -80,14 +80,14 @@ function Users() {
       setLastname("");
       setRole("");
       setToggleValue("");
+      window.location.reload();
     } catch (error) {
       // Handle errors here
       console.error("Error creating user:", error);
     }
   };
 
-  const onEditSubmit = async (e) => {
-    e.preventDefault();
+  const onEditSubmit = async () => {
     try {
       // Call the function with input values
       await doUpdateUsers(
@@ -354,6 +354,7 @@ function Users() {
                                   id="editoggle"
                                   checked={isChecked}
                                   onChange={handleCheckboxChange}
+                                  required
                                 />
 
                                 <p>{isChecked ? "Active" : "Inactive"}</p>
@@ -386,7 +387,7 @@ function Users() {
               </div>
               {/* Add Modal */}
               <div
-                className="modal fade"
+                className="modal "
                 id="addUserModal"
                 tabindex="-1"
                 aria-labelledby="exampleModalLabel"
@@ -474,23 +475,23 @@ function Users() {
                             <p>{isChecked ? "Active" : "Inactive"}</p>
                           </div>
                         </div>
+                        <div className="modal-footer">
+                          <button
+                            type="button"
+                            className="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                          <button
+                            onClick={onSubmit}
+                            type="submit"
+                            className="btn btn-primary"
+                          >
+                            Save changes
+                          </button>
+                        </div>
                       </form>
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                      <button
-                        onClick={onSubmit}
-                        type="submit"
-                        className="btn btn-primary"
-                      >
-                        Save changes
-                      </button>
                     </div>
                   </div>
                 </div>
