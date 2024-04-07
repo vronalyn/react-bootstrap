@@ -12,6 +12,8 @@ import { useAuth } from "./contexts/authContext";
 import Weekly from "./pages/Weekly";
 import BuildingDorm from "./pages/building/BuildingDorm";
 import BuildingCCS from "./pages/building/BuildingCCS";
+import AnalyticsWeekly from "./pages/AnalyticsWeekly";
+import AnalyticsMonthly from "./pages/AnalyticsMonthly";
 
 function App() {
   const { currentUser } = useAuth();
@@ -95,10 +97,18 @@ function App() {
           }
         />
         <Route
-          path="/weekly"
+          path="/analytics/weekly"
           element={
             <RequireAuth>
-              <Weekly />
+              <AnalyticsWeekly />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/analytics/monthly"
+          element={
+            <RequireAuth>
+              <AnalyticsMonthly />
             </RequireAuth>
           }
         />

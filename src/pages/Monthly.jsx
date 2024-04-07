@@ -13,9 +13,9 @@ import {
   getDocs,
 } from "@firebase/firestore";
 import { db } from "../firebase/firebase";
-import WeeklyChart from "../components/WeeklyChart";
+import MonthlyChart from "../components/MonthlyChart";
 
-const Weekly = ({ activeTab }) => {
+const Monthly = ({ activeTab }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const toggleSidebar = () => {
@@ -444,7 +444,7 @@ const Weekly = ({ activeTab }) => {
           <div class="card-body p-4">
             <div class="d-block d-sm-flex align-items-center justify-content-between mb-3">
               <div class="mb-3 mb-sm-0">
-                <h5 class="card-title widget-card-title">Last 7 days</h5>
+                <h5 class="card-title widget-card-title">Last 30 days</h5>
                 <p>Alumni Dormitory</p>
                 <p className="reminder">
                   Please be advised that new data will be added/updated daily.
@@ -515,14 +515,15 @@ const Weekly = ({ activeTab }) => {
                 </div>
               </div>
             </div>
-            <WeeklyChart
+            {/* <WeeklyChart
               height={400}
               type="line"
               // dateRange={dateRangeDorm}
               right={DormRightData}
               left={DormLeftData}
               tankLocation={selectedTankDorm}
-            />
+            /> */}
+            <MonthlyChart />
             <div id="bsb-chart-1"></div>
           </div>
         </div>
@@ -534,7 +535,7 @@ const Weekly = ({ activeTab }) => {
           <div class="card-body p-4">
             <div class="d-block d-sm-flex align-items-center justify-content-between mb-3">
               <div class="mb-3 mb-sm-0">
-                <h5 class="card-title widget-card-title">Last 7 days</h5>
+                <h5 class="card-title widget-card-title">Last 30 days</h5>
                 <p>College of Computer Studies</p>
                 <p className="reminder">
                   Please be advised that new data will be added/updated daily.
@@ -602,14 +603,15 @@ const Weekly = ({ activeTab }) => {
                 </div>
               </div>
             </div>
-            <WeeklyChart
+            {/* <WeeklyChart
               height={400}
               type="line"
               // dateRange={dateRangeCCS}
               right={CCSRightData}
               left={CCSLeftData}
               tankLocation={selectedTankCCS}
-            />
+            /> */}
+            <MonthlyChart />
             <div id="bsb-chart-1"></div>
           </div>
         </div>
@@ -618,4 +620,4 @@ const Weekly = ({ activeTab }) => {
   );
 };
 
-export default Weekly;
+export default Monthly;
