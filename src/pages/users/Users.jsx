@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import {
   doCreateUserWithEmailAndPassword,
@@ -44,7 +44,7 @@ function Users() {
 
   useEffect(() => {
     const unsub = onSnapshot(
-      collection(db, "users"),
+      query(collection(db, "users"), orderBy("createdAt", "desc")),
       (snapShot) => {
         let list = [];
         snapShot.docs.forEach((doc) => {

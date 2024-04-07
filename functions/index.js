@@ -7,7 +7,6 @@ admin.initializeApp();
 app.use(express.json());
 app.use(cors());
 
-
 app.post("/createUser", async (req, res) => {
   try {
     const { firstname, lastname, role, status } = req.body;
@@ -59,7 +58,7 @@ app.put("/updateUser/:userId", async (req, res) => {
     // Update the user data in Firebase Authentication
     await admin.auth().updateUser(userId, {
       displayName: firstname,
-      disabled: status !== "Active", 
+      disabled: status !== "Active",
     });
 
     // Update the user data in Firestore
@@ -80,3 +79,38 @@ app.put("/updateUser/:userId", async (req, res) => {
 
 // Export the updateUser function
 exports.updateUser = functions.https.onRequest(app);
+
+exports.logRateChange = functions.firestore
+  .document("Billing_Rates/1yiH9veKkCiXZxQwOCMM")
+  .onUpdate(async (change, context) => {
+    try {
+      const newValue = change.after.data(); // New rate data
+      const previousValue = change.before.data(); // Previous rate data
+
+      // Check if there's an actual rate or no_of_liters change
+      if (
+        newValue.rate !== previousValue.rate ||
+        newValue.no_of_liters !== previousValue.no_of_liters
+      ) {
+        // Add data to rate_change_log collection
+        await admin.firestore().collection("rate_change_log").add({
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          createdBy: newValue.modifiedBy, // Assuming modifiedBy is available in the rate document
+          no_of_liters: newValue.no_of_liters,
+          rate: newValue.rate,
+        });
+
+        console.log("Rate change logged successfully");
+      } else {
+        console.log("No rate or no_of_liters change detected");
+      }
+
+      return null;
+    } catch (error) {
+      console.error("Error logging rate change:", error.message);
+      throw new functions.https.HttpsError(
+        "internal",
+        "Error logging rate change"
+      );
+    }
+  });

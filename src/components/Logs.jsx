@@ -95,28 +95,62 @@ const Logs = ({ goals, setGoals }) => {
   }, []);
 
   useEffect(() => {
-    // Define an async function to handle asynchronous operations
     const handleGoals = async () => {
       const promises = goals.map(async (goal) => {
-        if (
-          goal.goalLiters &&
-          currentWaterUsage >= goal.goalLiters &&
-          !goal.goalAlert
-        ) {
-          const message = ` The water consumption target of ${goal.goalLiters} liters for ${goal.coverageArea} has been met.`;
-          toast.warning(message, {
-            autoClose: 5000,
-            closeOnClick: true,
-          });
-          const icon = "danger";
-          await addActivityLog(goal.id, message, icon);
-          try {
-            await updateGoal(goal.id, { goalAlert: true });
-          } catch (error) {
-            console.error("Error updating goal alert:", error);
+        const checkGoalCompletion = async (
+          coverageArea,
+          waterUsage,
+          goalLiters,
+          goal,
+          toast
+        ) => {
+          if (goalLiters && waterUsage >= goalLiters && !goal.goalAlert) {
+            const message = `The water consumption target of ${goalLiters} liters for ${coverageArea} has been met.`;
+            toast.warning(message, {
+              autoClose: 5000,
+              closeOnClick: true,
+            });
+            const icon = "danger";
+            await addActivityLog(goal.id, message, icon);
+            try {
+              await updateGoal(goal.id, { goalAlert: true });
+            } catch (error) {
+              console.error("Error updating goal alert:", error);
+            }
           }
-        }
+        };
 
+        switch (goal.coverageArea) {
+          case "MSU-IIT":
+            checkGoalCompletion(
+              "MSU-IIT",
+              currentWaterUsage,
+              goal.goalLiters,
+              goal,
+              toast
+            );
+            break;
+          case "CCS":
+            checkGoalCompletion(
+              "CCS",
+              ccsWaterUsage,
+              goal.goalLiters,
+              goal,
+              toast
+            );
+            break;
+          case "Dorm":
+            checkGoalCompletion(
+              "Dorm",
+              dormWaterUsage,
+              goal.goalLiters,
+              goal,
+              toast
+            );
+            break;
+          default:
+            break;
+        }
         const percentage = calculatePercentage(
           goal.goalLiters,
           goal.coverageArea
@@ -293,15 +327,15 @@ const Logs = ({ goals, setGoals }) => {
   return (
     <div className="card widget-card border-light shadow-sm overflow-auto">
       <div className="card-body p-4">
-        <div className="d-flex justify-content-between ">
-          <h5 className="card-title widget-card-title mb-4">Activity Logs</h5>
+        <div className="d-flex justify-content-between mb-4">
+          <h5 className="card-title widget-card-title mb-4">Goal Limit</h5>
           <div>
             <Clock format={"h:mm:ss A"} ticking={true} />
           </div>
         </div>
         {/* Alert testing */}
 
-        <div>
+        {/* <div>
           <div>
             <p>CCS Water Usage: {ccsWaterUsage}</p>
           </div>
@@ -311,7 +345,7 @@ const Logs = ({ goals, setGoals }) => {
           <div>
             <p>Total Water Usage: {currentWaterUsage}</p>
           </div>
-        </div>
+        </div> */}
         <div
           className="row gy-4"
           style={{ maxHeight: "600px", overflowY: "auto" }}
