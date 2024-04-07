@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import Contact from "./Contact";
 import About from "./About";
 import Unsplash from "../images/unsplash-water.jpg";
+import glass from "../images/glass.webp";
+import washing from "../images/washing.webp";
 const Landing = () => {
   return (
     <div>
@@ -35,46 +37,49 @@ const Landing = () => {
           {/* Right Side */}
           <div className="col-md-6 d-flex justify-content-center align-items-center">
             <div className="container">
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-md-12 mb-3">
-                  <div
-                    className="rounded-3 shadow border border-info"
+                  <img
+                    src={Unsplash}
+                    className="rounded-3 shadow border border-info w-100 "
                     style={{
-                      backgroundImage: `url('./images/unsplash-water.jpg')`,
+                      // backgroundImage: `url('./images/unsplash-water.jpg')`,
                       // backgroundImage: `url(`${Unsplash}`)`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                      width: "100%",
+                      // backgroundSize: "cover",
+                      // backgroundPosition: "center",
+                      // width: "100%",
                       height: "250px",
                     }}
-                  ></div>
+                  ></img>
                 </div>
-              </div>
+              </div> */}
 
               <div className="row">
                 <div className="col-md-6">
-                  <div
+                  <img
+                    src={washing}
                     className="rounded-3 shadow border border-info"
                     style={{
-                      backgroundImage: `url('./images/washing.webp')`,
+                      // backgroundImage: `url('./images/washing.webp')`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                       width: "100%",
                       height: "250px",
                     }}
-                  ></div>
+                  ></img>
                 </div>
                 <div className="col-md-6">
-                  <div
+                  <img
+                    src={glass}
                     className="rounded-3 shadow border border-info"
                     style={{
-                      backgroundImage: `url('./images/glass.webp')`,
+                      // backgroundImage: `url('./images/glass.webp')`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                       width: "100%",
                       height: "250px",
                     }}
-                  ></div>
+                  ></img>
                 </div>
               </div>
             </div>

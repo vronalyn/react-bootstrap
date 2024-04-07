@@ -303,7 +303,7 @@ export const deleteGoalToFirestore = async (id) => {
 export const getActivityLogs = async (setActivityLog) => {
   try {
     const logsRef = collection(db, "activity_Log"); // Replace 'activity_logs' with your actual collection name
-    const logsQuery = query(logsRef, orderBy("createdAt", "desc")); // Order logs by 'timestamp' in descending order
+    const logsQuery = query(logsRef, orderBy("createdAt", "desc"), limit(10)); // Order logs by 'timestamp' in descending order
 
     const unsubscribe = onSnapshot(logsQuery, (snapshot) => {
       if (!snapshot.empty) {

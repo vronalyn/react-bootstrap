@@ -5,6 +5,7 @@ import {
   doSignInWithGoogle,
 } from "../firebase/auth";
 import { useAuth } from "../contexts/authContext";
+import dataVisualization from "../images/data-visualization.png";
 
 const Login = () => {
   const { userLoggedIn } = useAuth();
@@ -26,7 +27,7 @@ const Login = () => {
           setErrorMessage("Invalid email address. Please check and try again.");
         } else {
           // Handle generic error cases
-          setErrorMessage("An error occurred. Please try again later.");
+          setErrorMessage("Invalid email or password. Please try again.");
         }
         setIsSigningIn(false);
       }
@@ -47,7 +48,9 @@ const Login = () => {
                   <div
                     className="rounded-3 shadow"
                     style={{
-                      backgroundImage: `url('./images/data-visualization.png')`,
+                      backgroundImage: `url(${dataVisualization})`,
+
+                      // backgroundImage: `url('./images/data-visualization.png')`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                       width: "100%",
@@ -64,14 +67,17 @@ const Login = () => {
             <div className="form-container p-5 text-center text-md-start">
               <p className="fs-4 lh-1">Welcome Back!</p>
               <h1 className="fw-bold">Login to your Account.</h1>
-              <p>Some notes or instructions here.</p>
+              {/* <p>Some notes or instructions here.</p> */}
 
               <form onSubmit={onSubmit} action="">
                 <div className="mt-5 text-light">
                   {errorMessage && (
-                    <span className="text-red-600 font-bold">
-                      {errorMessage}
-                    </span>
+                    <div className="mb-3">
+                      {" "}
+                      <span className=" text-danger fw-bold ">
+                        {errorMessage}
+                      </span>
+                    </div>
                   )}
                   <div className="input-group mb-3">
                     <span

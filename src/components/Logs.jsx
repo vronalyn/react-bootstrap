@@ -10,7 +10,7 @@ import {
   deleteGoalToFirestore,
 } from "../firebase/function";
 
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../css/log.css";
 import Swal from "sweetalert2";
@@ -30,12 +30,13 @@ const Logs = ({ goals, setGoals }) => {
   const [ccsWaterUsage, setCCSWaterUsage] = useState(0);
   const [dormWaterUsage, setDormWaterUsage] = useState(0);
   const [currentWaterUsage, setCurrentWaterUsage] = useState(0);
+  // const notify = () => toast("Wow so easy!");
 
   // Simulation for CCS water usage
 
   // useEffect(() => {
   //   const ccsInterval = setInterval(() => {
-  //     setCCSWaterUsage((prevUsage) => prevUsage + 50); // Increase CCS water usage by 50 units every second
+  //     setCCSWaterUsage((prevUsage) => prevUsage + 0.5); // Increase CCS water usage by 50 units every second
   //   }, 1000);
 
   //   return () => clearInterval(ccsInterval);
@@ -44,7 +45,7 @@ const Logs = ({ goals, setGoals }) => {
   // // Simulation for Dorm water usage
   // useEffect(() => {
   //   const dormInterval = setInterval(() => {
-  //     setDormWaterUsage((prevUsage) => prevUsage + 30); // Increase Dorm water usage by 30 units every second
+  //     setDormWaterUsage((prevUsage) => prevUsage + 0.3); // Increase Dorm water usage by 30 units every second
   //   }, 1000);
 
   //   return () => clearInterval(dormInterval);
@@ -53,7 +54,7 @@ const Logs = ({ goals, setGoals }) => {
   // // Combined simulation for current water usage
   // useEffect(() => {
   //   const interval = setInterval(() => {
-  //     setCurrentWaterUsage((prevUsage) => prevUsage + 80); // Increase total water usage by 80 units every second
+  //     setCurrentWaterUsage((prevUsage) => prevUsage + 0.8); // Increase total water usage by 80 units every second
   //   }, 1000);
 
   //   return () => clearInterval(interval);
@@ -101,8 +102,7 @@ const Logs = ({ goals, setGoals }) => {
           coverageArea,
           waterUsage,
           goalLiters,
-          goal,
-          toast
+          goal
         ) => {
           if (goalLiters && waterUsage >= goalLiters && !goal.goalAlert) {
             const message = `The water consumption target of ${goalLiters} liters for ${coverageArea} has been met.`;
@@ -126,27 +126,14 @@ const Logs = ({ goals, setGoals }) => {
               "MSU-IIT",
               currentWaterUsage,
               goal.goalLiters,
-              goal,
-              toast
+              goal
             );
             break;
           case "CCS":
-            checkGoalCompletion(
-              "CCS",
-              ccsWaterUsage,
-              goal.goalLiters,
-              goal,
-              toast
-            );
+            checkGoalCompletion("CCS", ccsWaterUsage, goal.goalLiters, goal);
             break;
           case "Dorm":
-            checkGoalCompletion(
-              "Dorm",
-              dormWaterUsage,
-              goal.goalLiters,
-              goal,
-              toast
-            );
+            checkGoalCompletion("Dorm", dormWaterUsage, goal.goalLiters, goal);
             break;
           default:
             break;
@@ -178,7 +165,7 @@ const Logs = ({ goals, setGoals }) => {
 
     // Call the async function
     handleGoals();
-  }, [currentWaterUsage, goals]);
+  }, [currentWaterUsage, goals, ccsWaterUsage, dormWaterUsage]);
 
   function calculatePercentage(goalLiters, coverageArea) {
     if (!goalLiters) return 0;
@@ -334,7 +321,10 @@ const Logs = ({ goals, setGoals }) => {
           </div>
         </div>
         {/* Alert testing */}
-
+        <div>
+          {/* <button onClick={notify}>Notify!</button> */}
+          <ToastContainer limit={4} position="bottom-right" theme="dark" />
+        </div>
         {/* <div>
           <div>
             <p>CCS Water Usage: {ccsWaterUsage}</p>
@@ -522,7 +512,7 @@ const Logs = ({ goals, setGoals }) => {
                             checked={showGoalAlert}
                             onChange={handleToggleChange}
                           />
-                          <p>{levelValue}</p>
+                          {/* <p>{levelValue}</p> */}
                         </div>
                       </div>
 

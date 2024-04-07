@@ -24,11 +24,10 @@ root.render(
             newestOnTop={false}
             closeOnClick
             rtl={false}
-            pauseOnFocusLoss
             draggable
             pauseOnHover
             theme="dark"
-            transition="Slide"
+            transition="slide"
           />
         </SidebarProvider>
       </UserRoleProvider>

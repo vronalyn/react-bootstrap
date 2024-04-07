@@ -78,85 +78,97 @@ const Navbar2 = ({ toggleSidebar }) => {
 
       <div className="navbar-collapse navbar ">
         <ul className="navbar-nav navbar-align">
-          <div className="dropdown me-2">
+          <div className="dropdown me-2 ">
             <button
-              onClick={toggleDropdown}
-              className="btn border-0"
+              // onClick={toggleDropdown}
+              className="btn border-0 dropdown-toggle"
               type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
             >
               <i className="bx bx-bell align-middle fs-5"></i>
             </button>
-            {dropdownOpen && (
-              <ul
-                className="dropdown-menu-end"
-                style={{
-                  width: "500px",
-                  maxHeight: "450px",
-                  overflowY: "auto",
-                  wordbreak: "break-all",
-                  overflowX: "hidden",
-                }}
-              >
-                <div className="dropdown-menu-header align-middle text-center text-muted">
-                  Notifications
-                </div>
 
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
+            <ul
+              className=" dropdown-menu dropdown-menu-end "
+              style={{
+                width: "500px",
+                maxHeight: "450px",
+                overflowY: "auto",
+                whiteSpace: "normal",
+              }}
+            >
+              <div className="dropdown-menu-header align-middle text-center text-muted">
+                Notifications
+              </div>
 
-                {activityLog &&
-                  activityLog.map((activityLogItem, index) => (
-                    <li
-                      key={index}
-                      className="d-flex align-items-center mt-3 pe-2 "
-                    >
-                      <a className="dropdown-item lh-1 d-flex " href="#">
-                        <span className="me-3 justify-content-center">
-                          <i
-                            className={`${
-                              activityLogItem.icon === "warning"
-                                ? "bg-warning-subtle text-warning"
-                                : "bg-danger-subtle text-danger"
-                            } bx bxs-error-circle rounded-circle p-2 align-items-center`}
-                          ></i>
-                        </span>
-                        <div>
-                          <p className="p-0 fs-6 mb-0">
-                            {showFullTexts[index]
-                              ? activityLogItem.message
-                              : truncateText(activityLogItem.message)}
-                            {!showFullTexts[index] && (
-                              <span
-                                className="fs-7 d-flex  justify-content-end "
-                                onClick={() => toggleShowFullText(index)}
-                              >
-                                <br /> Read More
-                              </span>
-                            )}
-                            {showFullTexts[index] && (
-                              <span
-                                className="fs-7 d-flex  justify-content-end "
-                                onClick={() => toggleShowFullText(index)}
-                              >
-                                <br /> Read Less
-                              </span>
-                            )}
-                          </p>
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
 
-                          <br />
-                          <p className="fs-7 mb-0 badge text-secondary p-0">
-                            {activityLogItem.createdAt &&
-                              new Date(
-                                activityLogItem.createdAt.seconds * 1000
-                              ).toLocaleString()}
-                          </p>
-                        </div>
-                      </a>
-                    </li>
-                  ))}
+              {activityLog &&
+                activityLog.map((activityLogItem, index) => (
+                  <li
+                    key={index}
+                    className="d-flex align-items-center mt-3 pe-2 text-break w-auto "
+                  >
+                    <div className="dropdown-item lh-1 d-flex w-100">
+                      <span className="me-3 justify-content-center">
+                        <i
+                          className={`${
+                            activityLogItem.icon === "warning"
+                              ? "bg-warning-subtle text-warning"
+                              : "bg-danger-subtle text-danger"
+                          } bx bxs-error-circle rounded-circle p-2 align-items-center`}
+                        ></i>
+                      </span>
+                      <div
+                        className=""
+                        style={{
+                          whiteSpace: "normal",
+                        }}
+                      >
+                        <p
+                          className=" fs-6 mb-0 text-break"
+                          style={{ wordWrap: "break-word" }}
+                        >
+                          {activityLogItem.message}
+                        </p>
+                        {/* <p className="p-0 fs-6 mb-0 text-break">
+                          {showFullTexts[index]
+                            ? activityLogItem.message
+                            : truncateText(activityLogItem.message)}
+                          {!showFullTexts[index] && (
+                            <span
+                              className="fs-7 d-flex  justify-content-end "
+                              onClick={() => toggleShowFullText(index)}
+                            >
+                              <br /> Read More
+                            </span>
+                          )}
+                          {showFullTexts[index] && (
+                            <span
+                              className="fs-7 d-flex  justify-content-end "
+                              onClick={() => toggleShowFullText(index)}
+                            >
+                              <br /> Read Less
+                            </span>
+                          )}
+                        </p> */}
 
-                {/* <li className="d-flex align-items-center mt-3 pe-2">
+                        <br />
+                        <p className="fs-7 mb-0 badge text-secondary p-0">
+                          {activityLogItem.createdAt &&
+                            new Date(
+                              activityLogItem.createdAt.seconds * 1000
+                            ).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+
+              {/* <li className="d-flex align-items-center mt-3 pe-2">
                 <a className="dropdown-item lh-1 d-flex " href="#">
                   <span className="me-3">
                     <i className="bx bxs-error-circle rounded-circle bg-danger-subtle text-danger p-2 align-items-center justify-content-center"></i>
@@ -170,16 +182,15 @@ const Navbar2 = ({ toggleSidebar }) => {
                   </div>
                 </a>
               </li> */}
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <div className="dropdown-menu-footer text-center">
-                  <a href="#" className="text-muted fs-7">
-                    Show all notifications
-                  </a>
-                </div>
-              </ul>
-            )}
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
+              <div className="dropdown-menu-footer text-center">
+                <a href="#" className="text-muted fs-7">
+                  Show all notifications
+                </a>
+              </div>
+            </ul>
           </div>
           <li className="nav-item dropdown">
             <a
