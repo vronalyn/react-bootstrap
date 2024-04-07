@@ -37,11 +37,26 @@ const BuildingCCS = ({ activeTab }) => {
   };
 
   //   added
+  // useEffect(() => {
+  //   const dateValue = selectedDate || currentDate;
+  //   const date = new Date(dateValue);
+  //   setSpecificDate(date);
+  //   fetchData(date);
+  // }, [selectedDate, activeTab]);
+
   useEffect(() => {
     const dateValue = selectedDate || currentDate;
     const date = new Date(dateValue);
     setSpecificDate(date);
     fetchData(date);
+
+    // Schedule fetchData to run every hour
+    const intervalId = setInterval(() => {
+      fetchData(date);
+    }, 3600000);
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(intervalId);
   }, [selectedDate, activeTab]);
 
   const handleDateChange = (event) => {

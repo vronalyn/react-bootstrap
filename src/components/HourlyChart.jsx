@@ -264,26 +264,55 @@ const HourlyChart = ({ colors, height, right, left, type }) => {
     console.log("Left Data:", left);
   }, [right, left]);
 
+  // useEffect(() => {
+  //   if (state.series[2].data.length > 0) {
+  //     // Find the last entry with total volume greater than 0
+  //     let lastIndex = state.series[2].data.length - 1;
+  //     while (
+  //       lastIndex >= 0 &&
+  //       parseFloat(state.series[2].data[lastIndex]) <= 0
+  //     ) {
+  //       lastIndex--;
+  //     }
+  //     // Set the grand total volume
+  //     if (lastIndex >= 0) {
+  //       setGrandTotalVolume(parseFloat(state.series[2].data[lastIndex]));
+  //     } else {
+  //       setGrandTotalVolume(0);
+  //     }
+  //   } else {
+  //     setGrandTotalVolume(0);
+  //   }
+  // }, [state.series[2].data]);
+
   useEffect(() => {
-    if (state.series[2].data.length > 0) {
-      // Find the last entry with total volume greater than 0
-      let lastIndex = state.series[2].data.length - 1;
-      while (
-        lastIndex >= 0 &&
-        parseFloat(state.series[2].data[lastIndex]) <= 0
-      ) {
-        lastIndex--;
-      }
-      // Set the grand total volume
-      if (lastIndex >= 0) {
-        setGrandTotalVolume(parseFloat(state.series[2].data[lastIndex]));
-      } else {
-        setGrandTotalVolume(0);
-      }
+    if (right && left) {
+      // Get the last entry for each location with volume greater than 0
+      const rightLastEntry = Object.values(right).findLast(
+        (data) => data && data.length > 0 && data[data.length - 1].volume > 0
+      );
+      const leftLastEntry = Object.values(left).findLast(
+        (data) => data && data.length > 0 && data[data.length - 1].volume > 0
+      );
+
+      // Calculate grand total volume
+      const grandTotal =
+        (rightLastEntry
+          ? rightLastEntry[rightLastEntry.length - 1].volume
+          : 0) +
+        (leftLastEntry ? leftLastEntry[leftLastEntry.length - 1].volume : 0);
+
+      // Update state with the grand total volume
+      setGrandTotalVolume(grandTotal);
     } else {
       setGrandTotalVolume(0);
     }
-  }, [state.series[2].data]);
+  }, [right, left]);
+
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "decimal",
+    minimumFractionDigits: 2,
+  });
 
   return (
     <div className="head">
@@ -299,10 +328,12 @@ const HourlyChart = ({ colors, height, right, left, type }) => {
         height={height}
       />
       {/* extra data */}
-      <p>
+      {/* <p>
         Total:{" "}
         {grandTotalVolume.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-      </p>
+      </p> */}
+
+      <p className="text">Total: {formatter.format(grandTotalVolume)}</p>
       {/* extra data */}
     </div>
   );
