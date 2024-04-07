@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   createColumnHelper,
   flexRender,
@@ -8,69 +8,47 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import "./history.css";
-
-const Data = [
-  {
-    id: 1,
-    date: "2024-03-01",
-    total_water_volume: 5000,
-    billed_amount: 200.5,
-  },
-  {
-    id: 2,
-    date: "2024-03-02",
-    total_water_volume: 4800,
-    billed_amount: 195.2,
-  },
-  {
-    id: 3,
-    date: "2024-03-03",
-    total_water_volume: 5200,
-    billed_amount: 210.8,
-  },
-  {
-    id: 4,
-    date: "2024-03-04",
-    total_water_volume: 4900,
-    billed_amount: 198.6,
-  },
-  {
-    id: 5,
-    date: "2024-03-05",
-    total_water_volume: 5100,
-    billed_amount: 205.0,
-  },
-];
+import { format } from "date-fns";
+import { fetchBilling } from "../../firebase/function";
 
 function BillingHistory() {
   const columnHelper = createColumnHelper();
+  const [billing, setBilling] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = fetchBilling(setBilling);
+    return () => unsubscribe();
+  }, []);
 
   const columns = [
-    columnHelper.accessor("id", {
-      cell: (info) => <span>{info.getValue()}</span>,
-      header: "Id no.",
+    columnHelper.accessor("month", {
+      cell: (info) => (
+        <span>
+          {info.getValue() && format(info.getValue().toDate(), "MMMM dd, yyyy")}
+        </span>
+      ),
+      header: "Month",
     }),
-    columnHelper.accessor("date", {
+    columnHelper.accessor("total_volume", {
       cell: (info) => <span>{info.getValue()}</span>,
-      header: "Date",
+      header: "Water Usage (L)",
     }),
-    columnHelper.accessor("total_water_volume", {
+    columnHelper.accessor("rate", {
       cell: (info) => <span>{info.getValue()}</span>,
-      header: "water volumes",
+      header: "Rate",
     }),
-    columnHelper.accessor("billed_amount", {
+    columnHelper.accessor("amount", {
       cell: (info) => <span>{info.getValue()}</span>,
-      header: "billed_amount",
+      header: "Billing",
     }),
   ];
-  const [data] = useState(() => [...Data]);
+
   const [globalFilter, setGlobalFilter] = useState("");
 
-  console.log(data);
   const [searchTerm, setSearchTerm] = useState("");
 
   const table = useReactTable({
-    data,
+    data: billing,
     columns,
     state: {
       globalFilter: searchTerm,
@@ -89,7 +67,7 @@ function BillingHistory() {
   return (
     <div>
       <div className="historyContainer">
-        <div className="form-group has-search w-25 mb-3">
+        <div className="form-group has-search mb-3 search-container">
           <span className="fa fa-search form-control-feedback"></span>
           <input
             value={searchTerm}

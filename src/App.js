@@ -65,7 +65,7 @@ function App() {
           element={
             // <Users />
             <RequireAuth>
-              <RequireRole allowedRoles={["admin"]}>
+              <RequireRole allowedRoles={["Admin"]}>
                 <Users />
               </RequireRole>
             </RequireAuth>

@@ -11,41 +11,44 @@ import "./history.css";
 import "./rate.css";
 import {
   fetchBillingRates,
-  fetchBilling,
+  fetchRateChangeLog,
   updateBillingRates,
 } from "../../firebase/function";
 import Swal from "sweetalert2";
+import { useAuth } from "../../contexts/authContext";
+import { format } from "date-fns";
 
 function BillingRates() {
+  const { currentUser } = useAuth();
+
   const [editMode, setEditMode] = useState(false);
   const [billingRates, setBillingRates] = useState([]);
-  const [billing, setBilling] = useState([]);
-  const [billingList, setBillingList] = useState([]);
+  const [rateChangeLog, setRateChangeLog] = useState([]);
   const [values, setValues] = useState({
     liters: "", // Assuming these are your input fields
     rate: "",
   });
+
   useEffect(() => {
-    const unsubscribe = fetchBilling(setBilling);
-    console.log("Billing " + billing);
+    const unsubscribe = fetchRateChangeLog(setRateChangeLog);
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    // Extracting necessary properties into a new array
-    const newList = billing.map((item) => ({
-      building: item.building,
-      rate: item.rate,
-      total_billed: item.total_billed,
-      total_volume: item.total_volume,
-    }));
+  // useEffect(() => {
+  //   // Extracting necessary properties into a new array
+  //   const newList = billing.map((item) => ({
+  //     building: item.building,
+  //     rate: item.rate,
+  //     total_billed: item.total_billed,
+  //     total_volume: item.total_volume,
+  //   }));
 
-    setBillingList(newList);
-    // console.log("Billing List:");
-    // newList.forEach((obj, index) => {
-    //   console.log(`Item ${index}:`, obj);
-    // });
-  }, [billing]);
+  //   setBillingList(newList);
+  //   // console.log("Billing List:");
+  //   // newList.forEach((obj, index) => {
+  //   //   console.log(`Item ${index}:`, obj);
+  //   // });
+  // }, [billing]);
 
   useEffect(() => {
     const unsubscribe = fetchBillingRates(setBillingRates);
@@ -81,11 +84,10 @@ function BillingRates() {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateBillingRates(values);
+      await updateBillingRates(values, currentUser.email);
       Swal.fire({
         icon: "success",
         title: "Success",
@@ -99,25 +101,30 @@ function BillingRates() {
   const columnHelper = createColumnHelper();
 
   const columns = [
-    columnHelper.accessor("building", {
-      cell: (info) => <span>{info.getValue()}</span>,
-      header: "Building",
+    columnHelper.accessor("createdAt", {
+      cell: (info) => (
+        <span>
+          {info.getValue() &&
+            format(info.getValue().toDate(), "yyyy-MM-dd HH:mm:ss")}
+        </span>
+      ),
+      header: "Date Modified",
     }),
     // columnHelper.accessor("date", {
     //   cell: (info) => <span>{info.getValue()}</span>,
     //   header: "Date",
     // }),
-    columnHelper.accessor("total_volume", {
+    columnHelper.accessor("no_of_liters", {
       cell: (info) => <span>{info.getValue()}</span>,
-      header: "Water Usage",
+      header: "No. Of Liters",
     }),
     columnHelper.accessor("rate", {
       cell: (info) => <span>{info.getValue()}</span>,
       header: "Rate",
     }),
-    columnHelper.accessor("total_billed", {
+    columnHelper.accessor("createdBy", {
       cell: (info) => <span>{info.getValue()}</span>,
-      header: "Total Billed",
+      header: "Modified By",
     }),
   ];
   const [globalFilter, setGlobalFilter] = useState("");
@@ -125,7 +132,7 @@ function BillingRates() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const table = useReactTable({
-    data: billingList,
+    data: rateChangeLog,
     columns,
     state: {
       globalFilter: searchTerm,
@@ -235,9 +242,9 @@ function BillingRates() {
           </div>
         </div>
       </div>
-      <div className="rateChangeLog">
+      <div className="rateChangeLog mb-4">
         <h5 className="mb-4">Rate Change Log</h5>
-        <div>
+        <div className="p-3 bg-white rounded">
           <table className="">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (

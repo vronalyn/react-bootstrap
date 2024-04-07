@@ -81,7 +81,7 @@ function BillingDetails() {
         <div className="totalBillContainer">
           <div className="">
             <span className="total">
-              <span className="totalBill">{totalBill} php</span>
+              <span className="totalBill text-uppercase ">{totalBill} php</span>
             </span>
           </div>
           <div className="totalBillDate">

@@ -24,7 +24,7 @@ const Sidebar = ({ sidebarCollapsed }) => {
               <span className="align-middle">Dashboard</span>
             </Link>
           </li>
-          {userRole === "admin" && (
+          {userRole === "Admin" && (
             <li className="sidebar-item">
               <Link to="/users" className="sidebar-link">
                 <i className="bx bx-group pe-2 align-middle"></i>

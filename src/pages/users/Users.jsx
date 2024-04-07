@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import {
   doCreateUserWithEmailAndPassword,
@@ -17,27 +17,34 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { format } from "date-fns";
+
 function Users() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [editlastname, setEditLastname] = useState("");
   const [editfirstname, setEditFirstname] = useState("");
   const [editrole, setEditRole] = useState("");
+  const [userId, setUserId] = useState("");
 
-  const handleUserClick = (user) => {
+  const handleUserClick = (info) => {
+    const user = info.row.original;
+    console.log("Row data:", user);
+
     setSelectedUser(user);
-
-    if (user) {
-      setEditLastname(user.lastname);
-      setEditFirstname(user.firstname);
-      setEditRole(user.role);
-      setEditRole(user.userId);
-    }
+    setEditFirstname(user.firstname);
+    setEditLastname(user.lastname);
+    setEditRole(user.role);
+    setIsChecked(user.status === "Active");
+    setUserId(user.id);
   };
+
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const unsub = onSnapshot(
-      collection(db, "users"),
+      query(collection(db, "users"), orderBy("createdAt", "desc")),
       (snapShot) => {
         let list = [];
         snapShot.docs.forEach((doc) => {
@@ -60,50 +67,79 @@ function Users() {
   const [firstname, setFirstname] = useState("");
   const [role, setRole] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const [toggleValue, setToggleValue] = useState("Inactive");
+  const [toggleValue, setToggleValue] = useState("Deactivate");
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked); // Toggle the value of isChecked
     setToggleValue(isChecked ? "Inactive" : "Active");
   };
+
   const onSubmit = async (e) => {
     e.preventDefault();
+    const userData = {
+      firstname: firstname,
+      lastname: lastname,
+      role: role,
+      status: toggleValue,
+    };
+
     try {
-      // Call the function with input values
-      await doCreateUserWithEmailAndPassword(
-        firstname,
-        lastname,
-        role,
-        toggleValue
+      const response = await axios.post(
+        "https://us-central1-msu-iit-watermonitoringsystem.cloudfunctions.net/createUser/createUser",
+        userData
       );
+      console.log(response.data);
       setFirstname("");
       setLastname("");
       setRole("");
       setToggleValue("");
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "User created successfully!",
+      });
       window.location.reload();
     } catch (error) {
-      // Handle errors here
-      console.error("Error creating user:", error);
+      console.error("Error creating user:", error.message);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
     }
   };
 
-  const onEditSubmit = async () => {
+  const onEditSubmit = async (e) => {
+    e.preventDefault();
+
+    const editUserData = {
+      firstname: editfirstname,
+      lastname: editlastname,
+      role: editrole,
+      status: toggleValue,
+    };
+
     try {
-      // Call the function with input values
-      await doUpdateUsers(
-        editfirstname,
-        editlastname,
-        role,
-        // fileName,
-        selectedUser.id,
-        toggleValue
+      // Send updated user data to the server
+      const response = await axios.put(
+        `https://us-central1-msu-iit-watermonitoringsystem.cloudfunctions.net/updateUser/updateUser/${userId}`,
+        editUserData
       );
-      // setFirstname("");
-      // setLastname("");
-      // setRole("");
+      // Handle success
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "User updated successfully!",
+      });
+      window.location.reload();
     } catch (error) {
-      // Handle errors here
-      console.error("Error creating user:", error);
+      console.error("Error updating user data:", error);
+      // Handle error
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
     }
   };
 
@@ -133,10 +169,15 @@ function Users() {
       cell: (info) => <span>{info.getValue()}</span>,
       header: "Status",
     }),
-    // columnHelper.accessor("createdAt", {
-    //   cell: (info) => <span>{info.getValue()}</span>,
-    //   header: "Date",
-    // }),
+    columnHelper.accessor("createdAt", {
+      cell: (info) => (
+        <span>
+          {info.getValue() &&
+            format(info.getValue().toDate(), "yyyy-MM-dd HH:mm:ss")}
+        </span>
+      ),
+      header: "Date Added",
+    }),
     {
       header: "Action",
       cell: (info) => (
@@ -145,7 +186,7 @@ function Users() {
           className="btn "
           data-bs-toggle="modal"
           data-bs-target="#editUserModal"
-          onClick={() => handleUserClick(info.row)}
+          onClick={() => handleUserClick(info)}
         >
           <i className="bx bx-edit-alt"></i>
         </button>
@@ -255,6 +296,62 @@ function Users() {
                       )}
                     </tbody>
                   </table>
+                  {/* Pagination */}
+                  <div className="d-flex align-items-center justify-content-end mt-2 gap-2">
+                    <button
+                      onClick={() => {
+                        table.previousPage();
+                      }}
+                      disabled={!table.getCanPreviousPage()}
+                      className="btn btn-outline-secondary p-1 disabled:opacity-30"
+                    >
+                      {"<"}
+                    </button>
+                    <button
+                      onClick={() => {
+                        table.nextPage();
+                      }}
+                      disabled={!table.getCanNextPage()}
+                      className="btn btn-outline-secondary p-1 disabled:opacity-30"
+                    >
+                      {">"}
+                    </button>
+
+                    <span className="d-flex align-items-center gap-1">
+                      <div>Page</div>
+                      <strong>
+                        {table.getState().pagination.pageIndex + 1} of{" "}
+                        {table.getPageCount()}
+                      </strong>
+                    </span>
+                    <span className="d-flex align-items-center gap-1 ">
+                      | Go to page:
+                      <input
+                        type="number"
+                        defaultValue={table.getState().pagination.pageIndex + 1}
+                        onChange={(e) => {
+                          const page = e.target.value
+                            ? Number(e.target.value) - 1
+                            : 0;
+                          table.setPageIndex(page);
+                        }}
+                        className="form-control rounded bg-transparent PaginationPage"
+                      />
+                    </span>
+                    <select
+                      value={table.getState().pagination.pageSize}
+                      onChange={(e) => {
+                        table.setPageSize(Number(e.target.value));
+                      }}
+                      className="form-select bg-transparent w-auto"
+                    >
+                      {[5, 10, 20, 30, 50].map((pageSize) => (
+                        <option key={pageSize} value={pageSize}>
+                          Show {pageSize}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
 
@@ -293,9 +390,9 @@ function Users() {
                               </label>
                               <input
                                 type="text"
-                                className="form-control"
+                                className="form-control text-capitalize "
                                 id="editfirstname"
-                                value={editfirstname}
+                                value={selectedUser.firstname}
                                 onChange={(e) =>
                                   setEditFirstname(e.target.value)
                                 }
@@ -312,9 +409,9 @@ function Users() {
                               </label>
                               <input
                                 type="text"
-                                className="form-control"
+                                className="form-control text-capitalize "
                                 id="editlastname"
-                                value={editlastname}
+                                value={selectedUser.lastname}
                                 onChange={(e) =>
                                   setEditLastname(e.target.value)
                                 }
@@ -333,9 +430,9 @@ function Users() {
                                 onChange={(e) => setEditRole(e.target.value)}
                                 required
                               >
-                                <option value="">Select Role</option>
-                                <option value="admin">Admin</option>
-                                <option value="user">User</option>
+                                <option value=""></option>
+                                <option value="Admin">Admin</option>
+                                <option value="Staff">Staff</option>
                                 {/* Add more role options as needed */}
                               </select>
                             </div>
@@ -414,7 +511,7 @@ function Users() {
                           </label>
                           <input
                             type="text"
-                            className="form-control"
+                            className="form-control text-capitalize "
                             id="firstname"
                             placeholder="Ex. John"
                             value={firstname}
@@ -424,12 +521,12 @@ function Users() {
                         </div>
 
                         <div className="mb-3">
-                          <label htmlFor="lastname" className="form-label">
+                          <label htmlFor="lastname" className="form-label  ">
                             Last Name
                           </label>
                           <input
                             type="text"
-                            className="form-control"
+                            className="form-control text-capitalize"
                             id="lastname"
                             placeholder="Ex. Gonzales"
                             value={lastname}
@@ -450,8 +547,8 @@ function Users() {
                             required
                           >
                             <option value="">Select Role</option>
-                            <option value="admin">Admin</option>
-                            <option value="user">User</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Staff">Staff</option>
                             {/* Add more role options as needed */}
                           </select>
                         </div>

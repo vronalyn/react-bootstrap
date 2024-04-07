@@ -11,35 +11,99 @@ import {
   serverTimestamp,
   doc,
   orderBy,
+  deleteDoc,
 } from "firebase/firestore";
 import Swal from "sweetalert2";
 
 export const fetchWeeklyReports = (setWeeklyReports) => {
-  const sunday = new Date();
-  sunday.setDate(sunday.getDate() - sunday.getDay());
+  // const sunday = new Date();
+  // sunday.setDate(sunday.getDate() - sunday.getDay());
 
-  const startOfWeek = new Date(sunday); // Start of the current week
-  startOfWeek.setHours(0, 0, 0, 0); // Set to midnight of the start of the week
+  // const startOfWeek = new Date(sunday); // Start of the current week
+  // startOfWeek.setHours(0, 0, 0, 0); // Set to midnight of the start of the week
 
-  const endOfWeek = new Date(sunday); // End of the current week
-  endOfWeek.setDate(sunday.getDate() + 6); // Add 6 days to get to Saturday (end of the week)
-  endOfWeek.setHours(23, 59, 59, 999); // Set to the end of the last day of the week
+  // const endOfWeek = new Date(sunday); // End of the current week
+  // endOfWeek.setDate(sunday.getDate() + 6); // Add 6 days to get to Saturday (end of the week)
+  // endOfWeek.setHours(23, 59, 59, 999); // Set to the end of the last day of the week
 
-  const weeklyReportsRef = query(
+  // const weeklyReportsRef = query(
+  //   collection(db, "Weekly_Report"),
+  //   where("createdAt", ">=", startOfWeek), // Filter documents created on or after the start of the week
+  //   where("createdAt", "<=", endOfWeek), // Filter documents created on or before the end of the week
+  //   limit(10)
+  // );
+
+  // console.log("Start of week:", startOfWeek);
+  // console.log("End of week:", endOfWeek);
+
+  // const today = new Date();
+  // const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); // Start of the current month
+  // startOfMonth.setHours(0, 0, 0, 0); // Set to midnight of the start of the month
+
+  // const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // End of the current month
+  // endOfMonth.setHours(23, 59, 59, 999); // Set to the end of the last day of the month
+
+  // const monthlyReportsRef = query(
+  //   collection(db, "Weekly_Report"),
+  //   where("createdAt", ">=", startOfMonth), // Filter documents created on or after the start of the month
+  //   where("createdAt", "<=", endOfMonth), // Filter documents created on or before the end of the month
+  //   limit(10)
+  // );
+
+  // console.log("Start of Month:", startOfMonth);
+  // console.log("End of Month:", endOfMonth);
+
+  const today = new Date();
+  const startOfPreviousMonth = new Date(
+    today.getFullYear(),
+    today.getMonth() - 1,
+    1
+  ); // Start of the previous month
+  startOfPreviousMonth.setHours(0, 0, 0, 0); // Set to midnight of the start of the month
+
+  const endOfPreviousMonth = new Date(today.getFullYear(), today.getMonth(), 0); // End of the previous month
+  endOfPreviousMonth.setHours(23, 59, 59, 999); // Set to the end of the last day of the month
+
+  const monthlyReportsRef = query(
     collection(db, "Weekly_Report"),
-    where("createdAt", ">=", startOfWeek), // Filter documents created on or after the start of the week
-    where("createdAt", "<=", endOfWeek), // Filter documents created on or before the end of the week
+    where("createdAt", ">=", startOfPreviousMonth), // Filter documents created on or after the start of the previous month
+    where("createdAt", "<=", endOfPreviousMonth), // Filter documents created on or before the end of the previous month
     limit(10)
   );
 
-  console.log("Start of week:", startOfWeek);
-  console.log("End of week:", endOfWeek);
+  console.log("Start of Previous Month:", startOfPreviousMonth);
+  console.log("End of Previous Month:", endOfPreviousMonth);
 
-  return onSnapshot(weeklyReportsRef, (snapshot) => {
+  return onSnapshot(monthlyReportsRef, (snapshot) => {
     const reports = snapshot.docs.map((doc) => doc.data());
     console.log("Weekly reports:", reports);
 
-    setWeeklyReports(reports);
+    let totalVolumeCCS = 0;
+    let totalVolumeDorm = 0;
+
+    reports.forEach((report) => {
+      if (report.building === "CCS") {
+        totalVolumeCCS += report.total_volume || 0; // Ensure total_volume is a number, add 0 if it's undefined
+      } else if (report.building === "Dorm") {
+        totalVolumeDorm += report.total_volume || 0; // Ensure total_volume is a number, add 0 if it's undefined
+      }
+    });
+
+    const WeeklyReport = [
+      {
+        building: "CCS",
+        total_volume: totalVolumeCCS,
+      },
+      {
+        building: "Dorm",
+        total_volume: totalVolumeDorm,
+      },
+    ];
+
+    console.log("Total Volume of CCS:", totalVolumeCCS);
+    console.log("Total Volume of Dorm:", totalVolumeDorm);
+
+    setWeeklyReports(WeeklyReport);
   });
 };
 
@@ -52,15 +116,16 @@ export const fetchBillingRates = (setBillingRates) => {
   });
 };
 
-export const updateBillingRates = async (values) => {
+export const updateBillingRates = async (values, email) => {
   const { liters, rate } = values;
   try {
     const billingRatesRef = await updateDoc(
-      doc(db, "Billing_Rates", "o0k4w4jjN8Ym8pWvmFSE"),
+      doc(db, "Billing_Rates", "1yiH9veKkCiXZxQwOCMM"),
       {
         no_of_liters: liters,
         rate: rate,
-        modifiedAt: serverTimestamp(),
+        createdAt: serverTimestamp(),
+        modifiedBy: email,
       }
     );
     console.log("Document successfully updated!");
@@ -68,6 +133,21 @@ export const updateBillingRates = async (values) => {
     console.error("Error updating document: ", error);
     throw error;
   }
+};
+
+export const fetchRateChangeLog = (setRateChangeLog) => {
+  const logsRef = collection(db, "rate_change_log"); // Replace 'rate_change_log' with your actual collection name
+  const logsQuery = query(logsRef, orderBy("createdAt", "desc")); // Order logs by 'createdAt' in descending order
+
+  return onSnapshot(logsQuery, (snapshot) => {
+    if (!snapshot.empty) {
+      const RateChangeLogData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setRateChangeLog(RateChangeLogData);
+    }
+  });
 };
 
 export const calculateAndSaveBilled = (weeklyReports, billingRate) => {
@@ -79,10 +159,33 @@ export const calculateAndSaveBilled = (weeklyReports, billingRate) => {
 
 export const fetchBilling = (setBilling) => {
   const billingRef = collection(db, "Billing");
-
   return onSnapshot(billingRef, (snapshot) => {
-    const billing = snapshot.docs.map((doc) => doc.data());
-    setBilling(billing);
+    if (!snapshot.empty) {
+      const billing = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setBilling(billing);
+    }
+  });
+};
+
+export const fetchRecentBilling = (setBilling) => {
+  const billingRef = collection(db, "Billing");
+  const billingQuery = query(
+    billingRef,
+    orderBy("CreatedAt", "desc"),
+    limit(1)
+  );
+
+  return onSnapshot(billingQuery, (snapshot) => {
+    if (!snapshot.empty) {
+      const billing = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setBilling(billing);
+    }
   });
 };
 
@@ -112,6 +215,7 @@ export const getGoalsWithAlertFalse = async (setGoals) => {
       collection(db, "goals"),
       orderBy("createdAt", "desc")
     );
+
     // const goalRef = collection(db, "goals");
 
     // Subscribe to the query snapshot to get real-time updates
@@ -183,6 +287,19 @@ export const addActivityLog = async (goalId, message, icon) => {
   }
 };
 
+export const deleteGoalToFirestore = async (id) => {
+  try {
+    // await db.collection("goals").add(goalWithMeta);
+    await deleteDoc(doc(db, "goals", id));
+
+    return true;
+  } catch (error) {
+    console.error("Error adding goal to Firestore:", error);
+
+    return false;
+  }
+};
+
 export const getActivityLogs = async (setActivityLog) => {
   try {
     const logsRef = collection(db, "activity_Log"); // Replace 'activity_logs' with your actual collection name
@@ -195,6 +312,58 @@ export const getActivityLogs = async (setActivityLog) => {
           ...doc.data(),
         }));
         setActivityLog(activityLogData);
+      } else {
+        console.log("No documents found");
+      }
+    });
+
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error fetching activity logs:", error);
+    return []; // Return an empty array if there's an error
+  }
+};
+
+export const getCCSWaterUsage = async (setCCSWaterUsage) => {
+  try {
+    const logsRef = collection(db, "CCS"); // Replace 'activity_logs' with your actual collection name
+    const logsQuery = query(logsRef, orderBy("DateTime", "desc"), limit(1)); // Order logs by 'timestamp' in descending order
+
+    const unsubscribe = onSnapshot(logsQuery, (snapshot) => {
+      if (!snapshot.empty) {
+        const CCSWaterUsageData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const volume = CCSWaterUsageData[0].volume;
+        // const volume = CCSWaterUsageData.volume;
+        setCCSWaterUsage(volume);
+      } else {
+        console.log("No documents found");
+      }
+    });
+
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error fetching activity logs:", error);
+    return []; // Return an empty array if there's an error
+  }
+};
+
+export const getDormWaterUsage = async (setDormWaterUsage) => {
+  try {
+    const logsRef = collection(db, "Dorm"); // Replace 'activity_logs' with your actual collection name
+    const logsQuery = query(logsRef, orderBy("DateTime", "desc"), limit(1)); // Order logs by 'timestamp' in descending order
+
+    const unsubscribe = onSnapshot(logsQuery, (snapshot) => {
+      if (!snapshot.empty) {
+        const DormWaterUsageData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const volume = DormWaterUsageData[0].volume;
+        // const volume = DormWaterUsageData.volume;
+        setDormWaterUsage(volume);
       } else {
         console.log("No documents found");
       }
