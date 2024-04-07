@@ -7,6 +7,7 @@ import Chart from "../components/Chart";
 
 // added
 import TotalWeekly from "./TotalWeekly";
+import Realtime from "../components/Realtime";
 
 const Dashboard = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -59,9 +60,10 @@ const Dashboard = () => {
                     </div>
                   </div>
                   {/* added */}
-                  <TotalWeekly />
 
-                  <Chart />
+                  <Realtime />
+
+                  <TotalWeekly />
                 </div>
 
                 <div className="col-md-4">

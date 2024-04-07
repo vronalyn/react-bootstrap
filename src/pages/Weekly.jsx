@@ -374,7 +374,7 @@ const Weekly = ({ activeTab }) => {
         "CCS",
         selectedTankCCS
       );
-    }, 60000);
+    }, 86400000);
 
     // Cleanup function to clear the interval when the component unmounts or when the dependencies change
     return () => clearInterval(fetchDataInterval);

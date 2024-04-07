@@ -38,8 +38,8 @@ const Monthly = ({ activeTab }) => {
   // const [selectedWeek, setSelectedWeek] = useState("");
   // const [dateRange, setDateRange] = useState({ start: null, end: null });
 
-  const [selectedWeekDorm, setSelectedWeekDorm] = useState("");
-  const [selectedWeekCCS, setSelectedWeekCCS] = useState("");
+  const [selectedMonthDorm, setSelectedMonthDorm] = useState("");
+  const [selectedMonthCCS, setSelectedMonthCCS] = useState("");
   const [dateRangeDorm, setDateRangeDorm] = useState({ start: "", end: "" });
   const [dateRangeCCS, setDateRangeCCS] = useState({ start: "", end: "" });
 
@@ -56,34 +56,34 @@ const Monthly = ({ activeTab }) => {
   const [formattedStartDateCCS, setFormattedStartDateCCS] = useState("");
   const [formattedEndDateCCS, setFormattedEndDateCCS] = useState("");
 
-  useEffect(() => {
-    const currentDate = new Date();
-    const currentWeekNumber = getWeekNumber(currentDate);
-    const currentYear = currentDate.getFullYear();
-    const formattedCurrentWeek = `${currentYear}-W${currentWeekNumber
-      .toString()
-      .padStart(2, "0")}`;
-    setSelectedWeekDorm(formattedCurrentWeek);
-    setSelectedWeekCCS(formattedCurrentWeek);
+  // ==================================================================== 1 until last day sa month
+  // useEffect(() => {
+  //   const currentDate = new Date(); // This line remains unchanged
+  //   const currentYear = currentDate.getFullYear();
+  //   const currentMonth = (currentDate.getMonth() + 1)
+  //     .toString()
+  //     .padStart(2, "0");
+  //   const formattedCurrentMonth = `${currentYear}-${currentMonth}`;
 
-    // Calculate and log the date range if selectedWeek has a value
-    if (formattedCurrentWeek) {
-      const [year, weekNumber] = formattedCurrentWeek.split("-W");
-      const startDate = new Date(year, 0, 1 + (weekNumber - 1) * 7);
-      const endDate = new Date(year, 0, 1 + (weekNumber - 1) * 7 + 6);
-      startDate.setDate(startDate.getDate() + 1);
-      endDate.setDate(endDate.getDate() + 1);
-      const formattedStartDate = startDate.toISOString().substring(0, 10);
-      const formattedEndDate = endDate.toISOString().substring(0, 10);
+  //   setSelectedMonthDorm(formattedCurrentMonth);
+  //   setSelectedMonthCCS(formattedCurrentMonth);
 
-      // Update the date range state variables
-      setDateRangeDorm({ start: formattedStartDate, end: formattedEndDate });
-      setDateRangeCCS({ start: formattedStartDate, end: formattedEndDate });
+  //   // Calculate and log the date range
+  //   const startDate = new Date(currentYear, currentDate.getMonth(), 1);
+  //   const endDate = new Date(currentYear, currentDate.getMonth() + 1, 0);
+  //   startDate.setDate(startDate.getDate() + 1);
+  //   endDate.setDate(endDate.getDate() + 1);
+  //   const formattedStartDate = startDate.toISOString().substring(0, 10);
+  //   const formattedEndDate = endDate.toISOString().substring(0, 10);
 
-      console.log(`Date Range: ${formattedStartDate} - ${formattedEndDate}`);
-    }
-    console.log("Initial Selected Week:", formattedCurrentWeek);
-  }, []);
+  //   // Update the date range state variables
+  //   setDateRangeDorm({ start: formattedStartDate, end: formattedEndDate });
+  //   setDateRangeCCS({ start: formattedStartDate, end: formattedEndDate });
+
+  //   console.log(`Date Range: ${formattedStartDate} - ${formattedEndDate}`);
+
+  //   console.log("Initial Selected Month:", formattedCurrentMonth);
+  // }, []);
 
   const toggleOptionsDorm = () => {
     setIsActiveDorm(!isActiveDorm);
@@ -107,149 +107,217 @@ const Monthly = ({ activeTab }) => {
     console.log(value);
   };
 
-  const handleWeekChangeDorm = (event) => {
-    let weekValue = event.target.value;
-    if (!weekValue) {
+  const handleMonthChangeDorm = (event) => {
+    let monthValue = event.target.value;
+    if (!monthValue) {
       const currentDate = new Date();
-      const currentWeekNumber = getWeekNumber(currentDate);
       const currentYear = currentDate.getFullYear();
-      weekValue = `${currentYear}-W${currentWeekNumber
+      const currentMonth = (currentDate.getMonth() + 1)
         .toString()
-        .padStart(2, "0")}`;
+        .padStart(2, "0");
+      monthValue = `${currentYear}-${currentMonth}`;
     }
-    setSelectedWeekDorm(weekValue);
-    handleWeekChange(weekValue, setDateRangeDorm);
-    console.log(`Selected Week (Dorm): ${weekValue}`);
+    setSelectedMonthDorm(monthValue);
+    handleMonthChange(monthValue, setDateRangeDorm);
+    console.log(`Selected Month (Dorm): ${monthValue}`);
   };
 
-  const handleWeekChangeCCS = (event) => {
-    let weekValue = event.target.value;
-    if (!weekValue) {
+  const handleMonthChangeCCS = (event) => {
+    let monthValue = event.target.value;
+    if (!monthValue) {
       const currentDate = new Date();
-      const currentWeekNumber = getWeekNumber(currentDate);
       const currentYear = currentDate.getFullYear();
-      weekValue = `${currentYear}-W${currentWeekNumber
+      const currentMonth = (currentDate.getMonth() + 1)
         .toString()
-        .padStart(2, "0")}`;
+        .padStart(2, "0");
+      monthValue = `${currentYear}-${currentMonth}`;
     }
-    setSelectedWeekCCS(weekValue);
-    handleWeekChange(weekValue, setDateRangeCCS);
-    console.log(`Selected Week (CCS): ${weekValue}`);
+    setSelectedMonthCCS(monthValue);
+    handleMonthChange(monthValue, setDateRangeCCS);
+    console.log(`Selected Month (CCS): ${monthValue}`);
   };
 
-  const handleWeekChange = (weekValue, setDateRange) => {
-    if (weekValue) {
-      const [year, weekNumber] = weekValue.split("-W");
-      const startDate = new Date(year, 0, 1 + (weekNumber - 1) * 7);
-      const endDate = new Date(year, 0, 1 + (weekNumber - 1) * 7 + 6);
-      startDate.setDate(startDate.getDate() + 1);
-      endDate.setDate(endDate.getDate() + 1);
-      const formattedStartDate = startDate.toISOString().substring(0, 10);
-      const formattedEndDate = endDate.toISOString().substring(0, 10);
-      setDateRange({ start: formattedStartDate, end: formattedEndDate });
-      console.log(`Date Range: ${formattedStartDate} - ${formattedEndDate}`);
+  // =============================================================== 1 until last day sa month
+  // const handleMonthChange = (monthValue, setDateRange) => {
+  //   if (monthValue) {
+  //     const [year, month] = monthValue.split("-");
+  //     const startDate = new Date(year, month - 1, 1);
+  //     const endDate = new Date(year, month, 0);
+  //     startDate.setDate(startDate.getDate() + 1);
+  //     endDate.setDate(endDate.getDate() + 1);
+  //     const formattedStartDate = startDate.toISOString().substring(0, 10);
+  //     const formattedEndDate = endDate.toISOString().substring(0, 10);
+  //     setDateRange({ start: formattedStartDate, end: formattedEndDate });
+  //     console.log(`Date Range: ${formattedStartDate} - ${formattedEndDate}`);
+  //   } else {
+  //     setDateRange({ start: null, end: null });
+  //   }
+  // };
+
+  // ============================================================== default week
+  // const handleMonthChange = (monthValue, setDateRange) => {
+  //   if (monthValue) {
+  //     const [year, month] = monthValue.split("-");
+  //     const startDate = new Date(year, month - 1, 1);
+  //     const endDate = new Date(year, month, 0);
+
+  //     // Find the first Monday of the month
+  //     const firstMonday = new Date(startDate);
+  //     firstMonday.setDate(1);
+  //     while (firstMonday.getDay() !== 1) {
+  //       firstMonday.setDate(firstMonday.getDate() + 1);
+  //     }
+
+  //     // Add one day to make it Tuesday
+  //     const firstTuesday = new Date(firstMonday);
+  //     firstTuesday.setDate(firstMonday.getDate() + 1);
+
+  //     // Find the last day of the month
+  //     const lastDayOfMonth = new Date(endDate);
+
+  //     // Adjust the end date to the last day of the last week by ensuring it ends on a Sunday
+  //     let endDateOfLastWeek = new Date(lastDayOfMonth);
+  //     if (endDateOfLastWeek.getDay() !== 0) {
+  //       // If it's not already Sunday
+  //       endDateOfLastWeek.setDate(
+  //         endDateOfLastWeek.getDate() + (7 - endDateOfLastWeek.getDay())
+  //       );
+  //     }
+
+  //     // Add one day to include the first day of the following week
+  //     endDateOfLastWeek.setDate(endDateOfLastWeek.getDate() + 1);
+
+  //     const formattedStartDate = firstTuesday.toISOString().substring(0, 10);
+  //     const formattedEndDate = endDateOfLastWeek.toISOString().substring(0, 10);
+  //     setDateRange({ start: formattedStartDate, end: formattedEndDate });
+  //     console.log(`Date Range: ${formattedStartDate} - ${formattedEndDate}`);
+  //   } else {
+  //     setDateRange({ start: null, end: null });
+  //   }
+  // };
+
+  const calculateDateRange = (year, month) => {
+    const startDate = new Date(year, month - 1, 1);
+    const endDate = new Date(year, month, 0);
+
+    // Find the first Monday of the month
+    const firstMonday = new Date(startDate);
+    firstMonday.setDate(1);
+    while (firstMonday.getDay() !== 1) {
+      firstMonday.setDate(firstMonday.getDate() + 1);
+    }
+
+    // Add one day to make it Tuesday
+    const firstTuesday = new Date(firstMonday);
+    firstTuesday.setDate(firstMonday.getDate() + 1);
+
+    // Find the last day of the month
+    const lastDayOfMonth = new Date(endDate);
+
+    // Adjust the end date to the last day of the last week by ensuring it ends on a Sunday
+    let endDateOfLastWeek = new Date(lastDayOfMonth);
+    if (endDateOfLastWeek.getDay() !== 0) {
+      // If it's not already Sunday
+      endDateOfLastWeek.setDate(
+        endDateOfLastWeek.getDate() + (7 - endDateOfLastWeek.getDay())
+      );
+    }
+
+    // Add one day to include the first day of the following week
+    endDateOfLastWeek.setDate(endDateOfLastWeek.getDate() + 1);
+
+    const formattedStartDate = firstTuesday.toISOString().substring(0, 10);
+    const formattedEndDate = endDateOfLastWeek.toISOString().substring(0, 10);
+
+    return { start: formattedStartDate, end: formattedEndDate };
+  };
+
+  // useEffect to set initial values
+  useEffect(() => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = (currentDate.getMonth() + 1)
+      .toString()
+      .padStart(2, "0");
+    const formattedCurrentMonth = `${currentYear}-${currentMonth}`;
+
+    setSelectedMonthDorm(formattedCurrentMonth);
+    setSelectedMonthCCS(formattedCurrentMonth);
+
+    const { start, end } = calculateDateRange(currentYear, currentMonth);
+
+    setDateRangeDorm({ start, end });
+    setDateRangeCCS({ start, end });
+
+    console.log(`Date Range: ${start} - ${end}`);
+    console.log("Initial Selected Month:", formattedCurrentMonth);
+  }, []);
+
+  // handleMonthChange function
+  const handleMonthChange = (monthValue, setDateRange) => {
+    if (monthValue) {
+      const [year, month] = monthValue.split("-");
+      const { start, end } = calculateDateRange(
+        parseInt(year),
+        parseInt(month)
+      );
+      setDateRange({ start, end });
+      console.log(`Date Range: ${start} - ${end}`);
     } else {
       setDateRange({ start: null, end: null });
     }
   };
 
-  const handlePrevWeek = (location) => {
+  const handlePrevMonth = (location) => {
+    const currentMonth = new Date(selectedMonthDorm);
+    currentMonth.setMonth(currentMonth.getMonth() - 1);
+    const formattedMonth = currentMonth.toISOString().substring(0, 7);
     if (location === "Dorm") {
-      const [year, weekNumber] = selectedWeekDorm.split("-W");
-      const prevWeekNumber = parseInt(weekNumber, 10) - 1;
-      const newSelectedWeek = `${year}-W${prevWeekNumber
-        .toString()
-        .padStart(2, "0")}`;
-      setSelectedWeekDorm(newSelectedWeek);
-      updateDateRange("Dorm", newSelectedWeek);
+      setSelectedMonthDorm(formattedMonth);
+      handleMonthChangeDorm({ target: { value: formattedMonth } });
     } else if (location === "CCS") {
-      const [year, weekNumber] = selectedWeekCCS.split("-W");
-      const prevWeekNumber = parseInt(weekNumber, 10) - 1;
-      const newSelectedWeek = `${year}-W${prevWeekNumber
-        .toString()
-        .padStart(2, "0")}`;
-      setSelectedWeekCCS(newSelectedWeek);
-      updateDateRange("CCS", newSelectedWeek);
+      setSelectedMonthCCS(formattedMonth);
+      handleMonthChangeCCS({ target: { value: formattedMonth } });
     }
   };
 
-  const handleNextWeek = (location) => {
+  const handleNextMonth = (location) => {
+    const currentMonth = new Date(selectedMonthDorm);
+    currentMonth.setMonth(currentMonth.getMonth() + 1);
+    const formattedMonth = currentMonth.toISOString().substring(0, 7);
     if (location === "Dorm") {
-      const [year, weekNumber] = selectedWeekDorm.split("-W");
-      const nextWeekNumber = parseInt(weekNumber, 10) + 1;
-      const newSelectedWeek = `${year}-W${nextWeekNumber
-        .toString()
-        .padStart(2, "0")}`;
-      setSelectedWeekDorm(newSelectedWeek);
-      updateDateRange("Dorm", newSelectedWeek);
+      setSelectedMonthDorm(formattedMonth);
+      handleMonthChangeDorm({ target: { value: formattedMonth } });
     } else if (location === "CCS") {
-      const [year, weekNumber] = selectedWeekCCS.split("-W");
-      const nextWeekNumber = parseInt(weekNumber, 10) + 1;
-      const newSelectedWeek = `${year}-W${nextWeekNumber
-        .toString()
-        .padStart(2, "0")}`;
-      setSelectedWeekCCS(newSelectedWeek);
-      updateDateRange("CCS", newSelectedWeek);
-    }
-  };
-
-  const updateDateRange = (location, week) => {
-    const [year, weekNumber] = week.split("-W");
-    const startDate = new Date(year, 0, 1 + (weekNumber - 1) * 7);
-    const endDate = new Date(year, 0, 1 + (weekNumber - 1) * 7 + 6);
-    startDate.setDate(startDate.getDate() + 1);
-    endDate.setDate(endDate.getDate() + 1);
-    const formattedStartDate = startDate.toLocaleString("default", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-    const formattedEndDate = endDate.toLocaleString("default", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-    if (location === "Dorm") {
-      setDateRangeDorm({
-        start: startDate.toISOString().substring(0, 10),
-        end: endDate.toISOString().substring(0, 10),
-      });
-      setFormattedStartDateDorm(formattedStartDate);
-      setFormattedEndDateDorm(formattedEndDate);
-    } else if (location === "CCS") {
-      setDateRangeCCS({
-        start: startDate.toISOString().substring(0, 10),
-        end: endDate.toISOString().substring(0, 10),
-      });
-      setFormattedStartDateCCS(formattedStartDate);
-      setFormattedEndDateCCS(formattedEndDate);
+      setSelectedMonthCCS(formattedMonth);
+      handleMonthChangeCCS({ target: { value: formattedMonth } });
     }
   };
 
   useEffect(() => {
     fetchData(
-      selectedWeekDorm,
+      selectedMonthDorm,
       dateRangeDorm,
       setDormRightData,
       setDormLeftData,
       "Dorm",
       selectedTankDorm
     );
-  }, [selectedWeekDorm, dateRangeDorm, selectedTankDorm]);
+  }, [selectedMonthDorm, dateRangeDorm, selectedTankDorm]);
 
   useEffect(() => {
     fetchData(
-      selectedWeekCCS,
+      selectedMonthCCS,
       dateRangeCCS,
       setCCSRightData,
       setCCSLeftData,
       "CCS",
       selectedTankCCS
     );
-  }, [selectedWeekCCS, dateRangeCCS, selectedTankCCS]);
+  }, [selectedMonthCCS, dateRangeCCS, selectedTankCCS]);
 
   const fetchData = async (
-    selectedWeek,
+    selectedMonth,
     setDateRange,
     setRightData,
     setLeftData,
@@ -262,13 +330,10 @@ const Monthly = ({ activeTab }) => {
     try {
       isLoading(true);
 
-      if (selectedWeek && setDateRange.start && setDateRange.end) {
-        const [year, weekNumber] = selectedWeek.split("-W");
-        const startDate = new Date(year, 0, 1 + (weekNumber - 1) * 7);
-        const endDate = new Date(year, 0, 1 + (weekNumber - 1) * 7 + 6);
-        startDate.setDate(startDate.getDate() + 1);
-        endDate.setDate(endDate.getDate() + 1);
-
+      if (selectedMonth && setDateRange.start && setDateRange.end) {
+        const [year, month] = selectedMonth.split("-");
+        const startDate = new Date(year, parseInt(month) - 1, 1);
+        const endDate = new Date(year, parseInt(month), 0);
         const formattedStartDate = startDate.toISOString().substring(0, 10);
         const formattedEndDate = endDate.toISOString().substring(0, 10);
 
@@ -305,6 +370,445 @@ const Monthly = ({ activeTab }) => {
     }
   };
 
+  // const fetchDataForLocation = async (
+  //   location,
+  //   startDate,
+  //   endDate,
+  //   database,
+  //   setData,
+  //   selectedTank
+  // ) => {
+  //   try {
+  //     const data = [];
+  //     const currentDate = new Date(startDate);
+
+  //     console.log(`Fetching ${location} data from Firestore...`);
+
+  //     while (currentDate <= endDate) {
+  //       const querySnapshot = await getDocs(
+  //         query(
+  //           collection(db, database),
+  //           where("location", "==", location),
+  //           where("DateTime", ">=", currentDate),
+  //           where("DateTime", "<=", new Date(currentDate.getTime() + 86400000)), // Adding 24 hours to the current date
+  //           orderBy("DateTime", "desc"),
+  //           limit(1)
+  //         )
+  //       );
+
+  //       const dailyData = querySnapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+
+  //       const formattedDate =
+  //         currentDate.getFullYear() +
+  //         "-" +
+  //         ("0" + (currentDate.getMonth() + 1)).slice(-2) +
+  //         "-" +
+  //         ("0" + currentDate.getDate()).slice(-2);
+
+  //       console.log(`${location} Data for ${formattedDate}:`, dailyData);
+  //       data.push({ date: formattedDate, entries: dailyData });
+
+  //       // Move to the next day
+  //       currentDate.setDate(currentDate.getDate() + 1);
+  //     }
+
+  //     setData(data);
+  //   } catch (error) {
+  //     console.error(`Error fetching ${location} data: `, error);
+  //   }
+  // };
+
+  // ================================weekly pero mag start mag start sa 29
+  // const fetchDataForLocation = async (
+  //   location,
+  //   startDate,
+  //   endDate,
+  //   database,
+  //   setData,
+  //   selectedTank
+  // ) => {
+  //   try {
+  //     const data = [];
+  //     const start = new Date(startDate);
+  //     const end = new Date(endDate);
+  //     const currentDate = new Date(start);
+
+  //     console.log(`Fetching ${location} data from Firestore...`);
+
+  //     while (currentDate <= end) {
+  //       const weekStartDate = new Date(currentDate);
+  //       const weekEndDate = new Date(currentDate);
+  //       weekEndDate.setDate(weekEndDate.getDate() + 6); // Setting the end date of the week
+
+  //       const querySnapshot = await getDocs(
+  //         query(
+  //           collection(db, database),
+  //           where("location", "==", location),
+  //           where("DateTime", ">=", weekStartDate),
+  //           where("DateTime", "<=", weekEndDate), // Fetching data for the current week
+  //           orderBy("DateTime", "desc"),
+  //           limit(1)
+  //         )
+  //       );
+
+  //       const weeklyData = querySnapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+
+  //       const formattedStartDate =
+  //         weekStartDate.getFullYear() +
+  //         "-" +
+  //         ("0" + (weekStartDate.getMonth() + 1)).slice(-2) +
+  //         "-" +
+  //         ("0" + weekStartDate.getDate()).slice(-2);
+
+  //       const formattedEndDate =
+  //         weekEndDate.getFullYear() +
+  //         "-" +
+  //         ("0" + (weekEndDate.getMonth() + 1)).slice(-2) +
+  //         "-" +
+  //         ("0" + weekEndDate.getDate()).slice(-2);
+
+  //       console.log(
+  //         `${location} Data for Week ${formattedStartDate} to ${formattedEndDate}:`,
+  //         weeklyData
+  //       );
+  //       data.push({
+  //         start: formattedStartDate,
+  //         end: formattedEndDate,
+  //         entries: weeklyData,
+  //       });
+
+  //       // Move to the next week
+  //       currentDate.setDate(currentDate.getDate() + 7);
+  //     }
+
+  //     setData(data);
+  //   } catch (error) {
+  //     console.error(`Error fetching ${location} data: `, error);
+  //   }
+  // };
+
+  // const fetchDataForLocation = async (
+  //   location,
+  //   startDate,
+  //   endDate,
+  //   database,
+  //   setData,
+  //   selectedTank
+  // ) => {
+  //   try {
+  //     const data = [];
+  //     let start = new Date(startDate); // Start from the provided start date in the date range
+  //     const end = new Date(endDate);
+
+  //     console.log(`Fetching ${location} data from Firestore...`);
+
+  //     while (start < end) {
+  //       let weekEndDate = new Date(start);
+  //       weekEndDate.setDate(weekEndDate.getDate() + 6); // Determine the end of the week
+
+  //       // Ensure the week's end does not go beyond the overall end date
+  //       if (weekEndDate > end) {
+  //         weekEndDate = end;
+  //       }
+
+  //       const querySnapshot = await getDocs(
+  //         query(
+  //           collection(db, database),
+  //           where("location", "==", location),
+  //           where("DateTime", ">=", start),
+  //           where("DateTime", "<=", weekEndDate), // Fetch data for the week
+  //           orderBy("DateTime", "desc"),
+  //           limit(1)
+  //         )
+  //       );
+
+  //       const weeklyData = querySnapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+
+  //       // Formatting dates for console log
+  //       const formattedStartDate = start.toISOString().split("T")[0];
+  //       const formattedEndDate = weekEndDate.toISOString().split("T")[0];
+
+  //       console.log(
+  //         `${location} Data for Week ${formattedStartDate} to ${formattedEndDate}:`,
+  //         weeklyData
+  //       );
+
+  //       data.push({
+  //         start: formattedStartDate,
+  //         end: formattedEndDate,
+  //         entries: weeklyData,
+  //       });
+
+  //       // Set the start to one day after the current week's end date for the next iteration
+  //       start = new Date(weekEndDate.getTime() + 86400000); // +1 day in milliseconds
+  //     }
+
+  //     setData(data);
+  //   } catch (error) {
+  //     console.error(`Error fetching ${location} data: `, error);
+  //   }
+  // };
+
+  // ============================================iterating over each weeks within the specified date range
+  // const fetchDataForLocation = async (
+  //   location,
+  //   startDate,
+  //   endDate,
+  //   database,
+  //   setData,
+  //   selectedTank
+  // ) => {
+  //   try {
+  //     const data = [];
+  //     let start = new Date(startDate); // Start from the provided start date in the date range
+  //     const end = new Date(endDate);
+
+  //     console.log(`Fetching ${location} data from Firestore...`);
+
+  //     while (start < end) {
+  //       let weekEndDate = new Date(start);
+  //       weekEndDate.setDate(weekEndDate.getDate() + 6); // Determine the end of the week
+
+  //       // Ensure the week's end does not go beyond the overall end date
+  //       if (weekEndDate > end) {
+  //         weekEndDate = end;
+  //       }
+
+  //       const querySnapshot = await getDocs(
+  //         query(
+  //           collection(db, database),
+  //           where("location", "==", location),
+  //           where("DateTime", ">=", start),
+  //           where("DateTime", "<=", weekEndDate), // Fetch data for the week
+  //           orderBy("DateTime", "desc"),
+  //           limit(1)
+  //         )
+  //       );
+
+  //       const weeklyData = querySnapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+
+  //       // Formatting dates for console log
+  //       const formattedStartDate = start.toISOString().split("T")[0];
+  //       const formattedEndDate = weekEndDate.toISOString().split("T")[0];
+
+  //       console.log(
+  //         `${location} Data for Week ${formattedStartDate} to ${formattedEndDate}:`,
+  //         weeklyData
+  //       );
+
+  //       data.push({
+  //         start: formattedStartDate,
+  //         end: formattedEndDate,
+  //         entries: weeklyData,
+  //       });
+
+  //       // Set the start to one day after the current week's end date for the next iteration
+  //       start = new Date(weekEndDate.getTime() + 86400000); // +1 day in milliseconds
+  //     }
+
+  //     setData(data);
+  //   } catch (error) {
+  //     console.error(`Error fetching ${location} data: `, error);
+  //   }
+  // };
+
+  // =========================================== fetching daily data
+  // const fetchDataForLocation = async (
+  //   location,
+  //   startDate,
+  //   endDate,
+  //   database,
+  //   setData,
+  //   selectedTank
+  // ) => {
+  //   try {
+  //     const data = [];
+  //     let start = new Date(startDate); // Start from the provided start date in the date range
+  //     const end = new Date(endDate);
+
+  //     console.log(`Fetching ${location} data from Firestore...`);
+
+  //     while (start <= end) {
+  //       const querySnapshot = await getDocs(
+  //         query(
+  //           collection(db, database),
+  //           where("location", "==", location),
+  //           where("DateTime", ">=", start),
+  //           where("DateTime", "<", new Date(start.getTime() + 86400000)), // Next day
+  //           orderBy("DateTime", "desc"),
+  //           limit(1)
+  //         )
+  //       );
+
+  //       const dailyData = querySnapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+
+  //       // Formatting date for console log
+  //       const formattedDate = start.toISOString().split("T")[0];
+
+  //       console.log(`${location} Data for ${formattedDate}:`, dailyData);
+
+  //       data.push({
+  //         date: formattedDate,
+  //         entries: dailyData,
+  //       });
+
+  //       // Move to the next day
+  //       start.setDate(start.getDate() + 1);
+  //     }
+
+  //     setData(data);
+  //   } catch (error) {
+  //     console.error(`Error fetching ${location} data: `, error);
+  //   }
+  // };
+
+  // ============================================= 2 functions
+  // const fetchDataForLocation = async (
+  //   location,
+  //   startDate,
+  //   endDate,
+  //   database,
+  //   setData,
+  //   selectedTank
+  // ) => {
+  //   try {
+  //     const data = [];
+  //     let start = new Date(startDate); // Start from the provided start date in the date range
+  //     const end = new Date(endDate);
+
+  //     console.log(`Fetching ${location} data from Firestore...`);
+
+  //     while (start < end) {
+  //       let weekEndDate = new Date(start);
+  //       weekEndDate.setDate(weekEndDate.getDate() + 6); // Determine the end of the week
+
+  //       // Ensure the week's end does not go beyond the overall end date
+  //       if (weekEndDate > end) {
+  //         weekEndDate = end;
+  //       }
+
+  //       const dailyData = await fetchDataForWeek(
+  //         location,
+  //         start,
+  //         weekEndDate,
+  //         database
+  //       );
+
+  //       // Formatting dates for console log
+  //       const formattedStartDate = start.toISOString().split("T")[0];
+  //       const formattedEndDate = weekEndDate.toISOString().split("T")[0];
+
+  //       console.log(
+  //         `${location} Data for Week ${formattedStartDate} to ${formattedEndDate}:`,
+  //         dailyData
+  //       );
+
+  //       data.push({
+  //         start: formattedStartDate,
+  //         end: formattedEndDate,
+  //         entries: dailyData,
+  //       });
+
+  //       // Set the start to one day after the current week's end date for the next iteration
+  //       start = new Date(weekEndDate.getTime() + 86400000); // +1 day in milliseconds
+  //     }
+
+  //     setData(data);
+  //   } catch (error) {
+  //     console.error(`Error fetching ${location} data: `, error);
+  //   }
+  // };
+
+  // const fetchDataForWeek = async (
+  //   location,
+  //   weekStartDate,
+  //   weekEndDate,
+  //   database
+  // ) => {
+  //   const dailyData = [];
+  //   let start = new Date(weekStartDate);
+  //   const end = new Date(weekEndDate);
+
+  //   while (start <= end) {
+  //     const querySnapshot = await getDocs(
+  //       query(
+  //         collection(db, database),
+  //         where("location", "==", location),
+  //         where("DateTime", ">=", start),
+  //         where("DateTime", "<", new Date(start.getTime() + 86400000)), // Next day
+  //         orderBy("DateTime", "asc"),
+  //         limit(1)
+  //       )
+  //     );
+
+  //     const dayData = querySnapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
+
+  //     // Formatting date for console log
+  //     const formattedDate = start.toISOString().split("T")[0];
+
+  //     // console.log(`${location} Data for ${formattedDate}:`, dayData);
+
+  //     dailyData.push({
+  //       date: formattedDate,
+  //       entries: dayData,
+  //     });
+
+  //     // Move to the next day
+  //     start.setDate(start.getDate() + 1);
+  //   }
+
+  //   return dailyData;
+  // };
+
+  // useEffect(() => {
+  //   const fetchDataInterval = setInterval(() => {
+  //     fetchData(
+  //       selectedMonthDorm,
+  //       dateRangeDorm,
+  //       setDormRightData,
+  //       setDormLeftData,
+  //       "Dorm",
+  //       selectedTankDorm
+  //     );
+  //     fetchData(
+  //       selectedMonthCCS,
+  //       dateRangeCCS,
+  //       setCCSRightData,
+  //       setCCSLeftData,
+  //       "CCS",
+  //       selectedTankCCS
+  //     );
+  //   }, 60000);
+
+  //   // Cleanup function to clear the interval when the component unmounts or when the dependencies change
+  //   return () => clearInterval(fetchDataInterval);
+  // }, [
+  //   selectedMonthDorm,
+  //   dateRangeDorm,
+  //   selectedTankDorm,
+  //   selectedTankCCS,
+  //   selectedMonthCCS,
+  //   dateRangeCCS,
+  // ]);
+
   const fetchDataForLocation = async (
     location,
     startDate,
@@ -315,84 +819,77 @@ const Monthly = ({ activeTab }) => {
   ) => {
     try {
       const data = [];
-      const currentDate = new Date(startDate);
+      let start = new Date(startDate); // Start from the provided start date in the date range
+      const end = new Date(endDate);
 
       console.log(`Fetching ${location} data from Firestore...`);
 
-      while (currentDate <= endDate) {
-        const querySnapshot = await getDocs(
-          query(
-            collection(db, database),
-            where("location", "==", location),
-            where("DateTime", ">=", currentDate),
-            where("DateTime", "<=", new Date(currentDate.getTime() + 86400000)), // Adding 24 hours to the current date
-            orderBy("DateTime", "desc"),
-            limit(1)
-          )
+      while (start <= end) {
+        let weekEndDate = new Date(start);
+        weekEndDate.setDate(weekEndDate.getDate() + 6); // Determine the end of the week
+
+        // Ensure the week's end does not go beyond the overall end date
+        if (weekEndDate > end) {
+          weekEndDate = end;
+        }
+
+        const weeklyData = [];
+        let currentDay = new Date(start);
+        const weekEnd = new Date(weekEndDate);
+        while (currentDay <= weekEnd) {
+          const querySnapshot = await getDocs(
+            query(
+              collection(db, database),
+              where("location", "==", location),
+              where("DateTime", ">=", currentDay),
+              where("DateTime", "<", new Date(currentDay.getTime() + 86400000)), // Next day
+              orderBy("DateTime", "desc"),
+              limit(1)
+            )
+          );
+
+          const dailyData = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          // Formatting date for console log
+          const formattedDate = currentDay.toISOString().split("T")[0];
+
+          // console.log(`${location} Data for ${formattedDate}:`, dailyData);
+
+          weeklyData.push({
+            date: formattedDate,
+            entries: dailyData,
+          });
+
+          // Move to the next day
+          currentDay.setDate(currentDay.getDate() + 1);
+        }
+
+        // Formatting dates for console log
+        const formattedStartDate = start.toISOString().split("T")[0];
+        const formattedEndDate = weekEndDate.toISOString().split("T")[0];
+
+        console.log(
+          `${location} Data for Week ${formattedStartDate} to ${formattedEndDate}:`,
+          weeklyData
         );
 
-        const dailyData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        data.push({
+          start: formattedStartDate,
+          end: formattedEndDate,
+          entries: weeklyData,
+        });
 
-        const formattedDate =
-          currentDate.getFullYear() +
-          "-" +
-          ("0" + (currentDate.getMonth() + 1)).slice(-2) +
-          "-" +
-          ("0" + currentDate.getDate()).slice(-2);
-
-        console.log(`${location} Data for ${formattedDate}:`, dailyData);
-        data.push({ date: formattedDate, entries: dailyData });
-
-        // Move to the next day
-        currentDate.setDate(currentDate.getDate() + 1);
+        // Set the start to one day after the current week's end date for the next iteration
+        start = new Date(weekEndDate.getTime() + 86400000); // +1 day in milliseconds
       }
 
       setData(data);
     } catch (error) {
       console.error(`Error fetching ${location} data: `, error);
     }
-  };
-
-  useEffect(() => {
-    const fetchDataInterval = setInterval(() => {
-      fetchData(
-        selectedWeekDorm,
-        dateRangeDorm,
-        setDormRightData,
-        setDormLeftData,
-        "Dorm",
-        selectedTankDorm
-      );
-      fetchData(
-        selectedWeekCCS,
-        dateRangeCCS,
-        setCCSRightData,
-        setCCSLeftData,
-        "CCS",
-        selectedTankCCS
-      );
-    }, 60000);
-
-    // Cleanup function to clear the interval when the component unmounts or when the dependencies change
-    return () => clearInterval(fetchDataInterval);
-  }, [
-    selectedWeekDorm,
-    dateRangeDorm,
-    selectedTankDorm,
-    selectedTankCCS,
-    selectedWeekCCS,
-    dateRangeCCS,
-  ]);
-
-  const getWeekNumber = (date) => {
-    date = new Date(date);
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 4 - (date.getDay() || 7));
-    const yearStart = new Date(date.getFullYear(), 0, 4);
-    return Math.ceil(((date - yearStart) / 86400000 + 1) / 7);
   };
 
   useEffect(() => {
@@ -452,12 +949,12 @@ const Monthly = ({ activeTab }) => {
                 <p className="date">
                   <i
                     className="bx bx-chevron-left icon-left"
-                    onClick={() => handlePrevWeek("Dorm")}
+                    onClick={() => handlePrevMonth("Dorm")}
                   ></i>
                   <span>{`${formattedStartDateDorm} - ${formattedEndDateDorm}`}</span>
                   <i
                     className="bx bx-chevron-right icon-right"
-                    onClick={() => handleNextWeek("Dorm")}
+                    onClick={() => handleNextMonth("Dorm")}
                   ></i>
                 </p>
               </div>
@@ -465,11 +962,11 @@ const Monthly = ({ activeTab }) => {
                 <div className="form-card">
                   <form action="POST">
                     <input
-                      type="week"
-                      id="weekDorm"
-                      name="weekDorm"
-                      value={selectedWeekDorm}
-                      onChange={handleWeekChangeDorm}
+                      type="month"
+                      id="monthDorm"
+                      name="monthDorm"
+                      value={selectedMonthDorm}
+                      onChange={handleMonthChangeDorm}
                     />
 
                     <div className="select-menu" onClick={toggleOptionsDorm}>
@@ -515,15 +1012,14 @@ const Monthly = ({ activeTab }) => {
                 </div>
               </div>
             </div>
-            {/* <WeeklyChart
+            <MonthlyChart
               height={400}
               type="line"
               // dateRange={dateRangeDorm}
               right={DormRightData}
               left={DormLeftData}
               tankLocation={selectedTankDorm}
-            /> */}
-            <MonthlyChart />
+            />
             <div id="bsb-chart-1"></div>
           </div>
         </div>
@@ -543,12 +1039,12 @@ const Monthly = ({ activeTab }) => {
                 <p className="date">
                   <i
                     className="bx bx-chevron-left icon-left"
-                    onClick={() => handlePrevWeek("CCS")}
+                    onClick={() => handlePrevMonth("CCS")}
                   ></i>
                   <span>{`${formattedStartDateCCS} - ${formattedEndDateCCS}`}</span>
                   <i
                     className="bx bx-chevron-right icon-right"
-                    onClick={() => handleNextWeek("CCS")}
+                    onClick={() => handleNextMonth("CCS")}
                   ></i>
                 </p>
               </div>
@@ -556,11 +1052,11 @@ const Monthly = ({ activeTab }) => {
                 <div className="form-card">
                   <form action="POST">
                     <input
-                      type="week"
-                      id="weekCCS"
-                      name="weekCCS"
-                      value={selectedWeekCCS}
-                      onChange={handleWeekChangeCCS}
+                      type="month"
+                      id="monthCCS"
+                      name="monthCCS"
+                      value={selectedMonthCCS}
+                      onChange={handleMonthChangeCCS}
                     />
 
                     <div className="select-menu" onClick={toggleOptionsCCS}>
@@ -603,15 +1099,15 @@ const Monthly = ({ activeTab }) => {
                 </div>
               </div>
             </div>
-            {/* <WeeklyChart
+            <MonthlyChart
               height={400}
               type="line"
               // dateRange={dateRangeCCS}
               right={CCSRightData}
               left={CCSLeftData}
               tankLocation={selectedTankCCS}
-            /> */}
-            <MonthlyChart />
+            />
+
             <div id="bsb-chart-1"></div>
           </div>
         </div>

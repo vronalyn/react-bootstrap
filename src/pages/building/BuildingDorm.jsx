@@ -37,11 +37,26 @@ const BuildingDorm = ({ activeTab }) => {
   };
 
   //   added
+  // useEffect(() => {
+  //   const dateValue = selectedDate || currentDate;
+  //   const date = new Date(dateValue);
+  //   setSpecificDate(date);
+  //   fetchData(date);
+  // }, [selectedDate, activeTab]);
+
   useEffect(() => {
     const dateValue = selectedDate || currentDate;
     const date = new Date(dateValue);
     setSpecificDate(date);
     fetchData(date);
+
+    // Schedule fetchData to run every hour
+    const intervalId = setInterval(() => {
+      fetchData(date);
+    }, 3600000);
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(intervalId);
   }, [selectedDate, activeTab]);
 
   const handleDateChange = (event) => {
@@ -256,7 +271,6 @@ const BuildingDorm = ({ activeTab }) => {
                       </div>
                       <HourlyChart
                         height={450}
-                        building="College of Computer Studies"
                         type="line"
                         right={RightData}
                         left={LeftData}
@@ -264,6 +278,45 @@ const BuildingDorm = ({ activeTab }) => {
                     </div>
                     <div id="bsb-chart-1"></div>
                   </div>
+
+                  {/* total */}
+                  {/* <div className="card widget-card border-light shadow-sm">
+                    <div className="card-body p-4">
+                      <div className="d-block d-sm-flex align-items-center justify-content-between mb-3">
+                        <div className="mb-3 mb-sm-0">
+                          <h5 className="card-title widget-card-title">
+                            Last 24 hours
+                          </h5>
+                          <p>Alumni Dormitory</p>
+                          <p className="reminder">
+                            Please be advised that data collection for the
+                            selected date begins at 8AM and concludes at 8AM the
+                            following day.
+                          </p>
+                        </div>
+                        <div>
+                          <div className="form-card">
+                            <form action="POST">
+                              <input
+                                type="date"
+                                id="date"
+                                name="date"
+                                value={null}
+                                disabled
+                              />
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                      <HourlyChart
+                        height={450}
+                        type="line"
+                        right={RightData}
+                        left={LeftData}
+                      />
+                    </div>
+                    <div id="bsb-chart-1"></div>
+                  </div> */}
 
                   {/* Weekly */}
                   <Weekly activeTab={activeTab} />

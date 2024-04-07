@@ -73,7 +73,7 @@ const WeeklyChart = ({
       // },
       xaxis: {
         type: "category", // Changed from datetime to category
-        categories: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"], // Define the categories (days of the week)
+        categories: ["Mon", "Tues", "Wed", "Thur", "Fri", "Sat", "Sun"], // Define the categories (days of the week)
         labels: {
           style: {
             fontSize: "12px", // Adjust the font size here
@@ -350,6 +350,11 @@ const WeeklyChart = ({
     }
   }, [rightDormTotal, leftDormTotal, rightCCSTotal, leftCCSTotal]);
 
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "decimal",
+    minimumFractionDigits: 2,
+  });
+
   return (
     <div className="head">
       <ReactApexChart
@@ -360,11 +365,12 @@ const WeeklyChart = ({
       />
 
       {/* extra data */}
-      <p>
+      {/* <p>
         Total:{" "}
         {grandTotalVolume.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-      </p>
+      </p> */}
 
+      <p className="text">Total: {formatter.format(grandTotalVolume)}</p>
       {/* extra data */}
     </div>
   );
