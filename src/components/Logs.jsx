@@ -5,6 +5,9 @@ import {
   updateGoal,
   addActivityLog,
   editGoal,
+  getCCSWaterUsage,
+  getDormWaterUsage,
+  deleteGoalToFirestore,
 } from "../firebase/function";
 
 import { toast } from "react-toastify";
@@ -24,7 +27,7 @@ const Logs = ({ goals, setGoals }) => {
   const [initialGoal, setInitialGoal] = useState(null);
 
   // SImulation test
-  const [ccsWaterUsage, setCcsWaterUsage] = useState(0);
+  const [ccsWaterUsage, setCCSWaterUsage] = useState(0);
   const [dormWaterUsage, setDormWaterUsage] = useState(0);
   const [currentWaterUsage, setCurrentWaterUsage] = useState(0);
 
@@ -32,7 +35,7 @@ const Logs = ({ goals, setGoals }) => {
 
   // useEffect(() => {
   //   const ccsInterval = setInterval(() => {
-  //     setCcsWaterUsage((prevUsage) => prevUsage + 50); // Increase CCS water usage by 50 units every second
+  //     setCCSWaterUsage((prevUsage) => prevUsage + 50); // Increase CCS water usage by 50 units every second
   //   }, 1000);
 
   //   return () => clearInterval(ccsInterval);
@@ -57,6 +60,33 @@ const Logs = ({ goals, setGoals }) => {
   // }, []);
 
   useEffect(() => {
+    const fetchCCSWaterUsage = async () => {
+      const CCSWaterUsageFirestore = await getCCSWaterUsage(setCCSWaterUsage);
+    };
+
+    fetchCCSWaterUsage();
+  }, []);
+
+  useEffect(() => {
+    const fetchDormWaterUsage = async () => {
+      const DormWaterUsageFirestore = await getDormWaterUsage(
+        setDormWaterUsage
+      );
+    };
+
+    fetchDormWaterUsage();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const currentUsage = ccsWaterUsage + dormWaterUsage;
+      setCurrentWaterUsage(currentUsage);
+    };
+
+    fetchData(); // Call the fetchData function
+  }, [ccsWaterUsage, dormWaterUsage]);
+
+  useEffect(() => {
     const fetchGoals = async () => {
       const goalsFromFirestore = await getGoalsWithAlertFalse(setGoals);
     };
@@ -67,7 +97,6 @@ const Logs = ({ goals, setGoals }) => {
   useEffect(() => {
     // Define an async function to handle asynchronous operations
     const handleGoals = async () => {
-      // Create an array to store promises for each goal processing
       const promises = goals.map(async (goal) => {
         if (
           goal.goalLiters &&
@@ -92,6 +121,7 @@ const Logs = ({ goals, setGoals }) => {
           goal.goalLiters,
           goal.coverageArea
         );
+
         if (percentage >= goal.levelValue && !goal.levelValueAlert) {
           const message = `The water consumption in ${goal.coverageArea} has reached ${percentage}% of the target goal of ${goal.goalLiters} liters.`;
           toast.warning(message, {
@@ -125,16 +155,14 @@ const Logs = ({ goals, setGoals }) => {
 
     // let percentage = (currentWaterUsage / goalLitersInt) * 100;
     let percentage;
-    switch (coverageArea) {
-      case "CCS":
-        percentage = (ccsWaterUsage / goalLitersInt) * 100;
-        break;
-      case "Dorm":
-        percentage = (dormWaterUsage / goalLitersInt) * 100;
-        break;
-      default:
-        percentage = (currentWaterUsage / goalLitersInt) * 100;
-        break;
+    if (coverageArea === "CCS") {
+      percentage = (ccsWaterUsage / goalLitersInt) * 100;
+    } else if (coverageArea === "Dorm") {
+      percentage = (dormWaterUsage / goalLitersInt) * 100;
+    } else if (coverageArea === "MSU-IIT") {
+      percentage = (currentWaterUsage / goalLitersInt) * 100;
+    } else {
+      return;
     }
     // Cap the percentage at 100
     if (percentage >= 100) {
@@ -151,12 +179,6 @@ const Logs = ({ goals, setGoals }) => {
       levelValue: index.levelValue,
     });
   };
-
-  // useEffect(() => {
-  //   if (editedGoal !== null && editedGoal.levelValue !== null) {
-  //     setShowGoalAlert(true);
-  //   }
-  // }, [editedGoal]);
 
   useEffect(() => {
     if (editedGoal !== null) {
@@ -187,6 +209,7 @@ const Logs = ({ goals, setGoals }) => {
     setErrorMessage1("");
     setErrorMessage2("");
   };
+
   const submitEditGoal = async (e) => {
     e.preventDefault();
 
@@ -248,6 +271,25 @@ const Logs = ({ goals, setGoals }) => {
     }
   };
 
+  const handleDeleteGoal = (index) => {
+    // Show confirmation dialog using SweetAlert
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will not be able to recover this goal!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteGoalToFirestore(index.id);
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire("Cancelled", "Your goal is safe :)", "info");
+      }
+    });
+  };
+
   return (
     <div className="card widget-card border-light shadow-sm overflow-auto">
       <div className="card-body p-4">
@@ -257,6 +299,8 @@ const Logs = ({ goals, setGoals }) => {
             <Clock format={"h:mm:ss A"} ticking={true} />
           </div>
         </div>
+        {/* Alert testing */}
+
         <div>
           <div>
             <p>CCS Water Usage: {ccsWaterUsage}</p>
@@ -278,12 +322,13 @@ const Logs = ({ goals, setGoals }) => {
                 <div>
                   <h6 className=" text-secondary  m-0">{goal.coverageArea}</h6>
                   <p className=" fw-medium  m-0 fs-5">{goal.goalLiters} L</p>
+                  {goal.levelValue && (
+                    <span className="d-flex align-items-center justify-content-center gap-2">
+                      <i className="bx bx-alarm text-info "></i>
+                      <span className="text-secondary">{goal.levelValue}%</span>
+                    </span>
+                  )}
                 </div>
-                {/* <div>
-
-                  <i className="bx bx-dots-vertical-rounded"></i>
-                </div> */}
-
                 <div className=" w-auto ">
                   <div className="btn-group">
                     <button
@@ -307,7 +352,11 @@ const Logs = ({ goals, setGoals }) => {
                         </button>
                       </li>
                       <li>
-                        <button className="dropdown-item" type="button">
+                        <button
+                          onClick={() => handleDeleteGoal(goal)}
+                          className="dropdown-item"
+                          type="button"
+                        >
                           Delete
                         </button>
                       </li>
@@ -320,7 +369,7 @@ const Logs = ({ goals, setGoals }) => {
                   <span>
                     {goal.goalAlert
                       ? 100
-                      : calculatePercentage(goal.goalLiters)}
+                      : calculatePercentage(goal.goalLiters, goal.coverageArea)}
                     %
                   </span>
                 </div>
@@ -332,13 +381,19 @@ const Logs = ({ goals, setGoals }) => {
                       width: `${
                         goal.goalAlert
                           ? 100
-                          : calculatePercentage(goal.goalLiters)
+                          : calculatePercentage(
+                              goal.goalLiters,
+                              goal.coverageArea
+                            )
                       }%`,
                     }}
                     aria-valuenow={
                       goal.goalAlert
                         ? 100
-                        : calculatePercentage(goal.goalLiters)
+                        : calculatePercentage(
+                            goal.goalLiters,
+                            goal.coverageArea
+                          )
                     }
                     aria-valuemin="0"
                     aria-valuemax="100"

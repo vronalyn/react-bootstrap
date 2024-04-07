@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import Contact from "./Contact";
 import About from "./About";
-
+import Unsplash from "../images/unsplash-water.jpg";
 const Landing = () => {
   return (
     <div>
@@ -41,6 +41,7 @@ const Landing = () => {
                     className="rounded-3 shadow border border-info"
                     style={{
                       backgroundImage: `url('./images/unsplash-water.jpg')`,
+                      // backgroundImage: `url(`${Unsplash}`)`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                       width: "100%",

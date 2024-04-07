@@ -11,6 +11,7 @@ import {
   serverTimestamp,
   doc,
   orderBy,
+  deleteDoc,
 } from "firebase/firestore";
 import Swal from "sweetalert2";
 
@@ -183,6 +184,19 @@ export const addActivityLog = async (goalId, message, icon) => {
   }
 };
 
+export const deleteGoalToFirestore = async (id) => {
+  try {
+    // await db.collection("goals").add(goalWithMeta);
+    await deleteDoc(doc(db, "goals", id));
+
+    return true;
+  } catch (error) {
+    console.error("Error adding goal to Firestore:", error);
+
+    return false;
+  }
+};
+
 export const getActivityLogs = async (setActivityLog) => {
   try {
     const logsRef = collection(db, "activity_Log"); // Replace 'activity_logs' with your actual collection name
@@ -195,6 +209,58 @@ export const getActivityLogs = async (setActivityLog) => {
           ...doc.data(),
         }));
         setActivityLog(activityLogData);
+      } else {
+        console.log("No documents found");
+      }
+    });
+
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error fetching activity logs:", error);
+    return []; // Return an empty array if there's an error
+  }
+};
+
+export const getCCSWaterUsage = async (setCCSWaterUsage) => {
+  try {
+    const logsRef = collection(db, "CCS"); // Replace 'activity_logs' with your actual collection name
+    const logsQuery = query(logsRef, orderBy("DateTime", "desc"), limit(1)); // Order logs by 'timestamp' in descending order
+
+    const unsubscribe = onSnapshot(logsQuery, (snapshot) => {
+      if (!snapshot.empty) {
+        const CCSWaterUsageData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const volume = CCSWaterUsageData[0].volume;
+        // const volume = CCSWaterUsageData.volume;
+        setCCSWaterUsage(volume);
+      } else {
+        console.log("No documents found");
+      }
+    });
+
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error fetching activity logs:", error);
+    return []; // Return an empty array if there's an error
+  }
+};
+
+export const getDormWaterUsage = async (setDormWaterUsage) => {
+  try {
+    const logsRef = collection(db, "Dorm"); // Replace 'activity_logs' with your actual collection name
+    const logsQuery = query(logsRef, orderBy("DateTime", "desc"), limit(1)); // Order logs by 'timestamp' in descending order
+
+    const unsubscribe = onSnapshot(logsQuery, (snapshot) => {
+      if (!snapshot.empty) {
+        const DormWaterUsageData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const volume = DormWaterUsageData[0].volume;
+        // const volume = DormWaterUsageData.volume;
+        setDormWaterUsage(volume);
       } else {
         console.log("No documents found");
       }

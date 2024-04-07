@@ -250,9 +250,7 @@ const Cards = ({ goals, setGoals }) => {
                                 <option disabled value="">
                                   Select coverage area
                                 </option>
-                                <option value="Entire Building">
-                                  Entire Building
-                                </option>
+                                <option value="MSU-IIT">MSU-IIT </option>
                                 <option value="CCS">CCS</option>
                                 <option value="Dorm">Dorm</option>
                               </select>

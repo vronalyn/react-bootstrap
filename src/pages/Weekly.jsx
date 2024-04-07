@@ -18,7 +18,6 @@ import WeeklyChart from "../components/WeeklyChart";
 
 const Weekly = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
