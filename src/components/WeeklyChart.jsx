@@ -370,7 +370,10 @@ const WeeklyChart = ({
         {grandTotalVolume.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
       </p> */}
 
-      <p className="text">Total: {formatter.format(grandTotalVolume)}</p>
+      {/* <p className="text">Total: {formatter.format(grandTotalVolume)}</p> */}
+      <p className="text">
+        Total: {formatter.format(Math.round(grandTotalVolume * 100) / 100)}
+      </p>
       {/* extra data */}
     </div>
   );
