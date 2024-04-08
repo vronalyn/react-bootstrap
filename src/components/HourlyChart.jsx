@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const HourlyChart = ({ colors, height, right, left, type }) => {
+const HourlyChart = ({
+  colors,
+  height,
+  right,
+  left,
+  tankLocation,
+  rightCCSTotal,
+  leftCCSTotal,
+  rightDormTotal,
+  leftDormTotal,
+  type,
+}) => {
   const [grandTotalVolume, setGrandTotalVolume] = useState(0);
   const [state, setState] = useState({
     series: [
@@ -309,6 +320,139 @@ const HourlyChart = ({ colors, height, right, left, type }) => {
     }
   }, [right, left]);
 
+  // ================================================================total chart
+  useEffect(() => {
+    if (rightDormTotal && leftDormTotal && rightCCSTotal && leftCCSTotal) {
+      if (tankLocation === "Total") {
+        // Calculate total volume for Dorm and CCS separately
+        const totalDormVolumes = Object.keys(rightDormTotal).map(
+          (hourRange, index) => {
+            const totalRightDormVolume = (
+              rightDormTotal[hourRange] || []
+            ).reduce((acc, curr) => acc + curr.volume, 0);
+            const totalLeftDormVolume = (leftDormTotal[hourRange] || []).reduce(
+              (acc, curr) => acc + curr.volume,
+              0
+            );
+            return totalRightDormVolume + totalLeftDormVolume;
+          }
+        );
+
+        const totalCCSVolumes = Object.keys(rightCCSTotal).map(
+          (hourRange, index) => {
+            const totalRightCCSVolume = (rightCCSTotal[hourRange] || []).reduce(
+              (acc, curr) => acc + curr.volume,
+              0
+            );
+            const totalLeftCCSVolume = (leftCCSTotal[hourRange] || []).reduce(
+              (acc, curr) => acc + curr.volume,
+              0
+            );
+            return totalRightCCSVolume + totalLeftCCSVolume;
+          }
+        );
+
+        setState((prevState) => ({
+          ...prevState,
+          series: [
+            {
+              name: "CCS",
+              data: totalCCSVolumes.map((volume) => volume.toFixed(2)),
+            },
+            {
+              name: "Dorm",
+              data: totalDormVolumes.map((volume) => volume.toFixed(2)),
+            },
+          ],
+        }));
+      } else {
+        // Calculate total volume for each hour range for CCS and Dorm combined
+        const totalVolumes = Object.keys(rightDormTotal).map(
+          (hourRange, index) => {
+            const totalRightVolume = (rightDormTotal[hourRange] || []).reduce(
+              (acc, curr) => acc + curr.volume,
+              0
+            );
+            const totalLeftVolume = (leftDormTotal[hourRange] || []).reduce(
+              (acc, curr) => acc + curr.volume,
+              0
+            );
+            return totalRightVolume + totalLeftVolume;
+          }
+        );
+
+        setState((prevState) => ({
+          ...prevState,
+          series: [
+            {
+              name: "Right",
+              data: Object.values(rightCCSTotal).map((data) =>
+                (data || [])
+                  .reduce((acc, curr) => acc + curr.volume, 0)
+                  .toFixed(2)
+              ),
+            },
+            {
+              name: "Left",
+              data: Object.values(leftCCSTotal).map((data) =>
+                (data || [])
+                  .reduce((acc, curr) => acc + curr.volume, 0)
+                  .toFixed(2)
+              ),
+            },
+            {
+              name: "Total",
+              data: totalVolumes.map((volume) => volume.toFixed(2)),
+            },
+          ],
+        }));
+      }
+    }
+  }, [
+    rightDormTotal,
+    leftDormTotal,
+    rightCCSTotal,
+    leftCCSTotal,
+    tankLocation,
+  ]);
+
+  useEffect(() => {
+    if (rightDormTotal && leftDormTotal && rightCCSTotal && leftCCSTotal) {
+      // Calculate grand total for Dorm and CCS combined
+      const grandTotalCCS =
+        Object.values(rightCCSTotal).reduce(
+          (acc, data) =>
+            acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
+          0
+        ) +
+        Object.values(leftCCSTotal).reduce(
+          (acc, data) =>
+            acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
+          0
+        );
+
+      const grandTotalDorm =
+        Object.values(rightDormTotal).reduce(
+          (acc, data) =>
+            acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
+          0
+        ) +
+        Object.values(leftDormTotal).reduce(
+          (acc, data) =>
+            acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
+          0
+        );
+
+      // Calculate grand total by adding CCS and Dorm volumes
+      const grandTotal = grandTotalCCS + grandTotalDorm;
+
+      // Update state with the grand total volume
+      setGrandTotalVolume(grandTotal);
+    } else {
+      setGrandTotalVolume(0);
+    }
+  }, [rightDormTotal, leftDormTotal, rightCCSTotal, leftCCSTotal]);
+
   const formatter = new Intl.NumberFormat("en-US", {
     style: "decimal",
     minimumFractionDigits: 2,
@@ -333,7 +477,11 @@ const HourlyChart = ({ colors, height, right, left, type }) => {
         {grandTotalVolume.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
       </p> */}
 
-      <p className="text">Total: {formatter.format(grandTotalVolume)}</p>
+      {/* <p className="text">Total: {formatter.format(grandTotalVolume)}</p> */}
+
+      <p className="text">
+        Total: {formatter.format(Math.round(grandTotalVolume * 100) / 100)}
+      </p>
       {/* extra data */}
     </div>
   );
