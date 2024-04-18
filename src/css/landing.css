@@ -1,0 +1,9 @@
+.hide-image {
+  display: block;
+}
+
+@media only screen and (max-width: 576px) {
+  .hide-image {
+    display: none;
+  }
+}

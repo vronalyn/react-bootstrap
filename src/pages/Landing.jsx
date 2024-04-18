@@ -6,14 +6,15 @@ import About from "./About";
 import Unsplash from "../images/unsplash-water.jpg";
 import glass from "../images/glass.webp";
 import washing from "../images/washing.webp";
+import "../css/landing.css";
 const Landing = () => {
   return (
     <div>
       <Navbar />
       <section className="bg-dark">
-        <div className="container vh-100 d-flex text-white">
+        <div className="container vh-100 d-md-flex  text-white">
           {/* Left Side */}
-          <div className="col-md-6 d-flex align-items-center">
+          <div className="col-md-6 col-sm-12  d-flex align-items-center text-md-start text-sm-center ">
             <div className="fw-light ">
               <h2 className="fw-light fs-1 lh-base">
                 Your Ultimate
@@ -22,7 +23,7 @@ const Landing = () => {
                   Water <br /> Monitoring Solution
                 </span>
               </h2>
-              <p className="mt-3 pe-4" style={{ maxWidth: "85%" }}>
+              <p className="mt-3 pe-md-4" style={{ maxWidth: "85%" }}>
                 Make a splash with WaterMS, the cutting-edge platform
                 revolutionizing how you manage water consumption. Streamline
                 your water usage like never before and embark on a journey
@@ -35,7 +36,7 @@ const Landing = () => {
           </div>
 
           {/* Right Side */}
-          <div className="col-md-6 d-flex justify-content-center align-items-center">
+          <div className="col-md-6 col-sm-12  d-md-flex justify-content-center align-items-center  d-sm-none  ">
             <div className="container">
               {/* <div className="row">
                 <div className="col-md-12 mb-3">
@@ -58,7 +59,7 @@ const Landing = () => {
                 <div className="col-md-6">
                   <img
                     src={washing}
-                    className="rounded-3 shadow border border-info"
+                    className="rounded-3 shadow border border-info hide-image"
                     style={{
                       // backgroundImage: `url('./images/washing.webp')`,
                       backgroundSize: "cover",
@@ -71,7 +72,7 @@ const Landing = () => {
                 <div className="col-md-6">
                   <img
                     src={glass}
-                    className="rounded-3 shadow border border-info"
+                    className="rounded-3 shadow border border-info hide-image"
                     style={{
                       // backgroundImage: `url('./images/glass.webp')`,
                       backgroundSize: "cover",

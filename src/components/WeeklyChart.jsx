@@ -309,39 +309,39 @@ const WeeklyChart = ({
             ? [
                 {
                   ...prevState.series[0],
-                  data: rightVolumes,
-                },
-                {
-                  ...prevState.series[1],
-                  data: leftVolumes,
-                },
-                {
-                  ...prevState.series[2],
-                  data: totalVolumes,
-                },
-                {
-                  ...prevState.series[3],
                   data: rightCCSVolumes,
                 },
                 {
-                  ...prevState.series[4],
+                  ...prevState.series[1],
                   data: leftCCSVolumes,
                 },
                 {
-                  ...prevState.series[5],
+                  ...prevState.series[2],
                   data: totalCCSVolumes,
+                },
+                {
+                  ...prevState.series[3],
+                  data: rightVolumes,
+                },
+                {
+                  ...prevState.series[4],
+                  data: leftVolumes,
+                },
+                {
+                  ...prevState.series[5],
+                  data: totalVolumes,
                 },
               ]
             : [
                 {
                   ...prevState.series[3],
-                  name: "Dorm",
-                  data: totalVolumes,
+                  name: "CCS",
+                  data: totalCCSVolumes,
                 },
                 {
                   ...prevState.series[4],
-                  name: "CCS",
-                  data: totalCCSVolumes,
+                  name: "Dorm",
+                  data: totalVolumes,
                 },
               ],
       }));
