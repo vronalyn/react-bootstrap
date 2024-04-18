@@ -36,6 +36,7 @@ const RealtimeChart = ({
         curve: "smooth",
       },
       markers: {
+        size: 6,
         hover: {
           size: 8,
         },
