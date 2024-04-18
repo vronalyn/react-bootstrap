@@ -3,7 +3,8 @@ import { doGetUserAccount, doSignOut } from "../firebase/auth";
 import { useAuth } from "../contexts/authContext";
 import { Link, useNavigate } from "react-router-dom";
 import { getActivityLogs } from "../firebase/function";
-const Navbar2 = ({ toggleSidebar }) => {
+
+const Navbar2 = ({ toggleSidebar, startTutorial, id }) => {
   const navigate = useNavigate();
 
   const { currentUser } = useAuth();
@@ -78,6 +79,16 @@ const Navbar2 = ({ toggleSidebar }) => {
 
       <div className="navbar-collapse navbar ">
         <ul className="navbar-nav navbar-align">
+          {/* <button
+            className="btn bg-transparent"
+            id="sidebar-toggle"
+            type="button"
+            onClick={() => {
+              startTutorial();
+            }}
+          >
+            <i className="bi bi-question-circle align-middle fs-5"></i>
+          </button> */}
           <div className="dropdown me-2 ">
             <button
               // onClick={toggleDropdown}
@@ -234,6 +245,7 @@ const Navbar2 = ({ toggleSidebar }) => {
               </a>
               <a
                 onClick={() => {
+                  localStorage.removeItem("joyrideCompleted");
                   doSignOut().then(() => {
                     navigate("/");
                   });

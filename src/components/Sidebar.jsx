@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import "../css/Sidebar.css";
 import { useUserRole } from "../contexts/UserRoleContext";
 
-const Sidebar = ({ sidebarCollapsed }) => {
+const Sidebar = ({ sidebarCollapsed, id }) => {
   const { userRole } = useUserRole();
   const location = useLocation();
   const isBuildingPage = location.pathname.includes("/building/");
@@ -41,7 +41,7 @@ const Sidebar = ({ sidebarCollapsed }) => {
               </NavLink>
             </li>
           )}
-          <li className="sidebar-item">
+          <li className="sidebar-item" id="step-five">
             <a
               href="#"
               className="sidebar-link collapsed"
@@ -71,7 +71,7 @@ const Sidebar = ({ sidebarCollapsed }) => {
               </li>
             </ul>
           </li>
-          <li className="sidebar-item">
+          <li className="sidebar-item" id="step-six">
             <a
               href="#"
               className="sidebar-link collapsed"

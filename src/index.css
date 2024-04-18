@@ -123,3 +123,70 @@ li {
     width: 100vw;
   }
 }
+
+/* ==============================================added */
+.select-menu {
+  position: relative;
+  border: 1px solid #636363;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+}
+
+.options {
+  display: none;
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  left: 0;
+  top: 100%;
+}
+
+.options.active {
+  display: block;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+}
+
+.option {
+  padding: 0.5rem;
+  transition: 0.3s ease;
+}
+
+.option:hover {
+  background: #dcdcdc;
+}
+
+input[type="week"],
+input[type="month"],
+input[type="date"] {
+  padding: 0.5rem 1rem;
+}
+
+.reminder {
+  font-size: 0.9rem;
+  color: #7e7e7e;
+}
+
+.card-container {
+  width: 100%;
+}
+
+.icon-left,
+.icon-right {
+  align-items: center;
+  justify-content: center;
+  background: #dcdcdc;
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.icon-left:hover,
+.icon-right:hover {
+  background-color: #c4c4c4; /* Change the background color on hover */
+}

@@ -951,7 +951,7 @@ const Monthly = ({ activeTab }) => {
                     className="bx bx-chevron-left icon-left"
                     onClick={() => handlePrevMonth("Dorm")}
                   ></i>
-                  <span>{`${formattedStartDateDorm} - ${formattedEndDateDorm}`}</span>
+                  <span className="mx-1">{`${formattedStartDateDorm} - ${formattedEndDateDorm}`}</span>
                   <i
                     className="bx bx-chevron-right icon-right"
                     onClick={() => handleNextMonth("Dorm")}
@@ -1005,21 +1005,32 @@ const Monthly = ({ activeTab }) => {
                         </li>
                       </ul>
                     </div>
-                    {isLoadingDorm && (
+                    {/* {isLoadingDorm && (
                       <p className="loading">Loading data...</p>
-                    )}
+                    )} */}
                   </form>
                 </div>
               </div>
             </div>
-            <MonthlyChart
-              height={400}
-              type="line"
-              // dateRange={dateRangeDorm}
-              right={DormRightData}
-              left={DormLeftData}
-              tankLocation={selectedTankDorm}
-            />
+            {isLoadingDorm && selectedTankDorm === "" ? (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ height: "400px" }}
+              >
+                <p className="text-center">
+                  Loading chart data, please wait...
+                </p>
+              </div>
+            ) : (
+              <MonthlyChart
+                height={400}
+                type="line"
+                // dateRange={dateRangeDorm}
+                right={DormRightData}
+                left={DormLeftData}
+                tankLocation={selectedTankDorm}
+              />
+            )}
             <div id="bsb-chart-1"></div>
           </div>
         </div>
@@ -1041,7 +1052,7 @@ const Monthly = ({ activeTab }) => {
                     className="bx bx-chevron-left icon-left"
                     onClick={() => handlePrevMonth("CCS")}
                   ></i>
-                  <span>{`${formattedStartDateCCS} - ${formattedEndDateCCS}`}</span>
+                  <span className="mx-1">{`${formattedStartDateCCS} - ${formattedEndDateCCS}`}</span>
                   <i
                     className="bx bx-chevron-right icon-right"
                     onClick={() => handleNextMonth("CCS")}
@@ -1094,20 +1105,30 @@ const Monthly = ({ activeTab }) => {
                       </ul>
                     </div>
 
-                    {isLoadingCCS && <p className="loading">Loading data...</p>}
+                    {/* {isLoadingCCS && <p className="loading">Loading data...</p>} */}
                   </form>
                 </div>
               </div>
             </div>
-            <MonthlyChart
-              height={400}
-              type="line"
-              // dateRange={dateRangeCCS}
-              right={CCSRightData}
-              left={CCSLeftData}
-              tankLocation={selectedTankCCS}
-            />
-
+            {isLoadingCCS && selectedTankCCS === "" ? (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ height: "400px" }}
+              >
+                <p className="text-center">
+                  Loading chart data, please wait...
+                </p>
+              </div>
+            ) : (
+              <MonthlyChart
+                height={400}
+                type="line"
+                // dateRange={dateRangeCCS}
+                right={CCSRightData}
+                left={CCSLeftData}
+                tankLocation={selectedTankCCS}
+              />
+            )}
             <div id="bsb-chart-1"></div>
           </div>
         </div>

@@ -233,7 +233,7 @@ const BuildingCCS = ({ activeTab }) => {
                       <div className="col-8 col-md-8">
                         <div className="heading-text">
                           {/* <h3 className="lh-1 fw-bold">Realtime Analytics</h3> */}
-                          <p>Write a short description here.</p>
+                          <p>View different insights here</p>
                         </div>
                       </div>
                     </div>

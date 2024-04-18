@@ -13,7 +13,7 @@ import {
 import { db } from "../firebase/firebase";
 import HourlyChart from "../components/HourlyChart";
 
-const TotalHourly = () => {
+const TotalHourly = ({ id }) => {
   const currentDate = new Date().toISOString().split("T")[0];
 
   const [specificDate, setSpecificDate] = useState("");
@@ -53,6 +53,27 @@ const TotalHourly = () => {
     // Clean up the interval when the component unmounts
     return () => clearInterval(intervalId);
   }, [selectedDate]);
+
+  const handleDateChange = (event) => {
+    const dateValue = event.target.value;
+
+    if (!dateValue) {
+      // If dateValue is empty, return "none"
+      setSelectedDate("");
+      setCCSRightData({});
+      setCCSLeftData({});
+      setDormRightData({});
+      setDormLeftData({});
+    } else {
+      setSelectedDate(dateValue);
+      console.log(`Selected Date: ${dateValue}`);
+      // Convert selected date to UTC+8
+      const date = new Date(dateValue);
+      // date.setHours(date.getHours() + 8); // Convert to UTC+8
+      const specificDate = date.toISOString();
+      setSpecificDate(specificDate);
+    }
+  };
 
   // storing if data does not exists
   const fetchData = async (specificDate) => {
@@ -213,7 +234,7 @@ const TotalHourly = () => {
     <div className="card widget-card border-light shadow-sm">
       <div className="card-body p-4">
         <div className="d-block d-sm-flex align-items-center justify-content-between mb-3">
-          <div className="mb-3 mb-sm-0">
+          <div className="mb-3 mb-sm-0" id="step-three">
             <h5 className="card-title widget-card-title">Last 24 hours</h5>
             <p>Realtime</p>
             <p className="reminder">
@@ -229,7 +250,8 @@ const TotalHourly = () => {
                   id="date"
                   name="date"
                   value={selectedDate}
-                  disabled
+                  onChange={handleDateChange}
+                  // disabled
                 />
               </form>
             </div>
