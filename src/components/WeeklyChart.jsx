@@ -58,6 +58,7 @@ const WeeklyChart = ({
         curve: "smooth",
       },
       markers: {
+        size: 5,
         hover: {
           size: 8,
         },
@@ -103,7 +104,9 @@ const WeeklyChart = ({
         position: "top",
       },
       tooltip: {
-        x: {},
+        style: {
+          fontSize: "14px",
+        },
       },
       grid: {
         borderColor: "#f0f0f0",

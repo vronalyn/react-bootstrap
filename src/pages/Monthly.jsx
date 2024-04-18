@@ -268,9 +268,31 @@ const Monthly = ({ activeTab }) => {
     }
   };
 
+  // const handlePrevMonth = (location) => {
+  //   const currentMonth = new Date(selectedMonthDorm);
+  //   currentMonth.setMonth(currentMonth.getMonth() - 1);
+  //   const formattedMonth = currentMonth.toISOString().substring(0, 7);
+  //   if (location === "Dorm") {
+  //     setSelectedMonthDorm(formattedMonth);
+  //     handleMonthChangeDorm({ target: { value: formattedMonth } });
+  //   } else if (location === "CCS") {
+  //     setSelectedMonthCCS(formattedMonth);
+  //     handleMonthChangeCCS({ target: { value: formattedMonth } });
+  //   }
+  // };
+
   const handlePrevMonth = (location) => {
-    const currentMonth = new Date(selectedMonthDorm);
+    let currentMonth;
+    if (location === "Dorm") {
+      currentMonth = new Date(selectedMonthDorm);
+    } else if (location === "CCS") {
+      currentMonth = new Date(selectedMonthCCS);
+    }
     currentMonth.setMonth(currentMonth.getMonth() - 1);
+    if (currentMonth.getMonth() === 11) {
+      // If the current month is December, go back to November of the same year
+      currentMonth.setFullYear(currentMonth.getFullYear() - 1);
+    }
     const formattedMonth = currentMonth.toISOString().substring(0, 7);
     if (location === "Dorm") {
       setSelectedMonthDorm(formattedMonth);
@@ -281,8 +303,26 @@ const Monthly = ({ activeTab }) => {
     }
   };
 
+  // const handleNextMonth = (location) => {
+  //   const currentMonth = new Date(selectedMonthDorm);
+  //   currentMonth.setMonth(currentMonth.getMonth() + 1);
+  //   const formattedMonth = currentMonth.toISOString().substring(0, 7);
+  //   if (location === "Dorm") {
+  //     setSelectedMonthDorm(formattedMonth);
+  //     handleMonthChangeDorm({ target: { value: formattedMonth } });
+  //   } else if (location === "CCS") {
+  //     setSelectedMonthCCS(formattedMonth);
+  //     handleMonthChangeCCS({ target: { value: formattedMonth } });
+  //   }
+  // };
+
   const handleNextMonth = (location) => {
-    const currentMonth = new Date(selectedMonthDorm);
+    let currentMonth;
+    if (location === "Dorm") {
+      currentMonth = new Date(selectedMonthDorm);
+    } else if (location === "CCS") {
+      currentMonth = new Date(selectedMonthCCS);
+    }
     currentMonth.setMonth(currentMonth.getMonth() + 1);
     const formattedMonth = currentMonth.toISOString().substring(0, 7);
     if (location === "Dorm") {
