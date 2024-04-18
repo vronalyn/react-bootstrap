@@ -13,7 +13,7 @@ import {
 import { db } from "../firebase/firebase";
 import WeeklyChart from "../components/WeeklyChart";
 
-const TotalWeekly = () => {
+const TotalWeekly = ({ id }) => {
   // added
   const [selectedWeek, setSelectedWeek] = useState("");
   const [dateRange, setDateRange] = useState({ start: "", end: "" });
@@ -284,12 +284,12 @@ const TotalWeekly = () => {
           <div className="mb-3 mb-sm-0">
             <h5 className="card-title widget-card-title">Last 7 days</h5>
             <p>Total Water Consumption</p>
-            <p className="date">
+            <p className="date" id="step-four">
               <i
                 className="bx bx-chevron-left icon-left"
                 onClick={handlePrevWeek}
               ></i>
-              <span>{`${formattedStartDate} - ${formattedEndDate}`}</span>
+              <span className="mx-1">{`${formattedStartDate} - ${formattedEndDate}`}</span>
               <i
                 className="bx bx-chevron-right icon-right"
                 onClick={handleNextWeek}
@@ -311,21 +311,33 @@ const TotalWeekly = () => {
                   onChange={handleWeekChange}
                 />
 
-                {isLoading && <p className="loading">Loading data...</p>}
+                {/* {isLoading && <p className="loading">Loading data...</p>} */}
               </form>
             </div>
           </div>
         </div>
-        <WeeklyChart
-          height={400}
-          type="line"
-          // dateRange={dateRange}
-          rightCCSTotal={CCSRightData}
-          leftCCSTotal={CCSLeftData}
-          rightDormTotal={DormRightData}
-          leftDormTotal={DormLeftData}
-          tankLocation="Total"
-        />
+
+        {/* Conditionally render WeeklyChart or a loading message */}
+        {isLoading ? (
+          <div
+            className="d-flex justify-content-center align-items-center"
+            style={{ height: "400px" }}
+          >
+            <p className="text-center">Loading chart data, please wait...</p>
+          </div>
+        ) : (
+          <WeeklyChart
+            height={400}
+            type="line"
+            // dateRange={dateRange}
+            rightCCSTotal={CCSRightData}
+            leftCCSTotal={CCSLeftData}
+            rightDormTotal={DormRightData}
+            leftDormTotal={DormLeftData}
+            tankLocation="Total"
+          />
+        )}
+
         <div id="bsb-chart-1"></div>
       </div>
     </div>

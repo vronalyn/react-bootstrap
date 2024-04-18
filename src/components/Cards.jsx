@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/authContext";
 import { addGoalToFirestore, fetchRecentBilling } from "../firebase/function";
 import { format } from "date-fns";
 
-const Cards = ({ goals, setGoals }) => {
+const Cards = ({ goals, setGoals, id }) => {
   const { currentUser } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
   const [levelValue, setLevelValue] = useState(0);
@@ -191,7 +191,7 @@ const Cards = ({ goals, setGoals }) => {
                 </div>
               ))}
             </div>
-            <div className="col-12 col-sm-4">
+            <div className="col-12 col-sm-4" id={id}>
               <div className="card widget-card border-light shadow-sm">
                 <div className="card-body p-4">
                   <div className="row">

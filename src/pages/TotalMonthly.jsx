@@ -289,7 +289,7 @@ const TotalMonthly = () => {
                 className="bx bx-chevron-left icon-left"
                 onClick={handlePrevWeek}
               ></i>
-              <span>{`${formattedStartDate} - ${formattedEndDate}`}</span>
+              <span className="mx-1">{`${formattedStartDate} - ${formattedEndDate}`}</span>
               <i
                 className="bx bx-chevron-right icon-right"
                 onClick={handleNextWeek}

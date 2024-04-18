@@ -56,8 +56,16 @@ const RealtimeChart = ({
         min: 0,
         opposite: false,
         labels: {
+          style: {
+            fontSize: "10px",
+          },
           formatter: function (value) {
-            return value.toFixed(2);
+            // Check if the value is undefined
+            if (value === undefined) {
+              return "0.00";
+            } else {
+              return value.toFixed(2);
+            }
           },
         },
       },
@@ -138,8 +146,13 @@ const RealtimeChart = ({
       />
 
       <div className="card-meta">
+        {/* <p className="text">
+          Total: {formatter.format(chartData.combinedLastIndexTotal)} L
+        </p> */}
         <p className="text">
-          Total: {formatter.format(chartData.combinedLastIndexTotal)}
+          {chartData.combinedLastIndexTotal > 0
+            ? `Total: ${formatter.format(chartData.combinedLastIndexTotal)} L`
+            : "No records found for this date."}
         </p>
       </div>
     </div>
