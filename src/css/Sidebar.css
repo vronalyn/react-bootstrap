@@ -45,6 +45,12 @@ a.sidebar-link {
   border-radius: 10px;
 }
 
+.active {
+  color: var(--white);
+  background: var(--accent-color);
+  border-radius: 10px;
+}
+
 .avatar {
   height: 40px;
   width: 40px;

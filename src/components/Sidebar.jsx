@@ -1,10 +1,13 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import "../css/Sidebar.css";
 import { useUserRole } from "../contexts/UserRoleContext";
 
 const Sidebar = ({ sidebarCollapsed }) => {
   const { userRole } = useUserRole();
+  const location = useLocation();
+  const isBuildingPage = location.pathname.includes("/building/");
+  const isAnalyticsPage = location.pathname.includes("/analytics/");
 
   return (
     <aside
@@ -19,17 +22,23 @@ const Sidebar = ({ sidebarCollapsed }) => {
         <ul className="sidebar-nav">
           <li className="sidebar-header">Main</li>
           <li className="sidebar-item">
-            <Link to="/home" className="sidebar-link">
+            <NavLink
+              to="/home"
+              className="sidebar-link"
+              activeClassName="active"
+            >
+              {" "}
+              {/* Use NavLink */}
               <i className="bx bx-category pe-2 align-middle"></i>
               <span className="align-middle">Dashboard</span>
-            </Link>
+            </NavLink>
           </li>
           {userRole === "Admin" && (
             <li className="sidebar-item">
-              <Link to="/users" className="sidebar-link">
+              <NavLink to="/users" className="sidebar-link">
                 <i className="bx bx-group pe-2 align-middle"></i>
                 <span className="align-middle">Users</span>
-              </Link>
+              </NavLink>
             </li>
           )}
           <li className="sidebar-item">
@@ -45,18 +54,20 @@ const Sidebar = ({ sidebarCollapsed }) => {
             </a>
             <ul
               id="buildings"
-              className="sidebar-dropdown list-unstyled collapse ps-4"
+              className={`sidebar-dropdown list-unstyled collapse ps-4 ${
+                isBuildingPage ? "show" : ""
+              }`}
               data-bs-parent="#sidebar"
             >
               <li className="sidebar-item">
-                <Link to="/building/ccs" className="sidebar-link">
+                <NavLink to="/building/ccs" className="sidebar-link">
                   CCS
-                </Link>
+                </NavLink>
               </li>
               <li className="sidebar-item">
-                <Link to="/building/dorm" className="sidebar-link">
+                <NavLink to="/building/dorm" className="sidebar-link">
                   Dormitory
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </li>
@@ -73,37 +84,39 @@ const Sidebar = ({ sidebarCollapsed }) => {
             </a>
             <ul
               id="analytics"
-              className="sidebar-dropdown list-unstyled collapse ps-4"
+              className={`sidebar-dropdown list-unstyled collapse ps-4 ${
+                isAnalyticsPage ? "show" : ""
+              }`}
               data-bs-parent="#sidebar"
             >
               <li className="sidebar-item">
-                <Link to="/analytics/weekly" className="sidebar-link">
+                <NavLink to="/analytics/weekly" className="sidebar-link">
                   Weekly
-                </Link>
+                </NavLink>
               </li>
               <li className="sidebar-item">
-                <Link to="/analytics/monthly" className="sidebar-link">
+                <NavLink to="/analytics/monthly" className="sidebar-link">
                   Monthly
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </li>
           <li className="sidebar-item">
-            <Link to="/billing" className="sidebar-link">
+            <NavLink to="/billing" className="sidebar-link">
               <i className="bx bx-receipt pe-2 align-middle"></i>
               <span className="align-middle">Billing Management</span>
-            </Link>
+            </NavLink>
           </li>
           <li className="sidebar-header">Misc</li>
           <li className="sidebar-item">
-            <Link to="/profile" className="sidebar-link">
+            <NavLink to="/profile" className="sidebar-link">
               <i className="bx bx-user pe-2 align-middle"></i>
               <span className="align-middle">User Profile</span>
-            </Link>
-            <Link to="/account-settings" className="sidebar-link">
+            </NavLink>
+            <NavLink to="/account-settings" className="sidebar-link">
               <i className="bx bx-cog pe-2 align-middle"></i>
               <span className="align-middle">Account Settings</span>
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </div>

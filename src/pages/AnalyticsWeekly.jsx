@@ -23,7 +23,7 @@ const AnalyticsWeekly = () => {
               </div>
 
               <div className="row">
-                <div className="col-md-8">
+                <div className="col-md-12">
                   <div className="row mb-4">
                     <div className="col-md-12 d-flex align-items-center">
                       <div className="col-8 col-md-8">
