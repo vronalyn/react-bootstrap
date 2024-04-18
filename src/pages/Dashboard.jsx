@@ -9,10 +9,140 @@ import Chart from "../components/Chart";
 import TotalWeekly from "./TotalWeekly";
 import Realtime from "../components/Realtime";
 import TotalHourly from "./TotalHourly";
+// import Joyride, { STATUS } from "react-joyride";
+import TutorialProcess from "../components/TutorialProcess";
 
 const Dashboard = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [goals, setGoals] = useState([]);
+  const [runTutorial, setRunTutorial] = useState(false);
+
+  // const [{ run, steps }, setState] = useState({
+  //   run: true,
+  //   steps: [
+  //     {
+  //       content: <h2>Enhance Your Experience: WaterMS Assistance Tool</h2>,
+  //       locale: { skip: <strong>SKIP</strong> },
+  //       placement: "center",
+  //       target: "body",
+  //     },
+  //     {
+  //       content: <p>insert description here</p>,
+  //       locale: { skip: <strong>SKIP</strong> },
+  //       placement: "bottom",
+  //       target: "#step-one",
+  //       title: "Goal Alert System",
+  //     },
+  //     {
+  //       content: <p>insert description here</p>,
+  //       locale: { skip: <strong>SKIP</strong> },
+  //       placement: "left-start",
+  //       target: "#step-two",
+  //       title: "Goal Alert System",
+  //     },
+  //     {
+  //       content: <p>insert description here</p>,
+  //       locale: { skip: <strong>SKIP</strong> },
+  //       placement: "right-start",
+  //       target: "#step-three",
+  //       title: "Chart Labels",
+  //     },
+  //     {
+  //       content: <p>insert description here</p>,
+  //       locale: { skip: <strong>SKIP</strong> },
+  //       placement: "right-start",
+  //       target: "#step-four",
+  //       title: "Date Selection",
+  //     },
+  //     {
+  //       content: <p>insert description here</p>,
+  //       locale: { skip: <strong>SKIP</strong> },
+  //       placement: "right-start",
+  //       target: "#step-five",
+  //       title: "Explore Insights: Building",
+  //     },
+  //     {
+  //       content: <p>insert description here</p>,
+  //       locale: { skip: <strong>SKIP</strong> },
+  //       placement: "right-start",
+  //       target: "#step-six",
+  //       title: "Explore Insights: Analytics",
+  //     },
+  //   ],
+  // });
+
+  // one time execute
+  // const [run, setRun] = useState(false);
+  // const steps = [
+  //   {
+  //     content: <h2>Enhance Your Experience: WaterMS Assistance Tool</h2>,
+  //     locale: { skip: <strong>SKIP</strong> },
+  //     placement: "center",
+  //     target: "body",
+  //   },
+  //   {
+  //     content: <p>insert description here</p>,
+  //     locale: { skip: <strong>SKIP</strong> },
+  //     placement: "bottom",
+  //     target: "#step-one",
+  //     title: "Goal Alert System",
+  //   },
+  //   {
+  //     content: <p>insert description here</p>,
+  //     locale: { skip: <strong>SKIP</strong> },
+  //     placement: "left-start",
+  //     target: "#step-two",
+  //     title: "Goal Alert System",
+  //   },
+  //   {
+  //     content: <p>insert description here</p>,
+  //     locale: { skip: <strong>SKIP</strong> },
+  //     placement: "right-start",
+  //     target: "#step-three",
+  //     title: "Chart Labels",
+  //   },
+  //   {
+  //     content: <p>insert description here</p>,
+  //     locale: { skip: <strong>SKIP</strong> },
+  //     placement: "right-start",
+  //     target: "#step-four",
+  //     title: "Date Selection",
+  //   },
+  //   {
+  //     content: <p>insert description here</p>,
+  //     locale: { skip: <strong>SKIP</strong> },
+  //     placement: "right-start",
+  //     target: "#step-five",
+  //     title: "Explore Insights: Building",
+  //   },
+  //   {
+  //     content: <p>insert description here</p>,
+  //     locale: { skip: <strong>SKIP</strong> },
+  //     placement: "right-start",
+  //     target: "#step-six",
+  //     title: "Explore Insights: Analytics",
+  //   },
+  // ];
+
+  // useEffect(() => {
+  //   const joyrideCompleted = localStorage.getItem("joyrideCompleted");
+  //   if (!joyrideCompleted) {
+  //     setRun(true);
+  //   }
+  // }, []);
+
+  // const handleJoyrideCallback = (data) => {
+  //   const { status } = data;
+  //   if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
+  //     localStorage.setItem("joyrideCompleted", "true");
+  //     setRun(false);
+  //   }
+  // };
+
+  // Function to toggle Joyride from Navbar
+  const startTutorial = () => {
+    setRunTutorial(true);
+  };
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
@@ -20,10 +150,29 @@ const Dashboard = () => {
 
   return (
     <div className="">
+      {/* <Joyride
+        continuous
+        // callback={() => {}}
+        callback={handleJoyrideCallback}
+        run={run}
+        steps={steps}
+        hideCloseButton
+        scrollToFirstStep
+        showSkipButton
+        showProgress
+      /> */}
+      <TutorialProcess run={runTutorial} setRun={setRunTutorial} />
       <div className="wrapper ">
-        <Sidebar sidebarCollapsed={sidebarCollapsed} />
+        <Sidebar
+          sidebarCollapsed={sidebarCollapsed}
+          id={["step-four", "step-five"]}
+        />
         <div className="main">
-          <Navbar2 toggleSidebar={toggleSidebar} />
+          <Navbar2
+            toggleSidebar={toggleSidebar}
+            startTutorial={startTutorial}
+            id="step-seven"
+          />
           <main className="content px-3 py-2 bg-secondary bg-opacity-10">
             <div className="container-fluid">
               <div className="mb-3">
@@ -40,7 +189,7 @@ const Dashboard = () => {
                 </nav>
               </div>
 
-              <Cards goals={goals} setGoals={setGoals} />
+              <Cards goals={goals} setGoals={setGoals} id="step-one" />
 
               <div className="row">
                 <div className="col-md-8">
@@ -49,7 +198,11 @@ const Dashboard = () => {
                       <div className="col-8 col-md-8">
                         <div className="heading-text">
                           <h3 className="lh-1 fw-bold">Realtime Analytics</h3>
-                          <p>Write a short description here.</p>
+                          <p>
+                            Analyze water consumption trends, track real-time
+                            usage, and monitor resource management with
+                            intuitive tools.
+                          </p>
                         </div>
                       </div>
 
@@ -62,13 +215,13 @@ const Dashboard = () => {
                   </div>
                   {/* added */}
 
-                  <TotalHourly />
+                  <TotalHourly id="step-three" />
 
-                  <TotalWeekly />
+                  <TotalWeekly id="step-four" />
                 </div>
 
                 <div className="col-md-4">
-                  <Logs goals={goals} setGoals={setGoals} />
+                  <Logs goals={goals} setGoals={setGoals} id="step-two" />
                 </div>
               </div>
             </div>

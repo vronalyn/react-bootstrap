@@ -87,10 +87,15 @@ const WeeklyChart = ({
         opposite: false,
         labels: {
           style: {
-            fontSize: "10px", // Adjust the font size here
+            fontSize: "10px",
           },
           formatter: function (value) {
-            return value.toFixed(2); // Format volume to two decimal points
+            // Check if the value is undefined
+            if (value === undefined) {
+              return "0.00";
+            } else {
+              return value.toFixed(2);
+            }
           },
         },
       },
@@ -127,11 +132,31 @@ const WeeklyChart = ({
         //   ).toFixed(2)
         // );
 
+        // older version
+        // const tankVolumes = Object.values(tankData).map((tankEntry) => {
+        //   const volume = (
+        //     tankEntry.entries.length > 0 ? tankEntry.entries[0].volume : 0
+        //   ).toFixed(2);
+        //   grandTotalVolume += parseFloat(volume); // Add volume to grand total
+        //   return volume;
+        // });
+
+        // const tankVolumes = Object.values(tankData).map((tankEntry) => {
+        //   const volume =
+        //     tankEntry.entries.length > 0 ? tankEntry.entries[0].volume : 0;
+        //   const volumeToAdd = volume !== "" ? parseFloat(volume.toFixed(2)) : 0;
+        //   grandTotalVolume += volumeToAdd; // Add volume to grand total
+        //   return volumeToAdd;
+        // });
+
         const tankVolumes = Object.values(tankData).map((tankEntry) => {
-          const volume = (
-            tankEntry.entries.length > 0 ? tankEntry.entries[0].volume : 0
-          ).toFixed(2);
-          grandTotalVolume += parseFloat(volume); // Add volume to grand total
+          const volume =
+            tankEntry.entries.length > 0
+              ? parseFloat(tankEntry.entries[0].volume)
+              : 0;
+          if (!isNaN(volume)) {
+            grandTotalVolume += volume; // Add volume to grand total if it's a valid number
+          }
           return volume;
         });
 
@@ -335,13 +360,13 @@ const WeeklyChart = ({
             : [
                 {
                   ...prevState.series[3],
-                  name: "Dorm",
-                  data: totalVolumes,
+                  name: "CCS",
+                  data: totalCCSVolumes,
                 },
                 {
                   ...prevState.series[4],
-                  name: "CCS",
-                  data: totalCCSVolumes,
+                  name: "Dorm",
+                  data: totalVolumes,
                 },
               ],
       }));
@@ -371,10 +396,19 @@ const WeeklyChart = ({
       </p> */}
 
       {/* <p className="text">Total: {formatter.format(grandTotalVolume)}</p> */}
-      <p className="text">
-        Total: {formatter.format(Math.round(grandTotalVolume * 100) / 100)}
-      </p>
+      {/* <p className="text">
+        Total: {formatter.format(Math.round(grandTotalVolume * 100) / 100)} L
+      </p> */}
       {/* extra data */}
+
+      {/* Conditionally render total text or 'No data for this date' */}
+      <p className="text">
+        {grandTotalVolume === 0
+          ? "No records found for this date."
+          : `Total: ${formatter.format(
+              Math.round(grandTotalVolume * 100) / 100
+            )} L`}
+      </p>
     </div>
   );
 };

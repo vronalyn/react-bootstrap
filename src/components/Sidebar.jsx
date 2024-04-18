@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../css/Sidebar.css";
 import { useUserRole } from "../contexts/UserRoleContext";
 
-const Sidebar = ({ sidebarCollapsed }) => {
+const Sidebar = ({ sidebarCollapsed, id }) => {
   const { userRole } = useUserRole();
 
   return (
@@ -32,7 +32,7 @@ const Sidebar = ({ sidebarCollapsed }) => {
               </Link>
             </li>
           )}
-          <li className="sidebar-item">
+          <li className="sidebar-item" id="step-five">
             <a
               href="#"
               className="sidebar-link collapsed"
@@ -60,7 +60,7 @@ const Sidebar = ({ sidebarCollapsed }) => {
               </li>
             </ul>
           </li>
-          <li className="sidebar-item">
+          <li className="sidebar-item" id="step-six">
             <a
               href="#"
               className="sidebar-link collapsed"

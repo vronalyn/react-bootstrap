@@ -16,7 +16,7 @@ import "../css/log.css";
 import Swal from "sweetalert2";
 import { useAuth } from "../contexts/authContext";
 
-const Logs = ({ goals, setGoals }) => {
+const Logs = ({ goals, setGoals, id }) => {
   const { currentUser } = useAuth();
   const [showGoalAlert, setShowGoalAlert] = useState(false);
   // const [goals, setGoals] = useState([]);
@@ -312,7 +312,10 @@ const Logs = ({ goals, setGoals }) => {
   };
 
   return (
-    <div className="card widget-card border-light shadow-sm overflow-auto">
+    <div
+      className="card widget-card border-light shadow-sm overflow-auto"
+      id={id}
+    >
       <div className="card-body p-4">
         <div className="d-flex justify-content-between mb-4">
           <h5 className="card-title widget-card-title mb-4">Goal Limit</h5>
