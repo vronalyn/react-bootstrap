@@ -11,6 +11,8 @@ import Realtime from "../components/Realtime";
 import TotalHourly from "./TotalHourly";
 // import Joyride, { STATUS } from "react-joyride";
 import TutorialProcess from "../components/TutorialProcess";
+import TotalMonthly from "./TotalMonthly";
+import PieMonthly from "./PieMonthly";
 
 const Dashboard = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -218,10 +220,13 @@ const Dashboard = () => {
                   <TotalHourly id="step-three" />
 
                   <TotalWeekly id="step-four" />
+
+                  <TotalMonthly />
                 </div>
 
                 <div className="col-md-4">
                   <Logs goals={goals} setGoals={setGoals} id="step-two" />
+                  <PieMonthly />
                 </div>
               </div>
             </div>

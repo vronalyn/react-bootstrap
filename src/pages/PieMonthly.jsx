@@ -11,9 +11,9 @@ import {
   getDocs,
 } from "@firebase/firestore";
 import { db } from "../firebase/firebase";
-import MonthlyChart2 from "../components/MonthlyChart2";
+import PieMothlyChart from "../components/PieMothlyChart";
 
-const TotalMonthly = () => {
+const PieMonthly = () => {
   // added
   const [selectedMonth, setSelectedMonth] = useState("");
   const [dateRange, setDateRange] = useState({ start: "", end: "" });
@@ -315,68 +315,68 @@ const TotalMonthly = () => {
   return (
     <div className="card widget-card border-light shadow-sm">
       <div className="card-body p-4">
-        <div className="d-block d-sm-flex align-items-center justify-content-between mb-3">
-          <div className="mb-3 mb-sm-0">
-            <h5 className="card-title widget-card-title">Last 30 days</h5>
-            <p>Total Water Consumption</p>
-            <p className="date">
-              <i
-                className="bx bx-chevron-left icon-left"
-                onClick={handlePrevMonth}
-              ></i>
-              <span className="mx-1">{`${formattedStartDate} - ${formattedEndDate}`}</span>
-              <i
-                className="bx bx-chevron-right icon-right"
-                onClick={handleNextMonth}
-              ></i>
-            </p>
-          </div>
-          <div>
-            {/* <select className="form-select text-secondary border-light-subtle ">
+        <div className="d-flex justify-content-between mb-4">
+          <h5 className="card-title widget-card-title">Last 30 Days</h5>
+        </div>
+        <p>Total Water Consumption</p>
+        <p className="date">
+          <i
+            className="bx bx-chevron-left icon-left"
+            onClick={handlePrevMonth}
+          ></i>
+          <span className="mx-1">{`${formattedStartDate} - ${formattedEndDate}`}</span>
+          <i
+            className="bx bx-chevron-right icon-right"
+            onClick={handleNextMonth}
+          ></i>
+        </p>
+        {/* </div> */}
+        <div>
+          {/* <select className="form-select text-secondary border-light-subtle ">
               <option selected>Right Tank</option>
               <option value="1">Left Tank</option>
             </select> */}
-            <div className="form-card">
-              <form action="POST">
-                <input
-                  type="month"
-                  id="monthDorm"
-                  name="monthDorm"
-                  value={selectedMonth}
-                  onChange={handleMonthChange}
-                />
+          <div className="form-card">
+            <form action="POST">
+              <input
+                type="month"
+                id="monthDorm"
+                name="monthDorm"
+                value={selectedMonth}
+                onChange={handleMonthChange}
+              />
 
-                {/* {isLoading && <p className="loading">Loading data...</p>} */}
-              </form>
-            </div>
+              {/* {isLoading && <p className="loading">Loading data...</p>} */}
+            </form>
           </div>
         </div>
-
-        {/* Conditionally render MonthlyChart or a loading message */}
-        {isLoading ? (
-          <div
-            className="d-flex justify-content-center align-items-center"
-            style={{ height: "400px" }}
-          >
-            <p className="text-center">Loading chart data, please wait...</p>
-          </div>
-        ) : (
-          <MonthlyChart2
-            height={400}
-            type="line"
-            // dateRange={dateRange}
-            rightCCSTotal={CCSRightData}
-            leftCCSTotal={CCSLeftData}
-            rightDormTotal={DormRightData}
-            leftDormTotal={DormLeftData}
-            tankLocation="Total"
-          />
-        )}
-
-        <div id="bsb-chart-1"></div>
       </div>
+
+      {/* Conditionally render MonthlyChart or a loading message */}
+      {isLoading ? (
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{ height: "400px" }}
+        >
+          <p className="text-center">Loading chart data, please wait...</p>
+        </div>
+      ) : (
+        <PieMothlyChart
+          height={400}
+          type="pie"
+          // dateRange={dateRange}
+          rightCCSTotal={CCSRightData}
+          leftCCSTotal={CCSLeftData}
+          rightDormTotal={DormRightData}
+          leftDormTotal={DormLeftData}
+          tankLocation="Total"
+        />
+      )}
+
+      <div id="bsb-chart-1"></div>
     </div>
+    // </div>
   );
 };
 
-export default TotalMonthly;
+export default PieMonthly;
