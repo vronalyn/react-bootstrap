@@ -222,7 +222,7 @@ function Users() {
           <div className="container-fluid">
             <div className="mb-3">
               <h1 className="fw-bold">Users</h1>
-              <nav aria-label="breadcrumb">
+              {/* <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
                     <a href="#">Home</a>
@@ -231,7 +231,7 @@ function Users() {
                     Profile
                   </li>
                 </ol>
-              </nav>
+              </nav> */}
             </div>
 
             <div className="">

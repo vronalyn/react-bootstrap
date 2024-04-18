@@ -128,7 +128,7 @@ function Profile() {
           <div className="container-fluid">
             <div className="mb-3">
               <h1 className="fw-bold">Profile</h1>
-              <nav aria-label="breadcrumb">
+              {/* <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
                     <a href="#">Home</a>
@@ -137,7 +137,7 @@ function Profile() {
                     Profile
                   </li>
                 </ol>
-              </nav>
+              </nav> */}
             </div>
 
             <div className=" mt-5 ">

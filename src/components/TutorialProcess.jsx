@@ -13,13 +13,13 @@ const TutorialProcess = ({ run, setRun }) => {
             <div
               className="rounded-circle bg-light d-flex align-items-center justify-content-center"
               style={{
-                width: "40px",
-                height: "40px",
+                width: "60px",
+                height: "60px",
                 boxShadow:
                   "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset",
               }}
             >
-              <i class="bx bxs-droplet text-primary fs-3"></i>
+              <i class="bx bxs-droplet text-primary fs-1"></i>
             </div>
           </div>
           <span className=" fs-4 fw-bold text-black ">Welcome to WaterMS</span>
@@ -70,20 +70,17 @@ const TutorialProcess = ({ run, setRun }) => {
     {
       content: (
         <div className="w-100 ">
-          <span className=" fs-4 fw-bold text-black ">
-            Water Usage Alert System{" "}
-          </span>
+          <span className=" fs-4 fw-bold text-black ">Realtime Chart </span>
           <p className="mt-3 fs-6 fw-light text-black  ">
-            Monitor water consumption levels in real-time and track usage
-            patterns, receiving system alerts when consumption exceeds
-            predefined thresholds.
+            Explore real-time water consumption data through dynamic visual
+            charts.
           </p>
         </div>
       ),
       locale: { skip: <div className=" ws text-uppercase  ">Skip TOur</div> },
-      placement: "right-start",
+      placement: "top",
       target: "#step-three",
-      title: "Chart Labels",
+      // title: "Chart Labels",
     },
     {
       content: (
@@ -160,7 +157,7 @@ const TutorialProcess = ({ run, setRun }) => {
   const handleJoyrideCallback = (data) => {
     const { status } = data;
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
-      localStorage.setItem("joyrideCompleted", "false");
+      localStorage.setItem("joyrideCompleted", "true");
       setRun(false);
     }
   };

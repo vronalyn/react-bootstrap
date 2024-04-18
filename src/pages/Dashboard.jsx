@@ -177,7 +177,7 @@ const Dashboard = () => {
             <div className="container-fluid">
               <div className="mb-3">
                 <h1 className="fw-bold">Dashboard</h1>
-                <nav aria-label="breadcrumb">
+                {/* <nav aria-label="breadcrumb">
                   <ol className="breadcrumb">
                     <li className="breadcrumb-item">
                       <a href="#">Home</a>
@@ -186,14 +186,14 @@ const Dashboard = () => {
                       Dashboard
                     </li>
                   </ol>
-                </nav>
+                </nav> */}
               </div>
 
               <Cards goals={goals} setGoals={setGoals} id="step-one" />
 
               <div className="row">
                 <div className="col-md-8">
-                  <div className="row mb-4">
+                  <div className="row mb-4" id="step-three">
                     <div className="col-md-12 d-flex align-items-center">
                       <div className="col-8 col-md-8">
                         <div className="heading-text">
@@ -206,16 +206,15 @@ const Dashboard = () => {
                         </div>
                       </div>
 
-                      <div className="col-4 col-md-4 ">
+                      {/* <div className="col-4 col-md-4 ">
                         <div className="d-flex justify-content-end ">
                           <a href="#">view all</a>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
+                    <TotalHourly />
                   </div>
                   {/* added */}
-
-                  <TotalHourly id="step-three" />
 
                   <TotalWeekly id="step-four" />
                 </div>
@@ -226,6 +225,28 @@ const Dashboard = () => {
               </div>
             </div>
           </main>
+        </div>
+      </div>
+      <div
+        className="floating-btn"
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          zIndex: "1000",
+        }}
+      >
+        <div
+          onClick={() => {
+            startTutorial();
+          }}
+          className="btn btn-dark  rounded-circle d-flex align-items-center justify-content-center "
+          style={{
+            width: "50px",
+            height: "50px",
+          }}
+        >
+          <i className="bx bx-bulb fs-3 text-primary"></i>
         </div>
       </div>
     </div>

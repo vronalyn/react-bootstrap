@@ -36,7 +36,7 @@ function BillingPage() {
           <div className="container-fluid">
             <div className="mb-3">
               <h1 className="fw-bold">Billing Management</h1>
-              <nav aria-label="breadcrumb">
+              {/* <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
                     <a href="#">Home</a>
@@ -45,7 +45,7 @@ function BillingPage() {
                     Billing Management
                   </li>
                 </ol>
-              </nav>
+              </nav> */}
             </div>
 
             <div className=" mt-5 d-flex align-items-center justify-content-center ">

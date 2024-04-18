@@ -25,9 +25,7 @@ function App() {
 
   const RequireRole = ({ allowedRoles, children }) => {
     const userRoles = userRole ? userRole.role : null;
-    return allowedRoles.includes(userRole)
-      ? children
-      : "you are restricted for this pages";
+    return allowedRoles.includes(userRole) ? children : <Error404 />;
   };
 
   return (
@@ -73,7 +71,7 @@ function App() {
         />
 
         <Route
-          path="/billing"
+          path="/billing/detail"
           element={
             <RequireAuth>
               <BillingPage />

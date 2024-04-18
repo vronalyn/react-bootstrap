@@ -102,10 +102,14 @@ const Sidebar = ({ sidebarCollapsed, id }) => {
             </ul>
           </li>
           <li className="sidebar-item">
-            <NavLink to="/billing" className="sidebar-link">
+            <Link
+              to="/billing/detail"
+              className="sidebar-link"
+              // activeClassName="active"
+            >
               <i className="bx bx-receipt pe-2 align-middle"></i>
               <span className="align-middle">Billing Management</span>
-            </NavLink>
+            </Link>
           </li>
           <li className="sidebar-header">Misc</li>
           <li className="sidebar-item">
