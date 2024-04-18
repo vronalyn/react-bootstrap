@@ -79,7 +79,7 @@ const Navbar2 = ({ toggleSidebar, startTutorial, id }) => {
 
       <div className="navbar-collapse navbar ">
         <ul className="navbar-nav navbar-align">
-          {/* <button
+          <button
             className="btn bg-transparent"
             id="sidebar-toggle"
             type="button"
@@ -88,7 +88,7 @@ const Navbar2 = ({ toggleSidebar, startTutorial, id }) => {
             }}
           >
             <i className="bi bi-question-circle align-middle fs-5"></i>
-          </button> */}
+          </button>
           <div className="dropdown me-2 ">
             <button
               // onClick={toggleDropdown}

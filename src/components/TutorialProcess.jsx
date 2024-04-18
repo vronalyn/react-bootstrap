@@ -5,130 +5,137 @@ const TutorialProcess = ({ run, setRun }) => {
   // const [run, setRun] = useState(false);
   const steps = [
     {
-      content: <h2>Enhance Your Experience: WaterMS Assistance Tool</h2>,
-      locale: { skip: <strong>SKIP</strong> },
+      // content: <h2>Enhance Your Experience: WaterMS Assistance Tool</h2>,
+
+      content: (
+        <div className="w-100 ">
+          <div className=" d-flex align-items-center justify-content-center mb-3">
+            <div
+              className="rounded-circle bg-light d-flex align-items-center justify-content-center"
+              style={{
+                width: "40px",
+                height: "40px",
+                boxShadow:
+                  "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset",
+              }}
+            >
+              <i class="bx bxs-droplet text-primary fs-3"></i>
+            </div>
+          </div>
+          <span className=" fs-4 fw-bold text-black ">Welcome to WaterMS</span>
+          <p className="mt-3 fs-6 fw-light ">
+            Let's take a quick tour to help you get familiar with our features
+            and how to make the most out of your experience.
+          </p>
+        </div>
+      ),
+      locale: { skip: <div className=" ws text-uppercase  ">Skip TOur</div> },
       placement: "center",
       target: "body",
     },
     {
-      content: <p>insert description here</p>,
-      locale: { skip: <strong>SKIP</strong> },
+      content: (
+        <div className="w-100 ">
+          <span className=" fs-4 fw-bold text-black ">
+            Water Usage Threshold Setting
+          </span>
+          <p className="mt-3 fs-6 fw-light ">
+            Set your desired usage threshold to receive alerts when water
+            consumption reaches a specified limit.
+          </p>
+        </div>
+      ),
+      locale: { skip: <div className=" ws text-uppercase  ">Skip TOur</div> },
       placement: "bottom",
       target: "#step-one",
-      title: "Goal Alert System",
-    },
-    {
-      content: <p>insert description here</p>,
-      locale: { skip: <strong>SKIP</strong> },
-      placement: "left-start",
-      target: "#step-two",
-      title: "Goal Alert Logs",
+      // title: "Water Usage Threshold Setting",
     },
     {
       content: (
-        <div style={{ textAlign: "justify" }}>
-          <p>This chart displays data over varying periods:</p>
-          <ul>
-            <li>
-              <strong>Last 24 hours</strong>: Data from the most recent day,
-              offering a granular view of daily trends.
-            </li>
-            <li>
-              <strong>Last 7 days</strong>: A week's data, providing insights
-              into weekly patterns and anomalies.
-            </li>
-            <li>
-              <strong>Last 30 days</strong>: Monthly data, ideal for identifying
-              broader trends and seasonal effects.
-            </li>
-          </ul>
+        <div className="w-100 ">
+          <span className=" fs-4 fw-bold text-black ">
+            Water Usage Alert System{" "}
+          </span>
+          <p className="mt-3 fs-6 fw-light text-black  ">
+            Monitor water consumption levels in real-time and track usage
+            patterns, receiving system alerts when consumption exceeds
+            predefined thresholds.
+          </p>
         </div>
       ),
-      locale: { skip: <strong>SKIP</strong> },
+      locale: { skip: <div className=" ws text-uppercase  ">Skip TOur</div> },
+      placement: "left-start",
+      target: "#step-two",
+    },
+    {
+      content: (
+        <div className="w-100 ">
+          <span className=" fs-4 fw-bold text-black ">
+            Water Usage Alert System{" "}
+          </span>
+          <p className="mt-3 fs-6 fw-light text-black  ">
+            Monitor water consumption levels in real-time and track usage
+            patterns, receiving system alerts when consumption exceeds
+            predefined thresholds.
+          </p>
+        </div>
+      ),
+      locale: { skip: <div className=" ws text-uppercase  ">Skip TOur</div> },
       placement: "right-start",
       target: "#step-three",
       title: "Chart Labels",
     },
     {
       content: (
-        <div style={{ textAlign: "justify" }}>
-          <p>
-            This interactive date selector allows you to navigate through time
-            to review data by week or month:
-          </p>
-          <ul>
-            <li>
-              <strong>Previous Period</strong>: Click the left arrow
-              <span
-                style={{
-                  backgroundColor: "#dcdcdc",
-                  padding: ".3rem .4rem",
-                  borderRadius: ".4rem",
-                  margin: ".2rem",
-                }}
-              >
-                <i className="bx bx-chevron-left"></i>
-              </span>
-              to move to the earlier week or month, depending on your current
-              view.
-            </li>
-            <li>
-              <strong>Next Period</strong>: Click the right arrow
-              <span
-                style={{
-                  backgroundColor: "#dcdcdc",
-                  padding: ".3rem .4rem",
-                  borderRadius: ".4rem",
-                  margin: ".2rem",
-                }}
-              >
-                <i className="bx bx-chevron-right"></i>
-              </span>
-              to advance to the next week or month, aligning with your
-              selection.
-            </li>
-          </ul>
-          <p>
-            The date range displayed between the arrows shows the start and end
-            dates of the current period you are viewing, whether it's a week or
-            a month.
+        <div className="w-100 ">
+          <span className=" fs-4 fw-bold text-black ">
+            Water Usage Alert System{" "}
+          </span>
+          <p className="mt-3 fs-6 fw-light text-black  ">
+            Monitor water consumption levels in real-time and track usage
+            patterns, receiving system alerts when consumption exceeds
+            predefined thresholds.
           </p>
         </div>
       ),
-      locale: { skip: <strong>SKIP</strong> },
+      locale: { skip: <div className=" ws text-uppercase  ">Skip TOur</div> },
+
       placement: "right-start",
       target: "#step-four",
       title: "Date Selection",
     },
     {
       content: (
-        <div style={{ textAlign: "justify" }}>
-          <p>
-            To view detailed insights and analytics for specific buildings,
-            explore to identify trends and opportunities for efficiency
-            improvements.
+        <div className="w-100 ">
+          <span className=" fs-4 fw-bold text-black ">
+            Building Water Usage Insights{" "}
+          </span>
+          <p className="mt-3 fs-6 fw-light text-black  ">
+            View water consumption data for individual buildings to track
+            trends, identify anomalies, and assess performance over time.{" "}
           </p>
         </div>
       ),
-      locale: { skip: <strong>SKIP</strong> },
+      locale: { skip: <div className=" ws text-uppercase  ">Skip TOur</div> },
       placement: "right-start",
       target: "#step-five",
-      title: "Explore Insights: Building",
+      // title: "Explore Insights: Building",
     },
     {
       content: (
-        <div style={{ textAlign: "justify" }}>
-          <p>
-            To view total water consumption data across all buildings,
-            categorized by weekly and monthly periods, this feature enables you
-            to compare consumptions.
+        <div className="w-100 ">
+          <span className=" fs-4 fw-bold text-black ">
+            Water Consumption Trends{" "}
+          </span>
+          <p className="mt-3 fs-6 fw-light text-black  ">
+            View historical data trends to identify patterns and fluctuations in
+            water usage over time
           </p>
         </div>
       ),
-      locale: { skip: <strong>SKIP</strong> },
+      locale: { skip: <div className=" ws text-uppercase  ">Skip TOur</div> },
       placement: "right-start",
       target: "#step-six",
-      title: "Explore Insights: Analytics",
     },
     // {
     //   content: (
@@ -153,7 +160,7 @@ const TutorialProcess = ({ run, setRun }) => {
   const handleJoyrideCallback = (data) => {
     const { status } = data;
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
-      localStorage.setItem("joyrideCompleted", "true");
+      localStorage.setItem("joyrideCompleted", "false");
       setRun(false);
     }
   };
@@ -168,6 +175,17 @@ const TutorialProcess = ({ run, setRun }) => {
       scrollToFirstStep
       showSkipButton
       showProgress
+      styles={{
+        options: {
+          // arrowColor: "#e3ffeb",
+          // backgroundColor: "#e3ffeb",
+          // overlayColor: "rgba(79, 26, 0, 0.4)",
+          primaryColor: "#0d6efd",
+          textColor: "black",
+          width: 600,
+          zIndex: 1000,
+        },
+      }}
     />
   );
 };
