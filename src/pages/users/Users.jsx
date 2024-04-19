@@ -222,6 +222,11 @@ function Users() {
           <div className="container-fluid">
             <div className="mb-3">
               <h1 className="fw-bold">Users</h1>
+              <p className="fs-7 w-75">
+                User management empowers you to efficiently oversee and control
+                access to your system. Easily add, remove, or modify user
+                accounts, ensuring streamlined operations and enhanced security.
+              </p>
               {/* <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">

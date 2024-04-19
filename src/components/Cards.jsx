@@ -126,13 +126,13 @@ const Cards = ({ goals, setGoals, id }) => {
                     <div className="row">
                       <div className="col-12">
                         <div className="d-flex align-items-center mt-3">
-                          <span className="lh-1 me-3 bg-success-subtle text-danger rounded-circle p-1 d-flex align-items-center justify-content-center">
+                          {/* <span className="lh-1 me-3 bg-success-subtle text-danger rounded-circle p-1 d-flex align-items-center justify-content-center">
                             <i className="bi bi-arrow-down-short text-success"></i>
-                          </span>
+                          </span> */}
                           <div>
-                            <p className="badge text-success p-0 fs-7 mb-0">
+                            {/* <p className="badge text-success p-0 fs-7 mb-0">
                               -9%
-                            </p>
+                            </p> */}
                             <br />
                             <p className="fs-7 mb-0 badge text-secondary p-0">
                               {format(item.month.toDate(), "'As of' MMMM yyyy")}
@@ -171,13 +171,13 @@ const Cards = ({ goals, setGoals, id }) => {
                     <div className="row">
                       <div className="col-12">
                         <div className="d-flex align-items-center mt-3">
-                          <span className="lh-1 me-3 bg-success-subtle text-danger rounded-circle p-1 d-flex align-items-center justify-content-center">
+                          {/* <span className="lh-1 me-3 bg-success-subtle text-danger rounded-circle p-1 d-flex align-items-center justify-content-center">
                             <i className="bi bi-arrow-down-short bsb-rotate-45 text-success "></i>
-                          </span>
+                          </span> */}
                           <div>
-                            <p className="badge text-success p-0 fs-7 mb-0">
+                            {/* <p className="badge text-success p-0 fs-7 mb-0">
                               -20%
-                            </p>
+                            </p> */}
                             <br />
 
                             <p className="fs-7 mb-0 badge text-secondary p-0">
@@ -197,10 +197,11 @@ const Cards = ({ goals, setGoals, id }) => {
                   <div className="row">
                     <div className="col-8">
                       <h5 className="card-title widget-card-title fs-6 mb-3">
-                        Goal
+                        Water Usage Alert Thresholds
                       </h5>
                       <p className="card-subtitle p-0 fs-7 text-secondary m-0">
-                        Enter your desired monthly water consumption
+                        Set your threshold to receive alerts at your specified
+                        limit.
                       </p>
                     </div>
                     <div className="col-4">
@@ -234,7 +235,7 @@ const Cards = ({ goals, setGoals, id }) => {
                       <div className="modal-content">
                         <div className="modal-header">
                           <h5 className="modal-title" id="exampleModalLabel">
-                            Goal
+                            Water Usage Alert Thresholds
                           </h5>
                           <button
                             type="button"
@@ -271,14 +272,14 @@ const Cards = ({ goals, setGoals, id }) => {
                               </select>
                             </div>
 
-                            <div className="mb-5">
+                            <div className="mb-5 w-100">
                               <label htmlFor="goalInput" className="form-label">
                                 Enter your goal (liters):
                               </label>
                               <div className="input-group">
                                 <input
                                   type="number"
-                                  className="form-control"
+                                  className="form-control w-75 "
                                   id="goalInput"
                                   required
                                   value={goalLiters}
@@ -286,49 +287,66 @@ const Cards = ({ goals, setGoals, id }) => {
                                     setGoalLiters(e.target.value)
                                   }
                                 />
-                                <span
+                                <select
+                                  class="form-select w-25"
+                                  id="inputGroup"
+                                  style={{ width: "20px" }}
+                                >
+                                  <option selected>Liter</option>
+                                  <option value="1">Gallon</option>
+                                  <option value="3">cm&sup3;</option>
+                                </select>
+                                {/* <span
                                   className="input-group-text"
                                   id="goalHelp"
                                 >
                                   liters
-                                </span>
+                                </span> */}
                               </div>
                             </div>
-                            <div className="form-check form-switch form-check-reverse d-flex gap-5 ">
-                              <div>
-                                <label
-                                  className="form-check-label"
-                                  htmlFor="goalToggle"
-                                >
-                                  <h6>
-                                    Set a Percentage Level for Goal Alerts!
-                                  </h6>
-                                </label>
+                            <div>
+                              <div className="form-check form-switch form-check-reverse d-flex gap-5 ">
+                                <div>
+                                  <label
+                                    className="form-check-label"
+                                    htmlFor="goalToggle"
+                                  >
+                                    <h6>
+                                      Set a Percentage Level for Goal Alerts!
+                                    </h6>
+                                  </label>
+                                </div>
+                                <div className="">
+                                  <input
+                                    className="form-check-input border-2 border-black "
+                                    type="checkbox"
+                                    id="goalToggle"
+                                    role="switch"
+                                    checked={showGoalAlert}
+                                    onChange={handleToggleChange}
+                                  />
+                                </div>
                               </div>
-                              <div className="">
-                                <input
-                                  className="form-check-input"
-                                  type="checkbox"
-                                  id="goalToggle"
-                                  role="switch"
-                                  checked={showGoalAlert}
-                                  onChange={handleToggleChange}
-                                />
-                              </div>
+                              <p className="fs-7  fw-light ">
+                                By enabling this feature, you'll receive alerts
+                                for goal progress. This helps you stay informed
+                                and motivated as you track your progress towards
+                                achieving your goals.
+                              </p>
                             </div>
 
                             <div>
                               {showGoalAlert && (
                                 <div>
-                                  <div className=" mb-5 ">
-                                    <p className="fs-7 text-secondary ">
+                                  {/* <div className=" mb-5 ">
+                                    <p className="fs-7 text-secondary fw-light">
                                       Input a percentage to receive timely
                                       notifications and stay motivated as you
                                       achieve milestones. Customize your
                                       threshold, stay informed, and keep pushing
                                       towards your targets!"
                                     </p>
-                                  </div>
+                                  </div> */}
                                   <div className="d-flex justify-content-center">
                                     <div className="w-100 pe-lg-4  ps-lg-4 ">
                                       {errorMessage && (

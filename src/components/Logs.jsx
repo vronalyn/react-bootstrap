@@ -317,12 +317,21 @@ const Logs = ({ goals, setGoals, id }) => {
       id={id}
     >
       <div className="card-body p-4">
-        <div className="d-flex justify-content-between mb-4">
-          <h5 className="card-title widget-card-title mb-4">Goal Limit</h5>
-          <div>
-            <Clock format={"h:mm:ss A"} ticking={true} />
+        <div className="mb-4">
+          <div className="d-flex justify-content-between">
+            <h5 className="card-title widget-card-title">
+              Water Usage Alert Threshold
+            </h5>
+            <div className="">
+              <Clock format={"h:mm:ss A"} ticking={true} />
+            </div>
           </div>
+          <p className="fs-7 text-secondary mb-1">
+            Customize your water usage alert to monitor and manage it
+            effectively. Stay informed!
+          </p>
         </div>
+
         {/* Alert testing */}
         <div>
           {/* <button onClick={notify}>Notify!</button> */}
@@ -339,6 +348,7 @@ const Logs = ({ goals, setGoals, id }) => {
             <p>Total Water Usage: {currentWaterUsage}</p>
           </div>
         </div> */}
+
         <div
           className="row gy-4"
           style={{ maxHeight: "600px", overflowY: "auto" }}
@@ -351,7 +361,7 @@ const Logs = ({ goals, setGoals, id }) => {
                   <p className=" fw-medium  m-0 fs-5">{goal.goalLiters} L</p>
                   {goal.levelValue && (
                     <span className="d-flex align-items-center justify-content-center gap-2">
-                      <i className="bx bx-alarm text-info "></i>
+                      <i className="bx bx-alarm text-danger "></i>
                       <span className="text-secondary">{goal.levelValue}%</span>
                     </span>
                   )}

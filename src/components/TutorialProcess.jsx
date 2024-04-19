@@ -85,13 +85,15 @@ const TutorialProcess = ({ run, setRun }) => {
     {
       content: (
         <div className="w-100 ">
-          <span className=" fs-4 fw-bold text-black ">
+          {/* <span className=" fs-4 fw-bold text-black ">
             Water Usage Alert System{" "}
-          </span>
+          </span> */}
           <p className="mt-3 fs-6 fw-light text-black  ">
-            Monitor water consumption levels in real-time and track usage
-            patterns, receiving system alerts when consumption exceeds
-            predefined thresholds.
+            Use the arrow buttons or the Date Picker to navigate through dates.
+            Click the left arrow button to move to the previous date or month,
+            and click the right arrow button to move to the next date or month.
+            Alternatively, click the calendar icon to open the Date Picker and
+            select a specific date or date range.
           </p>
         </div>
       ),
@@ -99,7 +101,7 @@ const TutorialProcess = ({ run, setRun }) => {
 
       placement: "right-start",
       target: "#step-four",
-      title: "Date Selection",
+      title: "Date Navigation",
     },
     {
       content: (
@@ -134,17 +136,41 @@ const TutorialProcess = ({ run, setRun }) => {
       placement: "right-start",
       target: "#step-six",
     },
-    // {
-    //   content: (
-    //     <div style={{ textAlign: "justify" }}>
-    //       <p>Click this icon for helpful guidance and support .</p>
-    //     </div>
-    //   ),
-    //   locale: { skip: <strong>SKIP</strong> },
-    //   placement: "bottom",
-    //   target: "#step-seven",
-    //   title: "WaterMS Assistance Tool",
-    // },
+    {
+      content: (
+        <div className="w-100">
+          <span className="fs-4 fw-bold text-black">
+            Billing Management Overview
+          </span>
+          <p className="mt-3 fs-6 fw-light text-black">
+            Manage billing processes efficiently with WaterMS Billing
+            Management. Track billing details, rates, and payment history
+            seamlessly.
+          </p>
+        </div>
+      ),
+      locale: { skip: <div className="ws text-uppercase">Skip Tour</div> },
+      placement: "right-start",
+      target: "#step-seven",
+    },
+    {
+      content: (
+        <div className="w-100">
+          <span className="fs-4 fw-bold text-black">
+            You're Ready to Onboard in Our System!!
+          </span>
+          <p className="mt-3 fs-6 fw-light text-black">
+            If you'd like to receive guided assistance, simply click this
+            button. Our interactive tour will help you navigate through the
+            features and functionalities of the platform effortlessly.
+          </p>
+        </div>
+      ),
+      locale: { skip: <div className="ws text-uppercase">Skip Tour</div> },
+      placement: "bottom",
+      target: "#step-eight",
+      // title: "WaterMS Assistance Tool",
+    },
   ];
 
   useEffect(() => {

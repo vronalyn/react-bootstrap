@@ -44,7 +44,7 @@ main {
   border-bottom: 1px solid rgb(5, 109, 150);
 }
 
-.billingTab li.active {
+.activeTab {
   color: rgb(5, 109, 150);
   border-bottom: 1px solid rgb(5, 109, 150);
 }

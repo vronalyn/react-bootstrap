@@ -36,6 +36,12 @@ function BillingPage() {
           <div className="container-fluid">
             <div className="mb-3">
               <h1 className="fw-bold">Billing Management</h1>
+              <p className="fs-7 w-75">
+                Billing management provides you with the ability to effortlessly
+                view your monthly water bill details and track your billing
+                history. Stay informed and in control of your water expenses
+                with this convenient feature
+              </p>
               {/* <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
@@ -54,7 +60,7 @@ function BillingPage() {
                   {Object.keys(tabContent).map((tabName) => (
                     <li
                       key={tabName}
-                      className={` ${activeTab === tabName ? "active" : ""}`}
+                      className={` ${activeTab === tabName ? "activeTab" : ""}`}
                       onClick={() => handleTabClick(tabName)}
                     >
                       {tabName}

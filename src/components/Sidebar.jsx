@@ -101,15 +101,15 @@ const Sidebar = ({ sidebarCollapsed, id }) => {
               </li>
             </ul>
           </li>
-          <li className="sidebar-item">
-            <Link
-              to="/billing/detail"
+          <li className="sidebar-item " id="step-seven">
+            <NavLink
+              to="/billing"
               className="sidebar-link"
               // activeClassName="active"
             >
               <i className="bx bx-receipt pe-2 align-middle"></i>
               <span className="align-middle">Billing Management</span>
-            </Link>
+            </NavLink>
           </li>
           <li className="sidebar-header">Misc</li>
           <li className="sidebar-item">

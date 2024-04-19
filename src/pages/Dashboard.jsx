@@ -18,6 +18,7 @@ const Dashboard = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [goals, setGoals] = useState([]);
   const [runTutorial, setRunTutorial] = useState(false);
+  const [showBeginTour, setShowBeginTour] = useState(false);
 
   // const [{ run, steps }, setState] = useState({
   //   run: true,
@@ -237,21 +238,31 @@ const Dashboard = () => {
         style={{
           position: "fixed",
           bottom: "20px",
-          right: "20px",
+          right: "10px",
           zIndex: "1000",
+          width: "200px",
         }}
       >
-        <div
-          onClick={() => {
-            startTutorial();
-          }}
-          className="btn btn-dark  rounded-circle d-flex align-items-center justify-content-center "
-          style={{
-            width: "50px",
-            height: "50px",
-          }}
-        >
-          <i className="bx bx-bulb fs-3 text-primary"></i>
+        <div className="d-flex flex-column gap-1 align-items-center justify-content-center ">
+          {showBeginTour && (
+            <div className=" bg-dark-subtle p-2 rounded-1 fs-7">Begin Tour</div>
+          )}
+
+          <div
+            id="step-eight"
+            onClick={() => {
+              startTutorial();
+            }}
+            className="btn btn-dark  rounded-circle d-flex align-items-center justify-content-center "
+            style={{
+              width: "50px",
+              height: "50px",
+            }}
+            onMouseEnter={() => setShowBeginTour(true)}
+            onMouseLeave={() => setShowBeginTour(false)}
+          >
+            <i className="bx bx-bulb fs-3 text-primary"></i>
+          </div>
         </div>
       </div>
     </div>
