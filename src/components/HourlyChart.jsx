@@ -120,9 +120,7 @@ const HourlyChart = ({
         position: "top",
       },
       tooltip: {
-        style: {
-          fontSize: "14px",
-        },
+        x: {},
       },
       grid: {
         borderColor: "#f0f0f0",
@@ -419,79 +417,30 @@ const HourlyChart = ({
     tankLocation,
   ]);
 
-  // useEffect(() => {
-  //   if (rightDormTotal && leftDormTotal && rightCCSTotal && leftCCSTotal) {
-  //     // Calculate grand total for Dorm and CCS combined
-  //     const grandTotalCCS =
-  //       Object.values(rightCCSTotal).reduce(
-  //         (acc, data) =>
-  //           acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
-  //         0
-  //       ) +
-  //       Object.values(leftCCSTotal).reduce(
-  //         (acc, data) =>
-  //           acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
-  //         0
-  //       );
-
-  //     const grandTotalDorm =
-  //       Object.values(rightDormTotal).reduce(
-  //         (acc, data) =>
-  //           acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
-  //         0
-  //       ) +
-  //       Object.values(leftDormTotal).reduce(
-  //         (acc, data) =>
-  //           acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
-  //         0
-  //       );
-
-  //     // Calculate grand total by adding CCS and Dorm volumes
-  //     const grandTotal = grandTotalCCS + grandTotalDorm;
-
-  //     // Update state with the grand total volume
-  //     setGrandTotalVolume(grandTotal);
-  //   } else {
-  //     setGrandTotalVolume(0);
-  //   }
-  // }, [rightDormTotal, leftDormTotal, rightCCSTotal, leftCCSTotal]);
-
   useEffect(() => {
     if (rightDormTotal && leftDormTotal && rightCCSTotal && leftCCSTotal) {
       // Calculate grand total for Dorm and CCS combined
       const grandTotalCCS =
         Object.values(rightCCSTotal).reduce(
           (acc, data) =>
-            acc +
-            (isNaN(data)
-              ? 0
-              : data.reduce((acc, curr) => acc + curr.volume, 0)),
+            acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
           0
         ) +
         Object.values(leftCCSTotal).reduce(
           (acc, data) =>
-            acc +
-            (isNaN(data)
-              ? 0
-              : data.reduce((acc, curr) => acc + curr.volume, 0)),
+            acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
           0
         );
 
       const grandTotalDorm =
         Object.values(rightDormTotal).reduce(
           (acc, data) =>
-            acc +
-            (isNaN(data)
-              ? 0
-              : data.reduce((acc, curr) => acc + curr.volume, 0)),
+            acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
           0
         ) +
         Object.values(leftDormTotal).reduce(
           (acc, data) =>
-            acc +
-            (isNaN(data)
-              ? 0
-              : data.reduce((acc, curr) => acc + curr.volume, 0)),
+            acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
           0
         );
 
@@ -532,7 +481,7 @@ const HourlyChart = ({
       {/* <p className="text">Total: {formatter.format(grandTotalVolume)}</p> */}
 
       {/* <p className="text">
-        Total: {formatter.format(Math.round(grandTotalVolume * 100) / 100)} L
+        Total: {formatter.format(Math.round(grandTotalVolume * 100) / 100)}
       </p> */}
       <p className="text">
         {grandTotalVolume === 0
