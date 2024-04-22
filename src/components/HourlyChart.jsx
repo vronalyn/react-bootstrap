@@ -417,35 +417,86 @@ const HourlyChart = ({
     tankLocation,
   ]);
 
+  // useEffect(() => {
+  //   if (rightDormTotal && leftDormTotal && rightCCSTotal && leftCCSTotal) {
+  //     // Calculate grand total for Dorm and CCS combined
+  //     const grandTotalCCS =
+  //       Object.values(rightCCSTotal).reduce(
+  //         (acc, data) =>
+  //           acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
+  //         0
+  //       ) +
+  //       Object.values(leftCCSTotal).reduce(
+  //         (acc, data) =>
+  //           acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
+  //         0
+  //       );
+
+  //     const grandTotalDorm =
+  //       Object.values(rightDormTotal).reduce(
+  //         (acc, data) =>
+  //           acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
+  //         0
+  //       ) +
+  //       Object.values(leftDormTotal).reduce(
+  //         (acc, data) =>
+  //           acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
+  //         0
+  //       );
+
+  //     // Calculate grand total by adding CCS and Dorm volumes
+  //     const grandTotal = grandTotalCCS + grandTotalDorm;
+
+  //     // Update state with the grand total volume
+  //     setGrandTotalVolume(grandTotal);
+  //   } else {
+  //     setGrandTotalVolume(0);
+  //   }
+  // }, [rightDormTotal, leftDormTotal, rightCCSTotal, leftCCSTotal]);
+
   useEffect(() => {
     if (rightDormTotal && leftDormTotal && rightCCSTotal && leftCCSTotal) {
-      // Calculate grand total for Dorm and CCS combined
-      const grandTotalCCS =
-        Object.values(rightCCSTotal).reduce(
-          (acc, data) =>
-            acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
-          0
-        ) +
-        Object.values(leftCCSTotal).reduce(
-          (acc, data) =>
-            acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
-          0
+      // Get the last entry data for each location with volume greater than 0
+      const getLastEntryVolume = (data) => {
+        const lastEntry = Object.values(data).findLast(
+          (hourRangeData) =>
+            hourRangeData &&
+            hourRangeData.length > 0 &&
+            hourRangeData[hourRangeData.length - 1].volume > 0
         );
+        return lastEntry ? lastEntry[lastEntry.length - 1].volume : 0;
+      };
 
-      const grandTotalDorm =
-        Object.values(rightDormTotal).reduce(
-          (acc, data) =>
-            acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
-          0
-        ) +
-        Object.values(leftDormTotal).reduce(
-          (acc, data) =>
-            acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
-          0
-        );
+      // Get last entry volumes for each location
+      const rightCCSLastVolume = getLastEntryVolume(rightCCSTotal);
+      const leftCCSLastVolume = getLastEntryVolume(leftCCSTotal);
+      const rightDormLastVolume = getLastEntryVolume(rightDormTotal);
+      const leftDormLastVolume = getLastEntryVolume(leftDormTotal);
 
-      // Calculate grand total by adding CCS and Dorm volumes
-      const grandTotal = grandTotalCCS + grandTotalDorm;
+      // Format volumes before summing up
+      const formattedRightCCSLastVolume =
+        rightCCSLastVolume !== undefined ? rightCCSLastVolume.toFixed(2) : 0;
+      const formattedLeftCCSLastVolume =
+        leftCCSLastVolume !== undefined ? leftCCSLastVolume.toFixed(2) : 0;
+      const formattedRightDormLastVolume =
+        rightDormLastVolume !== undefined ? rightDormLastVolume.toFixed(2) : 0;
+      const formattedLeftDormLastVolume =
+        leftDormLastVolume !== undefined ? leftDormLastVolume.toFixed(2) : 0;
+
+      // Calculate grand total by summing formatted last entry volumes
+      const grandTotal =
+        parseFloat(formattedRightCCSLastVolume) +
+        parseFloat(formattedLeftCCSLastVolume) +
+        parseFloat(formattedRightDormLastVolume) +
+        parseFloat(formattedLeftDormLastVolume);
+
+      console.log(
+        "Formatted volumes:",
+        formattedRightCCSLastVolume,
+        formattedLeftCCSLastVolume,
+        formattedRightDormLastVolume,
+        formattedLeftDormLastVolume
+      );
 
       // Update state with the grand total volume
       setGrandTotalVolume(grandTotal);
