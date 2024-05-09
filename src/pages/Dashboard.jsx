@@ -13,6 +13,8 @@ import TotalHourly from "./TotalHourly";
 import TutorialProcess from "../components/TutorialProcess";
 import TotalMonthly from "./TotalMonthly";
 import PieMonthly from "./PieMonthly";
+import TotalYearly from "./TotalYearly";
+import PieYearly from "./PieYearly";
 
 const Dashboard = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -222,11 +224,14 @@ const Dashboard = () => {
                   <TotalWeekly id="step-four" />
 
                   <TotalMonthly />
+
+                  <TotalYearly />
                 </div>
 
                 <div className="col-md-4">
                   <Logs goals={goals} setGoals={setGoals} id="step-two" />
                   <PieMonthly />
+                  <PieYearly />
                 </div>
               </div>
             </div>
