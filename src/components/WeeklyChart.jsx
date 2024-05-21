@@ -63,15 +63,6 @@ const WeeklyChart = ({
           size: 8,
         },
       },
-      // plotOptions: {
-      //   bar: {
-      //     borderRadius: 6,
-      //     columnWidth: "60%",
-      //     dataLabels: {
-      //       position: "top",
-      //     },
-      //   },
-      // },
       xaxis: {
         type: "category", // Changed from datetime to category
         categories: ["Mon", "Tues", "Wed", "Thur", "Fri", "Sat", "Sun"], // Define the categories (days of the week)
@@ -126,32 +117,7 @@ const WeeklyChart = ({
         } else if (tankLocation === "DormLeft" || tankLocation === "CCSLeft") {
           tankData = left;
         }
-
-        // Calculate total volume for each entry
-        // const tankVolumes = Object.values(tankData).map((tankEntry) =>
-        //   (tankEntry.entries.length > 0
-        //     ? tankEntry.entries[0].volume
-        //     : 0
-        //   ).toFixed(2)
-        // );
-
-        // older version
-        // const tankVolumes = Object.values(tankData).map((tankEntry) => {
-        //   const volume = (
-        //     tankEntry.entries.length > 0 ? tankEntry.entries[0].volume : 0
-        //   ).toFixed(2);
-        //   grandTotalVolume += parseFloat(volume); // Add volume to grand total
-        //   return volume;
-        // });
-
-        // const tankVolumes = Object.values(tankData).map((tankEntry) => {
-        //   const volume =
-        //     tankEntry.entries.length > 0 ? tankEntry.entries[0].volume : 0;
-        //   const volumeToAdd = volume !== "" ? parseFloat(volume.toFixed(2)) : 0;
-        //   grandTotalVolume += volumeToAdd; // Add volume to grand total
-        //   return volumeToAdd;
-        // });
-
+        
         const tankVolumes = Object.values(tankData).map((tankEntry) => {
           const volume =
             tankEntry.entries.length > 0
@@ -187,14 +153,6 @@ const WeeklyChart = ({
           ],
         }));
       } else {
-        // If tankLocation is not provided, display data for both right and left tanks
-        // const totalVolumes = Object.values(right).map((rightEntry, index) => {
-        //   const totalRightVolume =
-        //     rightEntry.entries.length > 0 ? rightEntry.entries[0].volume : 0;
-        //   const totalLeftVolume =
-        //     left[index]?.entries.length > 0 ? left[index].entries[0].volume : 0;
-        //   return (totalRightVolume + totalLeftVolume).toFixed(2);
-        // });
         const totalVolumes = Object.values(right).map((rightEntry, index) => {
           const totalRightVolume =
             rightEntry.entries.length > 0 ? rightEntry.entries[0].volume : 0;
@@ -391,18 +349,6 @@ const WeeklyChart = ({
         type={type}
         height={height}
       />
-
-      {/* extra data */}
-      {/* <p>
-        Total:{" "}
-        {grandTotalVolume.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-      </p> */}
-
-      {/* <p className="text">Total: {formatter.format(grandTotalVolume)}</p> */}
-      {/* <p className="text">
-        Total: {formatter.format(Math.round(grandTotalVolume * 100) / 100)} L
-      </p> */}
-      {/* extra data */}
 
       {/* Conditionally render total text or 'No data for this date' */}
       <p className="text">
