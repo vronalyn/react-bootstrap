@@ -3,7 +3,6 @@ import ReactApexChart from "react-apexcharts";
 
 const PieYearlyChart = ({
   height,
-  // dateRange,
   type,
   tankLocation,
   data,
