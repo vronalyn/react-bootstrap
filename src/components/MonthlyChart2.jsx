@@ -106,32 +106,6 @@ const MonthlyChart2 = ({
     minimumFractionDigits: 2,
   });
 
-  // ==================================== to display the data in html
-  // useEffect(() => {
-  //   if (right && left) {
-  //     const rightVolumes = Object.values(right).map((week) =>
-  //       week.entries.reduce((acc, entry) => acc + entry.volume, 0)
-  //     );
-  //     const leftVolumes = Object.values(left).map((week) =>
-  //       week.entries.reduce((acc, entry) => acc + entry.volume, 0)
-  //     );
-
-  //     setState((prevState) => ({
-  //       ...prevState,
-  //       series: [
-  //         {
-  //           name: "Right",
-  //           data: rightVolumes,
-  //         },
-  //         {
-  //           name: "Left",
-  //           data: leftVolumes,
-  //         },
-  //       ],
-  //     }));
-  //   }
-  // }, [right, left]);
-
   // ========================= checking data
   useEffect(() => {
     console.log("Right Data:", rightCCSTotal);
