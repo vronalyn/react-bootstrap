@@ -31,14 +31,6 @@ const TotalHourly = ({ id }) => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
-  //   added
-  // useEffect(() => {
-  //   const dateValue = selectedDate || currentDate;
-  //   const date = new Date(dateValue);
-  //   setSpecificDate(date);
-  //   fetchData(date);
-  // }, [selectedDate, activeTab]);
-
   useEffect(() => {
     const dateValue = selectedDate || currentDate;
     const date = new Date(dateValue);
