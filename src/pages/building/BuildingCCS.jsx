@@ -19,8 +19,6 @@ import Weekly from "../Weekly";
 import Monthly from "../Monthly";
 
 const BuildingCCS = ({ activeTab }) => {
-  // Use JavaScript's Date object to get the current date
-  // and format it as "YYYY-MM-DD" for the input's initial value
   const currentDate = new Date().toISOString().split("T")[0];
 
   const [specificDate, setSpecificDate] = useState("");
@@ -35,14 +33,6 @@ const BuildingCCS = ({ activeTab }) => {
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
-
-  //   added
-  // useEffect(() => {
-  //   const dateValue = selectedDate || currentDate;
-  //   const date = new Date(dateValue);
-  //   setSpecificDate(date);
-  //   fetchData(date);
-  // }, [selectedDate, activeTab]);
 
   useEffect(() => {
     const dateValue = selectedDate || currentDate;
