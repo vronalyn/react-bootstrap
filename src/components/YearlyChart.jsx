@@ -97,47 +97,6 @@ const YearlyChart = ({
 
   //   ===================================================== total chart
 
-  // useEffect(() => {
-  //   if (tankLocation === "Total") {
-
-  //     setState((prevState) => ({
-  //       ...prevState,
-  //       series: [
-  //         {
-  //           ...prevState.series[3],
-  //           name: "CCS",
-  //           data: zerosArray,
-  //         },
-  //         {
-  //           ...prevState.series[4],
-  //           name: "Dorm",
-  //           data: zerosArray,
-  //         },
-  //       ],
-  //     }));
-  //   }
-  // }, [tankLocation]);
-
-  // useEffect(() => {
-  //   console.log("Yearly Chart Data:", data);
-  // }, [data]);
-
-  // useEffect(() => {
-  //   if (tankLocation === "Total") {
-  //     const monthlyVolumes = Object.keys(data).map((month) => data[month]);
-  //     setState((prevState) => ({
-  //       ...prevState,
-  //       series: [
-  //         {
-  //           ...prevState.series[0],
-  //           name: "Total",
-  //           data: monthlyVolumes,
-  //         },
-  //       ],
-  //     }));
-  //   }
-  // }, [data, tankLocation]);
-
   useEffect(() => {
     if (tankLocation === "Total") {
       const monthlyVolumes = Object.keys(data).map((month) => data[month]);
