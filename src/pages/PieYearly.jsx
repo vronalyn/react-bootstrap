@@ -122,29 +122,6 @@ const PieYearly = () => {
     ];
   };
 
-  // // Function to iterate over months within a year and extract month_total_volume
-  // const extractMonthlyVolumes = (monthlyArrays) => {
-  //   const monthsInYear = generateMonths();
-  //   const monthlyDates = [];
-  //   const yearlyVolumes = {};
-
-  //   // Iterate over each monthly array
-  //   monthlyArrays.forEach((monthlyArray) => {
-  //     // Iterate over each report in the monthly array
-  //     monthlyArray.forEach((report) => {
-  //       // Extract the month_date
-  //       const monthDate = report.month_date;
-  //       // Add the month_date to the monthlyDates array if it's not already there
-  //       if (!monthlyDates.includes(monthDate)) {
-  //         monthlyDates.push(monthDate);
-  //       }
-  //     });
-  //   });
-
-  //   // Now monthlyDates contains all unique month dates
-  //   console.log("Monthly Dates:", monthlyDates);
-  // };
-
   // Function to iterate over months within a year and extract month_total_volume
   const extractMonthlyVolumes = (monthlyArrays) => {
     const monthsInYear = generateMonths();
