@@ -55,16 +55,6 @@ const HourlyChart = ({
         title: {
           text: "Time",
         },
-        // categories: Object.keys(right).map((hourRange) => {
-        //   const [start, end] = hourRange.split("-");
-        //   return `${new Date(start).toLocaleString("en-US", {
-        //     hour: "numeric",
-        //     hour12: true,
-        //   })}-${new Date(end).toLocaleString("en-US", {
-        //     hour: "numeric",
-        //     hour12: true,
-        //   })}`;
-        // }), // Format each hour range as 1AM-2AM
         categories: [
           "8AM-9AM",
           "9AM-10AM",
@@ -102,11 +92,6 @@ const HourlyChart = ({
           text: "Volume",
         },
         opposite: false,
-        // labels: {
-        //   formatter: function (value) {
-        //     return parseInt(value);
-        //   },
-        // },
         labels: {
           style: {
             fontSize: "10px", // Adjust the font size here
@@ -125,108 +110,8 @@ const HourlyChart = ({
       grid: {
         borderColor: "#f0f0f0",
       },
-      // colors: ["#ACE1AF", "#FBEC5D", "#FFbf00"],
-      // colors: ["#2D4B8A", "#3C63C6", "#FFC100"],
     },
   });
-
-  // useEffect(() => {
-  //   const rightVolumes = Object.values(right).map((data) =>
-  //     data.reduce((acc, curr) => acc + curr.volume, 0)
-  //   );
-  //   const leftVolumes = Object.values(left).map((data) =>
-  //     data.reduce((acc, curr) => acc + curr.volume, 0)
-  //   );
-  //   setState((prevState) => ({
-  //     ...prevState,
-  //     series: [
-  //       {
-  //         ...prevState.series[0],
-  //         data: rightVolumes,
-  //       },
-  //       {
-  //         ...prevState.series[1],
-  //         data: leftVolumes,
-  //       },
-  //     ],
-  //   }));
-  // }, [right, left]);
-
-  // useEffect(() => {
-  //   // Calculate total volume for each hour range
-  //   const totalVolumes = Object.keys(right).map((hourRange, index) => {
-  //     const totalRightVolume = right[hourRange].reduce(
-  //       (acc, curr) => acc + curr.volume,
-  //       0
-  //     );
-  //     const totalLeftVolume = left[hourRange].reduce(
-  //       (acc, curr) => acc + curr.volume,
-  //       0
-  //     );
-  //     return totalRightVolume + totalLeftVolume;
-  //   });
-
-  //   setState((prevState) => ({
-  //     ...prevState,
-  //     series: [
-  //       {
-  //         ...prevState.series[0],
-  //         data: Object.values(right).map((data) =>
-  //           data.reduce((acc, curr) => acc + curr.volume, 0)
-  //         ),
-  //       },
-  //       {
-  //         ...prevState.series[1],
-  //         data: Object.values(left).map((data) =>
-  //           data.reduce((acc, curr) => acc + curr.volume, 0)
-  //         ),
-  //       },
-  //       {
-  //         ...prevState.series[2],
-  //         data: totalVolumes,
-  //       },
-  //     ],
-  //   }));
-  // }, [right, left]);
-
-  // useEffect(() => {
-  //   if (right && left) {
-  //     // Calculate total volume for each hour range
-  //     const totalVolumes = Object.keys(right).map((hourRange, index) => {
-  //       const totalRightVolume = right[hourRange]?.reduce(
-  //         (acc, curr) => acc + curr.volume,
-  //         0
-  //       );
-  //       const totalLeftVolume = left[hourRange]?.reduce(
-  //         (acc, curr) => acc + curr.volume,
-  //         0
-  //       );
-  //       return (totalRightVolume || 0) + (totalLeftVolume || 0);
-  //     });
-
-  //     setState((prevState) => ({
-  //       ...prevState,
-  //       series: [
-  //         {
-  //           ...prevState.series[0],
-  //           data: Object.values(right).map((data) =>
-  //             (data || []).reduce((acc, curr) => acc + curr.volume, 0)
-  //           ),
-  //         },
-  //         {
-  //           ...prevState.series[1],
-  //           data: Object.values(left).map((data) =>
-  //             (data || []).reduce((acc, curr) => acc + curr.volume, 0)
-  //           ),
-  //         },
-  //         {
-  //           ...prevState.series[2],
-  //           data: totalVolumes,
-  //         },
-  //       ],
-  //     }));
-  //   }
-  // }, [right, left]);
 
   useEffect(() => {
     if (right && left) {
@@ -275,27 +160,6 @@ const HourlyChart = ({
     console.log("Right Data:", right);
     console.log("Left Data:", left);
   }, [right, left]);
-
-  // useEffect(() => {
-  //   if (state.series[2].data.length > 0) {
-  //     // Find the last entry with total volume greater than 0
-  //     let lastIndex = state.series[2].data.length - 1;
-  //     while (
-  //       lastIndex >= 0 &&
-  //       parseFloat(state.series[2].data[lastIndex]) <= 0
-  //     ) {
-  //       lastIndex--;
-  //     }
-  //     // Set the grand total volume
-  //     if (lastIndex >= 0) {
-  //       setGrandTotalVolume(parseFloat(state.series[2].data[lastIndex]));
-  //     } else {
-  //       setGrandTotalVolume(0);
-  //     }
-  //   } else {
-  //     setGrandTotalVolume(0);
-  //   }
-  // }, [state.series[2].data]);
 
   useEffect(() => {
     if (right && left) {
@@ -416,43 +280,6 @@ const HourlyChart = ({
     leftCCSTotal,
     tankLocation,
   ]);
-
-  // useEffect(() => {
-  //   if (rightDormTotal && leftDormTotal && rightCCSTotal && leftCCSTotal) {
-  //     // Calculate grand total for Dorm and CCS combined
-  //     const grandTotalCCS =
-  //       Object.values(rightCCSTotal).reduce(
-  //         (acc, data) =>
-  //           acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
-  //         0
-  //       ) +
-  //       Object.values(leftCCSTotal).reduce(
-  //         (acc, data) =>
-  //           acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
-  //         0
-  //       );
-
-  //     const grandTotalDorm =
-  //       Object.values(rightDormTotal).reduce(
-  //         (acc, data) =>
-  //           acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
-  //         0
-  //       ) +
-  //       Object.values(leftDormTotal).reduce(
-  //         (acc, data) =>
-  //           acc + (data || []).reduce((acc, curr) => acc + curr.volume, 0),
-  //         0
-  //       );
-
-  //     // Calculate grand total by adding CCS and Dorm volumes
-  //     const grandTotal = grandTotalCCS + grandTotalDorm;
-
-  //     // Update state with the grand total volume
-  //     setGrandTotalVolume(grandTotal);
-  //   } else {
-  //     setGrandTotalVolume(0);
-  //   }
-  // }, [rightDormTotal, leftDormTotal, rightCCSTotal, leftCCSTotal]);
 
   useEffect(() => {
     if (rightDormTotal && leftDormTotal && rightCCSTotal && leftCCSTotal) {
