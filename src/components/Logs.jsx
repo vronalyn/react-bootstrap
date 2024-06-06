@@ -10,6 +10,18 @@ import {
   deleteGoalToFirestore,
 } from "../firebase/function";
 
+// added
+import {
+  collection,
+  query,
+  where,
+  orderBy,
+  limit,
+  onSnapshot,
+  getDocs,
+} from "@firebase/firestore";
+import { db } from "../firebase/firebase";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../css/log.css";
@@ -25,6 +37,340 @@ const Logs = ({ goals, setGoals, id }) => {
   const [errorMessage1, setErrorMessage1] = useState("");
   const [errorMessage2, setErrorMessage2] = useState("");
   const [initialGoal, setInitialGoal] = useState(null);
+
+  // added - quisie
+  const [selectedMonth, setSelectedMonth] = useState("");
+  const [dateRange, setDateRange] = useState({ start: "", end: "" });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [formattedStartDate, setFormattedStartDate] = useState("");
+  const [formattedEndDate, setFormattedEndDate] = useState("");
+
+  const [CCSRightData, setCCSRightData] = useState({});
+  const [CCSLeftData, setCCSLeftData] = useState({});
+  const [DormRightData, setDormRightData] = useState({});
+  const [DormLeftData, setDormLeftData] = useState({});
+
+  const [totalCCS, setTotalCCS] = useState(0);
+  const [totalDorm, setTotalDorm] = useState(0);
+  const [grandTotalVolume, setGrandTotalVolume] = useState(0);
+
+  // ============================= Functions for total chart
+  // useEffect to set initial values
+  useEffect(() => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = (currentDate.getMonth() + 1)
+      .toString()
+      .padStart(2, "0");
+    const formattedCurrentMonth = `${currentYear}-${currentMonth}`;
+
+    setSelectedMonth(formattedCurrentMonth);
+
+    const { start, end } = calculateDateRange(currentYear, currentMonth);
+
+    setDateRange({ start, end });
+
+    console.log(`Date Range for Logs: ${start} - ${end}`);
+    console.log("Initial Selected Month for Logs:", formattedCurrentMonth);
+  }, []);
+
+  const calculateDateRange = (year, month) => {
+    const startDate = new Date(year, month - 1, 1);
+    const endDate = new Date(year, month, 0);
+
+    // Find the first Monday of the month
+    const firstMonday = new Date(startDate);
+    firstMonday.setDate(1);
+    while (firstMonday.getDay() !== 1) {
+      firstMonday.setDate(firstMonday.getDate() + 1);
+    }
+
+    // Add one day to make it Tuesday
+    const firstTuesday = new Date(firstMonday);
+    firstTuesday.setDate(firstMonday.getDate() + 1);
+
+    // Find the last day of the month
+    const lastDayOfMonth = new Date(endDate);
+
+    // Adjust the end date to the last day of the last week by ensuring it ends on a Sunday
+    let endDateOfLastWeek = new Date(lastDayOfMonth);
+    if (endDateOfLastWeek.getDay() !== 0) {
+      // If it's not already Sunday
+      endDateOfLastWeek.setDate(
+        endDateOfLastWeek.getDate() + (7 - endDateOfLastWeek.getDay())
+      );
+    }
+
+    // Add one day to include the first day of the following week
+    endDateOfLastWeek.setDate(endDateOfLastWeek.getDate() + 1);
+
+    const formattedStartDate = firstTuesday.toISOString().substring(0, 10);
+    const formattedEndDate = endDateOfLastWeek.toISOString().substring(0, 10);
+
+    return { start: formattedStartDate, end: formattedEndDate };
+  };
+
+  const handleMonthChange = (event) => {
+    let monthValue = event.target.value;
+    if (!monthValue) {
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear();
+      const currentMonth = (currentDate.getMonth() + 1)
+        .toString()
+        .padStart(2, "0");
+      monthValue = `${currentYear}-${currentMonth}`;
+    }
+    setSelectedMonth(monthValue);
+
+    // Calculate the date range based on the selected month
+    const [year, month] = monthValue.split("-");
+    const { start, end } = calculateDateRange(parseInt(year), parseInt(month));
+
+    // Set the calculated date range
+    setDateRange({ start, end });
+
+    console.log(`Selected Month (Dorm): ${monthValue}`);
+  };
+
+  useEffect(() => {
+    fetchDatadb(
+      selectedMonth,
+      dateRange,
+      setDormRightData,
+      setDormLeftData,
+      "Dorm"
+    );
+  }, [selectedMonth, dateRange]);
+
+  useEffect(() => {
+    fetchDatadb(
+      selectedMonth,
+      dateRange,
+      setCCSRightData,
+      setCCSLeftData,
+      "CCS"
+    );
+  }, [selectedMonth, dateRange]);
+
+  const fetchDatadb = async (
+    selectedMonth,
+    setDateRange,
+    setRightData,
+    setLeftData,
+    locationType
+  ) => {
+    try {
+      setIsLoading(true);
+
+      if (selectedMonth && setDateRange.start && setDateRange.end) {
+        const [year, month] = selectedMonth.split("-");
+        const startDate = new Date(year, parseInt(month) - 1, 1);
+        const endDate = new Date(year, parseInt(month), 0);
+        const formattedStartDate = startDate.toISOString().substring(0, 10);
+        const formattedEndDate = endDate.toISOString().substring(0, 10);
+
+        const startISO = new Date(setDateRange.start);
+        console.log("Start Date - iso:", startISO);
+
+        const endISO = new Date(setDateRange.end);
+        console.log("End Date - iso:", endISO);
+
+        const rightLocation = locationType + "Right";
+        const leftLocation = locationType + "Left";
+
+        await fetchDataForLocation(
+          rightLocation,
+          startISO,
+          endISO,
+          locationType,
+          setRightData
+        );
+        await fetchDataForLocation(
+          leftLocation,
+          startISO,
+          endISO,
+          locationType,
+          setLeftData
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchDataForLocation = async (
+    location,
+    startDate,
+    endDate,
+    database,
+    setData
+  ) => {
+    try {
+      const data = [];
+      let start = new Date(startDate); // Start from the provided start date in the date range
+      const end = new Date(endDate);
+
+      console.log(`Fetching ${location} data from Firestore...`);
+
+      while (start <= end) {
+        let weekEndDate = new Date(start);
+        weekEndDate.setDate(weekEndDate.getDate() + 6); // Determine the end of the week
+
+        // Ensure the week's end does not go beyond the overall end date
+        if (weekEndDate > end) {
+          weekEndDate = end;
+        }
+
+        const weeklyData = [];
+        let currentDay = new Date(start);
+        const weekEnd = new Date(weekEndDate);
+        while (currentDay <= weekEnd) {
+          const querySnapshot = await getDocs(
+            query(
+              collection(db, database),
+              where("location", "==", location),
+              where("DateTime", ">=", currentDay),
+              where("DateTime", "<", new Date(currentDay.getTime() + 86400000)), // Next day
+              orderBy("DateTime", "desc"),
+              limit(1)
+            )
+          );
+
+          const dailyData = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          // Formatting date for console log
+          const formattedDate = currentDay.toISOString().split("T")[0];
+
+          // console.log(`${location} Data for ${formattedDate}:`, dailyData);
+
+          weeklyData.push({
+            date: formattedDate,
+            entries: dailyData,
+          });
+
+          // Move to the next day
+          currentDay.setDate(currentDay.getDate() + 1);
+        }
+
+        // Formatting dates for console log
+        const formattedStartDate = start.toISOString().split("T")[0];
+        const formattedEndDate = weekEndDate.toISOString().split("T")[0];
+
+        console.log(
+          `${location} Data for Week ${formattedStartDate} to ${formattedEndDate}:`,
+          weeklyData
+        );
+
+        data.push({
+          start: formattedStartDate,
+          end: formattedEndDate,
+          entries: weeklyData,
+        });
+
+        // Set the start to one day after the current week's end date for the next iteration
+        start = new Date(weekEndDate.getTime() + 86400000); // +1 day in milliseconds
+      }
+
+      setData(data);
+    } catch (error) {
+      console.error(`Error fetching ${location} data: `, error);
+    }
+  };
+
+  useEffect(() => {
+    // Format date
+    if (dateRange.start && dateRange.end) {
+      const startDate = new Date(dateRange.start);
+      const endDate = new Date(dateRange.end);
+      const formattedStartDate = startDate.toLocaleString("default", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+      const formattedEndDate = endDate.toLocaleString("default", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+
+      setFormattedStartDate(formattedStartDate);
+      setFormattedEndDate(formattedEndDate);
+    }
+  }, [dateRange]);
+
+  // ========================== total
+  // Function to calculate total volumes by week for CCS
+  const calculateTotalVolumesCCS = (rightCCS, leftCCS) => {
+    const totalVolumesCCS = Array.from({ length: 4 }, () => 0); // Assuming 4 weeks
+    [rightCCS, leftCCS].forEach((data) => {
+      Object.values(data).forEach((week, index) => {
+        week.entries.forEach((dateEntry) => {
+          dateEntry.entries.forEach((entry) => {
+            totalVolumesCCS[index] += parseFloat(entry.volume);
+          });
+        });
+      });
+    });
+    return totalVolumesCCS.map((total) => total.toFixed(2));
+  };
+
+  // Function to calculate total volumes by week for Dorm
+  const calculateTotalVolumesDorm = (rightDorm, leftDorm) => {
+    const totalVolumesDorm = Array.from({ length: 4 }, () => 0); // Assuming 4 weeks
+    [rightDorm, leftDorm].forEach((data) => {
+      Object.values(data).forEach((week, index) => {
+        week.entries.forEach((dateEntry) => {
+          dateEntry.entries.forEach((entry) => {
+            totalVolumesDorm[index] += parseFloat(entry.volume);
+          });
+        });
+      });
+    });
+    return totalVolumesDorm.map((total) => total.toFixed(2));
+  };
+
+  useEffect(() => {
+    let grandTotal = 0;
+
+    // Calculate total volumes for CCS
+    const totalVolumesCCS = calculateTotalVolumesCCS(CCSRightData, CCSLeftData);
+
+    // Calculate total volumes for Dorm
+    const totalVolumesDorm = calculateTotalVolumesDorm(
+      DormRightData,
+      DormLeftData
+    );
+
+    const totalCCS = totalVolumesCCS.reduce(
+      (acc, curr) => acc + parseFloat(curr),
+      0
+    );
+    const totalDorm = totalVolumesDorm.reduce(
+      (acc, curr) => acc + parseFloat(curr),
+      0
+    );
+    // Calculate grand total
+    grandTotal =
+      totalVolumesCCS.reduce((acc, curr) => acc + parseFloat(curr), 0) +
+      totalVolumesDorm.reduce((acc, curr) => acc + parseFloat(curr), 0);
+
+    // Display
+    console.log(`CCS Total Volume Logs: ${totalCCS}`);
+    console.log(`Dorm Total Volume Logs: ${totalDorm}`);
+    console.log(`Grand Total Volume Logs: ${grandTotal}`);
+
+    setTotalCCS(totalCCS);
+    setTotalDorm(totalDorm);
+    setGrandTotalVolume(grandTotal);
+  }, [CCSRightData, CCSLeftData, DormRightData, DormLeftData]);
+
+  // ==================================================================
 
   // SImulation test
   const [ccsWaterUsage, setCCSWaterUsage] = useState(0);
@@ -60,6 +406,9 @@ const Logs = ({ goals, setGoals, id }) => {
   //   return () => clearInterval(interval);
   // }, []);
 
+  // monthly consumption
+  // totalCCS -> CCS total
+  // totalDorm -> Dorm Total
   useEffect(() => {
     const fetchCCSWaterUsage = async () => {
       const CCSWaterUsageFirestore = await getCCSWaterUsage(setCCSWaterUsage);
